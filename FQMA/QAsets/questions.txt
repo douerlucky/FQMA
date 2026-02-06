@@ -1,0 +1,524 @@
+ID: 1
+问题: Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 2
+问题: Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 3
+问题: Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 4
+问题: （families）Prevotellaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 5
+问题: （genera）Eubacterium，Lachnospiraceae，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 6
+问题: Bacteroides是否对生猪饲养效率是显著相关的？它受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 7
+问题: （genera）Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 8
+问题: （genera）Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 9
+问题: Desulfovibrionaceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 10
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 11
+问题: 哪些微生物群与生猪饲养效率显著相关？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 12
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下的Pvalue在0.2与0.21之间？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 13
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 14
+问题: （genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 15
+问题: （genera）Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 16
+问题: （genera）Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 17
+问题: Clostridium中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 18
+问题: Lactobacillus是否对生猪饲养效率是显著相关的？哪些基因的表达能够增加它的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 19
+问题: Desulfovibrionaceae是否对生猪饲养效率是显著相关的？哪些基因的表达能够增加它的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 20
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 21
+问题: 哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 22
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 23
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 24
+问题: 哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 25
+问题: （genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 26
+问题: （genera）Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 27
+问题: （families）Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 28
+问题: Eubacterium是否对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 29
+问题: Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 30
+问题: Clostridium中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 31
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 32
+问题: 哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 33
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 34
+问题: 哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 35
+问题: （genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 36
+问题: (genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 37
+问题: Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 38
+问题: (genera)Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 39
+问题: Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 40
+问题: Bacteroides是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 41
+问题: (genera) Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 42
+问题: Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 43
+问题: Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 44
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 45
+问题: 哪些微生物群与生猪饲养效率显著相关？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 46
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 47
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 48
+问题: 哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？
+--------------------------------------------------------------------------------
+
+ID: 49
+问题: (genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 50
+问题: (genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 51
+问题: (families)Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 52
+问题: Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 53
+问题: Bacteroides是否对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 54
+问题: Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 55
+问题: Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 56
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 57
+问题: 哪些微生物群与生猪饲养效率显著相关？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 58
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 59
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 60
+问题: (genera) Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 62
+问题: Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 63
+问题: (genera) Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 64
+问题: Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 65
+问题: Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 66
+问题: 哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 67
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 68
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 69
+问题: 哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 70
+问题: (genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 71
+问题: (genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 72
+问题: (genera) Prevotellaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 73
+问题: Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 74
+问题: Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 75
+问题: Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 76
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 77
+问题: 哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 78
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 79
+问题: 哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 80
+问题: (genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 81
+问题: （genera）Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 82
+问题: （families）Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 83
+问题: （genera）Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 84
+问题: Bacteroides是否对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 85
+问题: Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 86
+问题: Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 87
+问题: Desulfovibrionaceae是否对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 88
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 89
+问题: 哪些微生物群与生猪饲养效率显著相关？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 90
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 91
+问题: 哪些微生物群关联于生猪饲养效率，在"Fresh / Fresh+enzyme"条件下Pvalue=0.19？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 92
+问题: 哪些微生物群关联于生猪饲养效率，在条件下Pvalue在0.28与0.288之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 93
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 94
+问题: 生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 95
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 96
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 97
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 98
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 99
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 100
+问题: 哪些微生物群关联于生猪饲养效率，在"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？
+--------------------------------------------------------------------------------
+
+ID: 101
+问题: 给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?
+--------------------------------------------------------------------------------
+
+ID: 102
+问题: 给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够增加这些微生物的数量?这些基因的代谢通路是什么?
+--------------------------------------------------------------------------------
+
+ID: 103
+问题: 给soluble corn fiber食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?
+--------------------------------------------------------------------------------
+
+ID: 104
+问题: 给soluble corn fiber食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够增加这些微生物的数量?这些基因的代谢通路是什么?
+--------------------------------------------------------------------------------
+
+ID: 105
+问题: 给resistant starch食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?
+--------------------------------------------------------------------------------
+
+ID: 106
+问题: 给resistant starch食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 107
+问题: 给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 108
+问题: 给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 109
+问题: 给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 110
+问题: 给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 111
+问题: 给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 112
+问题: 给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 113
+问题: 给carbohydrates食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 114
+问题: 给carbohydrates食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 115
+问题: 给sea buckthorn protein食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 116
+问题: 给sea buckthorn protein食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 117
+问题: 给high caloric diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 118
+问题: 给high caloric diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 119
+问题: 使用药物Synbiotic导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 120
+问题: 使用药物Synbiotic导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 121
+问题: 使用药物Infliximab导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 122
+问题: 使用药物Infliximab导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 123
+问题: 使用药物Vitamin A导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 124
+问题: 使用药物Vitamin A导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 125
+问题: 使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 126
+问题: 使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 126
+问题: 使用药物Prebiotics导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 127
+问题: 使用药物Prebiotics导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 128
+问题: 使用药物Metformin导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 129
+问题: 使用药物Metformin导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 130
+问题: 使用药物Insulin Aspart导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+
+ID: 131
+问题: 使用药物Anticholinergic drug导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？
+--------------------------------------------------------------------------------
+

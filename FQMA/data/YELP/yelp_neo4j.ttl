@@ -1,0 +1,507 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix yelp: <http://yelp#> .
+
+# ===================================================================================
+# NEO4J GRAPH DATABASE MAPPINGS FOR YELP ONTOLOGY
+# 节点: User, Business
+# 关系: FRIENDS_WITH, REVIEWED, TIPPED
+# ===================================================================================
+
+# ===================================================================================
+# User Node Mapping - 用户节点映射
+# 属性: user_id, name, elite
+# ===================================================================================
+<#UserNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (u:User)
+            RETURN u.user_id as user_id,
+                   u.name as name,
+                   u.elite as elite
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}" ;
+        rr:class yelp:User
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_id ;
+        rr:objectMap [
+            rr:column "user_id" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_elite ;
+        rr:objectMap [
+            rr:column "elite" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Elite用户节点映射
+<#EliteUserNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (u:User)
+            WHERE u.elite IS NOT NULL AND u.elite <> ''
+            RETURN u.user_id as user_id,
+                   u.name as name,
+                   u.elite as elite
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}" ;
+        rr:class yelp:EliteUser
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_elite ;
+        rr:objectMap [
+            rr:column "elite" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# ===================================================================================
+# Business Node Mapping - 商家节点映射
+# 属性: business_id, name, city, state
+# ===================================================================================
+<#BusinessNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (b:Business)
+            RETURN b.business_id as business_id,
+                   b.name as name,
+                   b.city as city,
+                   b.state as state
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}" ;
+        rr:class yelp:Business
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_id ;
+        rr:objectMap [
+            rr:column "business_id" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_city ;
+        rr:objectMap [
+            rr:column "city" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_state ;
+        rr:objectMap [
+            rr:column "state" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Business按城市查询映射
+<#BusinessByCityNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (b:Business)
+            WHERE b.city IS NOT NULL
+            RETURN b.business_id as business_id,
+                   b.name as name,
+                   b.city as city,
+                   b.state as state
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_city ;
+        rr:objectMap [
+            rr:column "city" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_state ;
+        rr:objectMap [
+            rr:column "state" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# ===================================================================================
+# FRIENDS_WITH Relationship Mapping - 好友关系映射
+# User → User (有向)
+# ===================================================================================
+<#FriendsWithRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User)
+            RETURN u1.user_id as user1_id, u2.user_id as user2_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user1_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:friends_with ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user2_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# 好友关系完整映射（包含用户信息）
+<#FriendsWithFullMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u1:User)-[r:FRIENDS_WITH]->(u2:User)
+            RETURN u1.user_id as user1_id,
+                   u1.name as user1_name,
+                   u2.user_id as user2_id,
+                   u2.name as user2_name
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user1_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_name ;
+        rr:objectMap [
+            rr:column "user1_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:friends_with ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user2_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# ===================================================================================
+# REVIEWED Relationship Mapping - 评论关系映射
+# User → Business
+# 关系属性: stars, review_id, date
+# ===================================================================================
+<#ReviewedRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:REVIEWED]->(b:Business)
+            RETURN u.user_id as user_id,
+                   b.business_id as business_id,
+                   r.review_id as review_id,
+                   r.stars as stars,
+                   r.date as date
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviewed ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Review实体映射（从REVIEWED关系创建Review实例）
+<#ReviewFromRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:REVIEWED]->(b:Business)
+            RETURN r.review_id as review_id,
+                   u.user_id as user_id,
+                   b.business_id as business_id,
+                   r.stars as stars,
+                   r.date as date
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}" ;
+        rr:class yelp:Review
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review_id ;
+        rr:objectMap [
+            rr:column "review_id" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [
+            rr:column "stars" ;
+            rr:datatype xsd:decimal
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [
+            rr:column "date" ;
+            rr:datatype xsd:dateTime
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Business has_review 反向关系（从REVIEWED关系）
+<#BusinessHasReviewFromRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:REVIEWED]->(b:Business)
+            RETURN b.business_id as business_id,
+                   r.review_id as review_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review ;
+        rr:objectMap [
+            rr:template "http://yelp#review_{review_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# ===================================================================================
+# TIPPED Relationship Mapping - 贴士关系映射
+# User → Business
+# 关系属性: text, date, compliment_count
+# ===================================================================================
+<#TippedRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:TIPPED]->(b:Business)
+            RETURN u.user_id as user_id,
+                   b.business_id as business_id,
+                   r.text as text,
+                   r.date as date,
+                   r.compliment_count as compliment_count
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:tipped ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Tip实体映射（从TIPPED关系创建Tip实例）
+<#TipFromRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:TIPPED]->(b:Business)
+            RETURN u.user_id as user_id,
+                   b.business_id as business_id,
+                   r.text as text,
+                   r.date as date,
+                   r.compliment_count as compliment_count
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#tip_{user_id}_{business_id}" ;
+        rr:class yelp:Tip
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_text ;
+        rr:objectMap [
+            rr:column "text" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [
+            rr:column "date" ;
+            rr:datatype xsd:dateTime
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_count ;
+        rr:objectMap [
+            rr:column "compliment_count" ;
+            rr:datatype xsd:integer
+        ]
+    ] .
+
+# Business has_tip 反向关系
+<#BusinessHasTipMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (u:User)-[r:TIPPED]->(b:Business)
+            RETURN b.business_id as business_id,
+                   u.user_id as user_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_tip ;
+        rr:objectMap [
+            rr:template "http://yelp#tip_{user_id}_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# ===================================================================================
+# 复合查询映射
+# ===================================================================================
+
+# 用户的所有评论（包含商家信息）
+<#UserReviewsWithBusinessGraphMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (u:User)-[r:REVIEWED]->(b:Business)
+            RETURN u.user_id as user_id,
+                   u.name as user_name,
+                   b.business_id as business_id,
+                   b.name as business_name,
+                   b.city as business_city,
+                   r.review_id as review_id,
+                   r.stars as stars,
+                   r.date as date
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [
+            rr:column "stars" ;
+            rr:datatype xsd:decimal
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [
+            rr:column "date" ;
+            rr:datatype xsd:dateTime
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# 商家的所有评论和贴士统计
+<#BusinessReviewsAndTipsMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (b:Business)
+            OPTIONAL MATCH (u1:User)-[r:REVIEWED]->(b)
+            OPTIONAL MATCH (u2:User)-[t:TIPPED]->(b)
+            RETURN b.business_id as business_id,
+                   b.name as business_name,
+                   b.city as city,
+                   count(DISTINCT r) as review_count,
+                   count(DISTINCT t) as tip_count
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_name ;
+        rr:objectMap [
+            rr:column "business_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_city ;
+        rr:objectMap [
+            rr:column "city" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# 用户的好友及其评论
+<#UserFriendsReviewsMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (u1:User)-[:FRIENDS_WITH]->(u2:User)-[r:REVIEWED]->(b:Business)
+            RETURN u1.user_id as user_id,
+                   u2.user_id as friend_id,
+                   u2.name as friend_name,
+                   b.business_id as business_id,
+                   b.name as business_name,
+                   r.stars as stars
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:friends_with ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{friend_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .

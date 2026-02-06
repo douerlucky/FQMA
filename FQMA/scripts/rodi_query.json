@@ -1,0 +1,265 @@
+[
+  {
+    "id": "1",
+    "question": "查询ID为3的作者所著的前10篇论文，这些论文的摘要，之后在另一数据库他们的标题和提交的会议ID又是什么",
+    "answer": {
+      "query_1": {
+        "description": "查询ID为3的作者所著的前10篇论文的ID。",
+        "cypher_query": "MATCH (a:Person)-[:AUTHORED]->(p:Paper)\nWHERE a.ID = 3\nRETURN p.ID AS paper_id",
+        "results": [
+          ["600"],
+          ["0"]
+        ]
+      },
+      "query_2": {
+        "description": "查询步骤1中获取的论文ID列表对应的摘要",
+        "sql_query": "SELECT ID as abstract_id, has_text as abstract_text FROM Abstract\nWHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)",
+        "results": [
+          ["4", "tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical"],
+          ["1652", "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill"]
+        ]
+      },
+      "query_3": {
+        "description": "查询步骤1中获取的论文ID列表对应的标题和提交的会议ID。",
+        "sql_query": "SELECT \"Paper\".\"ID\", \"Paper\".\"has_a_paper_title\", \"Paper\".\"is_submitted_at\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (<<SUBQUERY_1>>)",
+        "results": [
+          ["600", "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill", "256"],
+          ["0", "tibetans slavishly hipless prs bluejays cuppier nonsurgical", "7"]
+        ]
+      }
+    }
+  },
+  {
+    "id": "2",
+    "question": "查询ID为1000的委员会的成员 ID，获取对应的邮箱地址，这些成员的名字、姓氏又是什么呢？",
+    "answer": {
+      "query_1": {
+        "description": "在Neo4j中查询ID为1000的委员会的成员ID，限制10条。",
+        "cypher_query": "MATCH (p:Person)-[:MEMBER_OF]->(c:Committee)\nWHERE c.ID = 1000\nRETURN p.ID AS person_id\nLIMIT 10",
+        "results": [
+          ["1800"],
+          ["1396"],
+          ["998"],
+          ["800"],
+          ["56"]
+        ]
+      },
+      "query_2": {
+        "description": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+        "sql_query": "SELECT h.Person AS person_id, h.VALUE AS email\nFROM has_an_email h\nWHERE h.Person IN (1800, 1396, 998, 800, 56)",
+        "results": [
+          ["56", "Raimund.Widdowson@secretresearch.tld"],
+          ["800", "Llyn.Hardge@secretresearch.tld"],
+          ["998", "Cenon.Colon@secretresearch.tld"],
+          ["1396", "Jace.Ruotolo@secretresearch.tld"],
+          ["1800", "Xiomara.Plowe@secretresearch.tld"]
+        ]
+      },
+      "query_3": {
+        "description": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+        "sql_query": "SELECT\n  p.\"ID\" AS person_id,\n  p.\"has_the_first_name\",\n  p.\"has_the_last_name\"\nFROM \"Person\" p\nWHERE p.\"ID\" IN (1800, 1396, 998, 800, 56)",
+        "results": [
+          ["1800", "Xiomara", "Plowe"],
+          ["56", "Raimund", "Widdowson"],
+          ["998", "Cenon", "Colon"],
+          ["1396", "Jace", "Ruotolo"],
+          ["800", "Llyn", "Hardge"]
+        ]
+      }
+    }
+  },
+  {
+    "id": "3",
+    "question": "查找ID为3的作者所著的所有论文,查询这些论文的审稿意见,查询每篇论文的作者数量",
+    "answer": {
+      "query_1": {
+        "description": "在Neo4j中查找ID为3的作者（Person）所著的所有论文（Paper），返回这些论文的ID，限制10条。",
+        "cypher_query": "MATCH (p:Person)-[:AUTHORED]->(paper:Paper)\nWHERE p.ID = 3\nRETURN paper.ID AS paper_id\nLIMIT 10",
+        "results": [
+          ["0"],
+          ["600"]
+        ]
+      },
+      "query_2": {
+        "description": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的审稿意见。",
+        "sql_query": "SELECT r.reviews AS paper_id, r.has_detailed_comments\nFROM Review r\nWHERE r.reviews IN (0, 600)",
+        "results": [
+          ["0", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["0", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["600", "In their paper 'SIGXYZ-2014' the authors discuss SIGXYZ-2014.\nThough apparently a contribution of remarkable novelty, 'SIGXYZ-2014' also has its weaknesses."],
+          ["600", "The paper \"SIGXYZ-2014\" is mainly about SIGXYZ-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight SIGXYZ-2014 in particular"]
+        ]
+      },
+      "query_3": {
+        "description": "根据Neo4j返回的论文ID列表，在PostgreSQL的Paper表和contributes表中查询每篇论文的作者数量。",
+        "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    COUNT(c.\"Person\") AS author_count\nFROM \"Paper\" p\nLEFT JOIN contributes c ON p.\"ID\" = c.\"Conference_document\"\nWHERE p.\"ID\" IN (0, 600)\nGROUP BY p.\"ID\"",
+        "results": [
+          ["0", "3"],
+          ["600", "2"]
+        ]
+      }
+    }
+  },
+  {
+    "id": "4",
+    "question": "查询ID=1000委员会的成员,查询这些成员的电子邮件地址,然后查询这些成员名字、姓氏",
+    "answer": {
+      "query_1": {
+        "description": "在Neo4j中查询ID=1000的委员会的成员ID，限制10条。",
+        "cypher_query": "MATCH (p:Person)-[:MEMBER_OF]->(c:Committee)\nWHERE c.ID = 1000\nRETURN p.ID AS person_id\nLIMIT 10",
+        "results": [
+          ["1800"],
+          ["1396"],
+          ["998"],
+          ["800"],
+          ["56"]
+        ]
+      },
+      "query_2": {
+        "description": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+        "sql_query": "SELECT h.Person AS person_id, h.VALUE AS email\nFROM has_an_email h\nWHERE h.Person IN (1800, 1396, 998, 800, 56)",
+        "results": [
+          ["56", "Raimund.Widdowson@secretresearch.tld"],
+          ["800", "Llyn.Hardge@secretresearch.tld"],
+          ["998", "Cenon.Colon@secretresearch.tld"],
+          ["1396", "Jace.Ruotolo@secretresearch.tld"],
+          ["1800", "Xiomara.Plowe@secretresearch.tld"]
+        ]
+      },
+      "query_3": {
+        "description": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+        "sql_query": "SELECT\n  p.\"ID\" AS person_id,\n  p.\"has_the_first_name\",\n  p.\"has_the_last_name\"\nFROM \"Person\" p\nWHERE p.\"ID\" IN (1800, 1396, 998, 800, 56)",
+        "results": [
+          ["1800", "Xiomara", "Plowe"],
+          ["56", "Raimund", "Widdowson"],
+          ["998", "Cenon", "Colon"],
+          ["1396", "Jace", "Ruotolo"],
+          ["800", "Llyn", "Hardge"]
+        ]
+      }
+    }
+  },
+  {
+    "id": "5",
+    "question": "查找会议ID=7的投稿论文限制10条,这些论文的所有审稿意见是是什么,每篇论文的标题和对应的会议是什么",
+    "answer": {
+      "query_1": {
+        "description": "在Neo4j图数据库中查找会议ID=7的所有投稿论文，限制15条。",
+        "cypher_query": "MATCH (paper:Paper)-[:SUBMITTED_AT]->(conf:Conference)\nWHERE conf.ID = 7\nRETURN paper.ID AS paper_id\nLIMIT 15",
+        "results": [
+          ["1828"],
+          ["1236"],
+          ["302"],
+          ["1195"],
+          ["322"],
+          ["1124"],
+          ["1025"],
+          ["288"],
+          ["541"],
+          ["53"],
+          ["63"],
+          ["505"],
+          ["1635"],
+          ["1689"],
+          ["423"]
+        ]
+      },
+      "query_2": {
+        "description": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的所有审稿意见。",
+        "sql_query": "SELECT r.reviews AS paper_id, r.has_detailed_comments\nFROM Review r\nWHERE r.reviews IN (1828, 1236, 302, 1195, 322, 1124, 1025, 288, 541, 53, 63, 505, 1635, 1689, 423)",
+        "results": [
+          ["53", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["53", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["63", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["63", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["288", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["288", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["302", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["302", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["322", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["322", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["423", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["423", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["505", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["505", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["541", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["541", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1025", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1025", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["1124", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1124", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1195", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1195", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["1236", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1236", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1635", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1635", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["1689", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1689", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"],
+          ["1828", "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."],
+          ["1828", "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"]
+        ]
+      },
+      "query_3": {
+        "description": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的详细信息和对应的会议信息。",
+        "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    p.\"has_a_paper_title\",\n    cv.\"has_a_name\" AS conference_name,\n    cv.\"has_a_location\"\nFROM \"Paper\" p\nJOIN \"Conference_volume\" cv ON p.\"is_submitted_at\" = cv.\"ID\"\nWHERE p.\"ID\" IN (1828, 1236, 302, 1195, 322, 1124, 1025, 288, 541, 53, 63, 505, 1635, 1689, 423)",
+        "results": [
+          ["1828", "kinkiest xix recollected householder overeducated objurgate", "ZSWC", "Annaba"],
+          ["1236", "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths", "ZSWC", "Annaba"],
+          ["302", "islanded burlily thanklessly swiveled", "ZSWC", "Annaba"],
+          ["1195", "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing", "ZSWC", "Annaba"],
+          ["322", "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling", "ZSWC", "Annaba"],
+          ["1124", "villainousness miscalling firefanged skeins", "ZSWC", "Annaba"],
+          ["1025", "loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs", "ZSWC", "Annaba"],
+          ["288", "bering evasiveness toto teashop reaccepts gunneries exorcises", "ZSWC", "Annaba"],
+          ["541", "fobbed transcribed swifters redigesting ostinato recalculation", "ZSWC", "Annaba"],
+          ["53", "giros podgy vagus kinkiest xix", "ZSWC", "Annaba"],
+          ["63", "coreless tuberculoses environs hulled preexamination", "ZSWC", "Annaba"],
+          ["505", "undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation", "ZSWC", "Annaba"],
+          ["1635", "splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned", "ZSWC", "Annaba"],
+          ["1689", "unrealistic substituting surges preheats loggias reconciliating photocatalyst", "ZSWC", "Annaba"],
+          ["423", "dissociated heartier petitionee brill", "ZSWC", "Annaba"]
+        ]
+      }
+    }
+  },
+  {
+    "id": "6",
+    "question": "查找所有提交到会议ID=7的前5篇论文，投稿论文摘要是什么，每篇论文的作者数量",
+    "answer": {
+      "query_1": {
+        "description": "在Neo4j图数据库中查找所有提交到会议ID=7的论文，返回论文ID和标题，限制10条。",
+        "cypher_query": "MATCH (conf:Conference {ID: 7})<-[:SUBMITTED_AT]-(paper:Paper)\nRETURN\n  paper.ID AS paper_id,\n  paper.title AS paper_title\nLIMIT 10",
+        "results": [
+          ["1828", "kinkiest xix recollected householder overeducated objurgate"],
+          ["1236", "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths"],
+          ["302", "islanded burlily thanklessly swiveled"],
+          ["1195", "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing"],
+          ["322", "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"]
+        ]
+      },
+      "query_2": {
+        "description": "根据Neo4j返回的论文ID列表，在MySQL中查询会议ID=7的前5篇投稿摘要。",
+        "sql_query": "SELECT a.is_the_1th_part_of AS paper_id, a.has_text\nFROM Abstract a\nWHERE a.is_the_1th_part_of IN (1828, 1236, 302, 1195, 322)",
+        "results": [
+          ["322", "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"],
+          ["1195", "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing"],
+          ["1236", "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths"],
+          ["1828", "kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate"],
+          ["302", "islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled"]
+        ]
+      },
+      "query_3": {
+        "description": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的作者数量。",
+        "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    COUNT(c.\"Person\") AS author_count\nFROM \"Paper\" p\nLEFT JOIN contributes c ON p.\"ID\" = c.\"Conference_document\"\nWHERE p.\"ID\" IN (1828, 1236, 302, 1195, 322)\nGROUP BY p.\"ID\"",
+        "results": [
+          ["322", "2"],
+          ["302", "3"],
+          ["1195", "2"],
+          ["1236", "3"],
+          ["1828", "2"]
+        ]
+      }
+    }
+  }
+]

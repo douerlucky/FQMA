@@ -1,0 +1,494 @@
+[
+  {
+    "id": "1",
+    "question": "What are the first 10 papers authored by the author with ID 3, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "2",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 1000?"
+  },
+  {
+    "id": "3",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 3?"
+  },
+  {
+    "id": "4",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 1000?"
+  },
+  {
+    "id": "5",
+    "question": "What are the review comments, titles, and corresponding conferences for all papers submitted to conference ID 7?"
+  },
+  {
+    "id": "6",
+    "question": "What are the abstracts and author counts for all papers submitted to conference ID 7?"
+  },
+  {
+    "id": "7",
+    "question": "What are the first 10 papers authored by the author with ID 62, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "8",
+    "question": "What are the first 10 papers authored by the author with ID 168, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "9",
+    "question": "What are the first 10 papers authored by the author with ID 199, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "10",
+    "question": "What are the first 10 papers authored by the author with ID 214, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "11",
+    "question": "What are the first 10 papers authored by the author with ID 290, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "12",
+    "question": "What are the first 10 papers authored by the author with ID 294, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "13",
+    "question": "What are the first 10 papers authored by the author with ID 296, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "14",
+    "question": "What are the first 10 papers authored by the author with ID 424, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "15",
+    "question": "What are the first 10 papers authored by the author with ID 434, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "16",
+    "question": "What are the first 10 papers authored by the author with ID 441, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "17",
+    "question": "What are the first 10 papers authored by the author with ID 494, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "18",
+    "question": "What are the first 10 papers authored by the author with ID 497, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "19",
+    "question": "What are the first 10 papers authored by the author with ID 499, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "20",
+    "question": "What are the first 10 papers authored by the author with ID 564, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "21",
+    "question": "What are the first 10 papers authored by the author with ID 743, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "22",
+    "question": "What are the first 10 papers authored by the author with ID 817, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "23",
+    "question": "What are the first 10 papers authored by the author with ID 852, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "24",
+    "question": "What are the first 10 papers authored by the author with ID 883, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "25",
+    "question": "What are the first 10 papers authored by the author with ID 893, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "26",
+    "question": "What are the first 10 papers authored by the author with ID 956, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "27",
+    "question": "What are the first 10 papers authored by the author with ID 960, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "28",
+    "question": "What are the first 10 papers authored by the author with ID 1028, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "29",
+    "question": "What are the first 10 papers authored by the author with ID 1038, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "30",
+    "question": "What are the first 10 papers authored by the author with ID 1053, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "31",
+    "question": "What are the first 10 papers authored by the author with ID 1059, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "32",
+    "question": "What are the first 10 papers authored by the author with ID 1071, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "33",
+    "question": "What are the first 10 papers authored by the author with ID 1087, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "34",
+    "question": "What are the first 10 papers authored by the author with ID 1095, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "35",
+    "question": "What are the first 10 papers authored by the author with ID 1146, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "36",
+    "question": "What are the first 10 papers authored by the author with ID 1148, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "37",
+    "question": "What are the first 10 papers authored by the author with ID 1151, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "38",
+    "question": "What are the first 10 papers authored by the author with ID 1154, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "39",
+    "question": "What are the first 10 papers authored by the author with ID 1164, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "40",
+    "question": "What are the first 10 papers authored by the author with ID 1170, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "41",
+    "question": "What are the first 10 papers authored by the author with ID 1221, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "42",
+    "question": "What are the first 10 papers authored by the author with ID 1294, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "43",
+    "question": "What are the first 10 papers authored by the author with ID 1294, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "44",
+    "question": "What are the first 10 papers authored by the author with ID 1315, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "45",
+    "question": "What are the first 10 papers authored by the author with ID 1327, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "46",
+    "question": "What are the first 10 papers authored by the author with ID 1338, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "47",
+    "question": "What are the first 10 papers authored by the author with ID 1350, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "48",
+    "question": "What are the first 10 papers authored by the author with ID 1532, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "49",
+    "question": "What are the first 10 papers authored by the author with ID 1658, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "50",
+    "question": "What are the first 10 papers authored by the author with ID 1679, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "51",
+    "question": "What are the first 10 papers authored by the author with ID 1698, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "52",
+    "question": "What are the first 10 papers authored by the author with ID 1750, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "53",
+    "question": "What are the first 10 papers authored by the author with ID 1779, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "54",
+    "question": "What are the first 10 papers authored by the author with ID 1836, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "55",
+    "question": "What are the first 10 papers authored by the author with ID 1837, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "56",
+    "question": "What are the first 10 papers authored by the author with ID 1849, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "57",
+    "question": "What are the first 10 papers authored by the author with ID 1852, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "58",
+    "question": "What are the first 10 papers authored by the author with ID 1859, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "59",
+    "question": "What are the first 10 papers authored by the author with ID 1873, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "60",
+    "question": "What are the first 10 papers authored by the author with ID 1878, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "61",
+    "question": "What are the first 10 papers authored by the author with ID 1915, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "62",
+    "question": "What are the first 10 papers authored by the author with ID 1938, including their abstracts, titles, and the IDs of the conferences where they were submitted?"
+  },
+  {
+    "id": "63",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 314?"
+  },
+  {
+    "id": "64",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 140?"
+  },
+  {
+    "id": "65",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 1489?"
+  },
+  {
+    "id": "66",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 160?"
+  },
+  {
+    "id": "67",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 510?"
+  },
+  {
+    "id": "68",
+    "question": "What are the member IDs, email addresses, and first and last names of the committee with ID 317?"
+  },
+  {
+    "id": "69",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 62?"
+  },
+  {
+    "id": "70",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 168?"
+  },
+  {
+    "id": "71",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 199?"
+  },
+  {
+    "id": "72",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 290?"
+  },
+  {
+    "id": "73",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 294?"
+  },
+  {
+    "id": "74",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 296?"
+  },
+  {
+    "id": "75",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 424?"
+  },
+  {
+    "id": "76",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 441?"
+  },
+  {
+    "id": "77",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 497?"
+  },
+  {
+    "id": "78",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 499?"
+  },
+  {
+    "id": "79",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 564?"
+  },
+  {
+    "id": "80",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 743?"
+  },
+  {
+    "id": "81",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 852?"
+  },
+  {
+    "id": "82",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 893?"
+  },
+  {
+    "id": "83",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 960?"
+  },
+  {
+    "id": "84",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1028?"
+  },
+  {
+    "id": "85",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 3?"
+  },
+  {
+    "id": "86",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1053?"
+  },
+  {
+    "id": "87",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1059?"
+  },
+  {
+    "id": "88",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1071?"
+  },
+  {
+    "id": "89",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1087?"
+  },
+  {
+    "id": "90",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1095?"
+  },
+  {
+    "id": "91",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1146?"
+  },
+  {
+    "id": "92",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1148?"
+  },
+  {
+    "id": "93",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1164?"
+  },
+  {
+    "id": "94",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1170?"
+  },
+  {
+    "id": "95",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1221?"
+  },
+  {
+    "id": "96",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1294?"
+  },
+  {
+    "id": "97",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1315?"
+  },
+  {
+    "id": "98",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1327?"
+  },
+  {
+    "id": "99",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1338?"
+  },
+  {
+    "id": "100",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1350?"
+  },
+  {
+    "id": "101",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1532?"
+  },
+  {
+    "id": "102",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1658?"
+  },
+  {
+    "id": "103",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1679?"
+  },
+  {
+    "id": "104",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1698?"
+  },
+  {
+    "id": "105",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1750?"
+  },
+  {
+    "id": "106",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1779?"
+  },
+  {
+    "id": "107",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1836?"
+  },
+  {
+    "id": "108",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1837?"
+  },
+  {
+    "id": "109",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1849?"
+  },
+  {
+    "id": "110",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1852?"
+  },
+  {
+    "id": "111",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1859?"
+  },
+  {
+    "id": "112",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1873?"
+  },
+  {
+    "id": "113",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1878?"
+  },
+  {
+    "id": "114",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1915?"
+  },
+  {
+    "id": "115",
+    "question": "What are the review comments and author counts for all papers authored by the author with ID 1938?"
+  },
+  {
+    "id": "116",
+    "question": "How can I find all individuals who are both committee members and paper authors, including their basic information, email addresses, and the papers they authored?"
+  },
+  {
+    "id": "117",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 256?"
+  },
+  {
+    "id": "118",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 7?"
+  },
+  {
+    "id": "119",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 470?"
+  },
+  {
+    "id": "120",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 69?"
+  },
+  {
+    "id": "121",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 18?"
+  },
+  {
+    "id": "122",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 163?"
+  },
+  {
+    "id": "123",
+    "question": "What are the paper IDs, titles, review comments, and author information for all papers submitted to the conference with ID 86?"
+  }
+]

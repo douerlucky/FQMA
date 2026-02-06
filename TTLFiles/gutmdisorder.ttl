@@ -1,0 +1,309 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix onto: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#> .
+
+# Food Gut Microbiota Change Results Mapping
+<#FoodGutMicrobiotaChangeResultsMapping>
+    rr:logicalTable [ rr:tableName "food_gut_microbiota_change_results" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food_microbiota_result/{index}" ;
+        rr:class onto:FoodMicrobiotaChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_microbiota_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:alteration_type ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:evidence_score ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .
+
+# Drug Gut Microbiota Change Results Mapping
+<#DrugGutMicrobiotaChangeResultsMapping>
+    rr:logicalTable [ rr:tableName "drug_gut_microbiota_change_results" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug_microbiota_result/{index}" ;
+        rr:class onto:DrugMicrobiotaChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_microbiota_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:alteration_type ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:evidence_score ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .
+
+# Food increases microbiota abundance relationship mapping - 改进版本
+<#FoodIncreasesMicrobiotaAbundanceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name
+            FROM gutmdisorder.food_gut_microbiota_change_results fgmcr
+            JOIN relationship.has_abundance_change_results_by_food hacrbf
+            ON fgmcr.index = hacrbf.index
+            WHERE fgmcr.Alteration = 'increase'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{food_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:increases_microbiota_abundance_by_food ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_name ;
+        rr:objectMap [ rr:column "food_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Food decreases microbiota abundance relationship mapping - 改进版本
+<#FoodDecreasesMicrobiotaAbundanceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name
+            FROM gutmdisorder.food_gut_microbiota_change_results fgmcr
+            JOIN relationship.has_abundance_change_results_by_food hacrbf
+            ON fgmcr.index = hacrbf.index
+            WHERE fgmcr.Alteration = 'decrease'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{food_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:decreases_microbiota_abundance_by_food ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_name ;
+        rr:objectMap [ rr:column "food_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# 关键修改：Drug increases microbiota abundance relationship mapping - 支持药物名称过滤
+<#DrugIncreasesMicrobiotaAbundanceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name
+            FROM gutmdisorder.drug_gut_microbiota_change_results dgmcr
+            JOIN relationship.has_abundance_change_results_by_drug hacrbd
+            ON dgmcr.index = hacrbd.index
+            WHERE dgmcr.Alteration = 'increase'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{drug_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:increases_microbiota_abundance_by_drug ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_name ;
+        rr:objectMap [ rr:column "drug_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# 关键修改：Drug decreases microbiota abundance relationship mapping - 支持药物名称过滤
+<#DrugDecreasesMicrobiotaAbundanceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name
+            FROM gutmdisorder.drug_gut_microbiota_change_results dgmcr
+            JOIN relationship.has_abundance_change_results_by_drug hacrbd
+            ON dgmcr.index = hacrbd.index
+            WHERE dgmcr.Alteration = 'decrease'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{drug_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:decreases_microbiota_abundance_by_drug ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_name ;
+        rr:objectMap [ rr:column "drug_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Food entity mapping from abundance change results - 增加列映射信息
+<#FoodEntityMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as food_name
+            FROM relationship.has_abundance_change_results_by_food
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{food_name}" ;
+        rr:class onto:Food
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_name ;
+        rr:objectMap [ rr:column "food_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Drug entity mapping from abundance change results - 增加列映射信息
+<#DrugEntityMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as drug_name
+            FROM relationship.has_abundance_change_results_by_drug
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{drug_name}" ;
+        rr:class onto:Drug
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_name ;
+        rr:objectMap [ rr:column "drug_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Microbiota entity mapping from food change results
+<#MicrobiotaFromFoodChangeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT microbiota_name
+            FROM gutmdisorder.food_gut_microbiota_change_results
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}" ;
+        rr:class onto:MicrobiotaName
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Microbiota entity mapping from drug change results
+<#MicrobiotaFromDrugChangeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT microbiota_name
+            FROM gutmdisorder.drug_gut_microbiota_change_results
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}" ;
+        rr:class onto:MicrobiotaName
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# 新增：专门处理食物名称到关系列的映射
+<#FoodNameToRelationshipMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as food_name, relationship
+            FROM relationship.has_abundance_change_results_by_food
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{food_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_name ;
+        rr:objectMap [ rr:column "relationship" ; rr:datatype xsd:string ]
+    ] .
+
+# 新增：专门处理药物名称到关系列的映射
+<#DrugNameToRelationshipMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as drug_name, relationship
+            FROM relationship.has_abundance_change_results_by_drug
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{drug_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_name ;
+        rr:objectMap [ rr:column "relationship" ; rr:datatype xsd:string ]
+    ] .
+
+# Additional result class mappings
+<#FoodMicrobiotaChangeResultClassMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT 'FoodMicrobiotaChangeResult' as result_type
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#FoodMicrobiotaChangeResult" ;
+        rr:class owl:Class
+    ] .
+
+<#DrugMicrobiotaChangeResultClassMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT 'DrugMicrobiotaChangeResult' as result_type
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#DrugMicrobiotaChangeResult" ;
+        rr:class owl:Class
+    ] .

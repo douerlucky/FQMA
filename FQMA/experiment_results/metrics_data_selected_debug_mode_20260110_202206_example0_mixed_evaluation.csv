@@ -1,0 +1,11 @@
+question_id,fex,ex,execution_time,total_tokens,tokens_per_subquery,total_subqueries,correct_subqueries,example_count,repair_attempts,repair_successes,repair_success_rate,query_planner_tokens,sparql_generator_tokens,query_repairer_tokens,subquery_scheduler_tokens,evaluation_mode,sq1_ex,sq2_ex,sq3_ex,sq3_similarity
+106,0,0.3333333333333333,44.21867394447327,775,258.3333333333333,3,1,0,0,0,0,91,366,0,318,mixed_evaluation_third_query_count_based,0,0,1,
+107,0,0.3333333333333333,94.63495397567749,640,213.33333333333334,3,1,0,0,0,0,85,298,0,257,mixed_evaluation_third_query_count_based,0,0,1,
+108,0,0.3333333333333333,58.201249837875366,639,213.0,3,1,0,0,0,0,84,298,0,257,mixed_evaluation_third_query_count_based,0,0,1,
+109,0,0.5,28.935245037078857,475,237.5,2,1,0,0,0,0,70,214,0,191,mixed_evaluation_third_query_count_based,1,0,,
+110,0,0.3333333333333333,103.13005185127258,657,219.0,3,1,0,0,0,0,91,303,0,263,mixed_evaluation_third_query_count_based,0,0,1,
+111,0,0.3333333333333333,87.57805109024048,636,212.0,3,1,0,0,0,0,83,296,0,257,mixed_evaluation_third_query_count_based,0,0,1,
+112,0,0.3333333333333333,87.10821580886841,639,213.0,3,1,0,0,0,0,84,297,0,258,mixed_evaluation_third_query_count_based,0,0,1,
+113,0,0.3333333333333333,68.67256498336792,631,210.33333333333334,3,1,0,0,0,0,82,294,0,255,mixed_evaluation_third_query_count_based,0,0,1,
+114,0,0.0,61.8069109916687,1447,723.5,2,0,0,2,0,0.0,70,266,869,242,mixed_evaluation_third_query_count_based,0,0,,
+115,0,0.0,66.88434886932373,1384,692.0,2,0,0,2,0,0.0,70,264,809,241,mixed_evaluation_third_query_count_based,0,0,,

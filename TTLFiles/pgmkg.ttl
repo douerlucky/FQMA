@@ -1,0 +1,289 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix ex: <http://example.com/> .
+@prefix onto: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ===================================================================================
+# PRIMARY ENTITY MAPPINGS
+# ===================================================================================
+
+# Microbiota实体映射
+ex:MicrobiotaMap rr:logicalTable [
+    rr:tableName "MicrobiotaName"
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{name}" ;
+    rr:class onto:MicrobiotaName
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:microbiota_name ;
+    rr:objectMap [
+        rr:column "name" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+# Gene实体映射
+ex:GeneMap rr:logicalTable [
+    rr:tableName "GeneName"
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_{name}" ;
+    rr:class onto:Gene
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:gene_symbol ;
+    rr:objectMap [
+        rr:column "name" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+# FeedEfficiency实体映射
+ex:FeedEfficiencyMap rr:logicalTable [
+    rr:tableName "FE"
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#feed_efficiency_{name}" ;
+    rr:class onto:FeedEfficiency
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:efficiency_name ;
+    rr:objectMap [
+        rr:column "name" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+# KEGGPathway实体映射（从PostgreSQL）
+ex:KEGGPathwayMap rr:logicalTable [
+    rr:tableName "kegg"
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#pathway_{pathway_name}" ;
+    rr:class onto:KEGGPathway
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:pathway_name ;
+    rr:objectMap [
+        rr:column "pathway_name" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+# Metabolite实体映射
+ex:MetaboliteMap rr:logicalTable [
+    rr:tableName "MetabolitesName"
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#metabolite_{name}" ;
+    rr:class onto:Metabolite
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:metabolite_name ;
+    rr:objectMap [
+        rr:column "name" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+# 微生物实体的has_association关系
+ex:MicrobiotaAssociationLinkMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:ASSOCIATED_WITH]->(p:Phenotype)
+        RETURN m.name as microbiota_name, p.name as phenotype_name
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:has_association ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#association_{microbiota_name}_{phenotype_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+
+# ===================================================================================
+# 🔥 has_phenotype_association 映射（用于带p值和condition的关联查询）
+# 这是让SPARQL生成的谓词能够正确转换的关键映射
+# ===================================================================================
+
+ex:HasPhenotypeAssociationMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:ASSOCIATED_WITH]->(p:Phenotype)
+        RETURN m.name as microbiota_name, p.name as phenotype_name,
+               r.pvalue as pvalue, r.condition_name as condition
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:has_phenotype_association ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#association_{microbiota_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+# ===================================================================================
+# PRIMARY RELATIONSHIP MAPPINGS - 优先使用这些简单关系
+# ===================================================================================
+
+# 1. 微生物与饲料效率的显著关联关系（Neo4j: significantlyassociated）
+ex:CorrelatedWithFeedEfficiencyMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:significantlyassociated]->(fe:FE)
+        RETURN m.name as microbiota_name, fe.name as feed_efficiency_name
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:correlatedwith_feed_efficiency ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#feed_efficiency_{feed_efficiency_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+# 2. 微生物提高饲料效率关系（Neo4j: increase）
+ex:IncreasesFeedEfficiencyMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:increase]->(f:FE)
+        RETURN m.name as microbiota_name, f.name as feed_efficiency_name
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:increases_feed_efficiency ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#feed_efficiency_{feed_efficiency_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+# 3. 微生物调控基因表达关系（Neo4j: upregulate/downregulate）
+ex:ChangesGeneExpressionMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:upregulate|downregulate]->(g:GeneName)
+        RETURN m.name as microbiota_name, g.name as gene_name, type(r) as regulation_type
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:changes_gene_expression_by_microbiota ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_{gene_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+
+# 5. 微生物产生代谢物关系（Neo4j: produce）
+ex:GeneratesMetaboliteMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:produce]->(met:MetabolitesName)
+        RETURN m.name as microbiota_name, met.name as metabolite_name
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:generates_metabolite ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#metabolite_{metabolite_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+
+# 7. 微生物与表型的关联关系（带p值和条件）
+ex:MicrobiotaPhenotypeAssociationMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (m:MicrobiotaName)-[r:ASSOCIATED_WITH]->(p:Phenotype)
+        RETURN m.name as microbiota_name, p.name as phenotype_name,
+               r.pvalue as pvalue, r.condition_name as condition
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#association_{microbiota_name}_{phenotype_name}" ;
+    rr:class onto:PhenotypeAssociation
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:association_source ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}" ;
+        rr:termType rr:IRI
+    ]
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:associated_with_phenotype ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#phenotype_{phenotype_name}" ;
+        rr:termType rr:IRI
+    ]
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:pvalue ;
+    rr:objectMap [
+        rr:column "pvalue" ;
+        rr:datatype xsd:float
+    ]
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:condition ;
+    rr:objectMap [
+        rr:column "condition" ;
+        rr:datatype xsd:string
+    ]
+] .
+
+
+# ===================================================================================
+# 补充关系映射
+# ===================================================================================
+
+# 疾病影响微生物丰度
+ex:DisorderMicrobiotaMap rr:logicalTable [
+    rr:sqlQuery """
+        MATCH (d:Disorder)-[r:changes_abundance]->(m:MicrobiotaName)
+        RETURN d.name as disorder_name, m.name as microbiota_name
+    """
+] ;
+rr:subjectMap [
+    rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#disorder_{disorder_name}"
+] ;
+rr:predicateObjectMap [
+    rr:predicate onto:changes_microbiota_abundance_by_disorder ;
+    rr:objectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_{microbiota_name}" ;
+        rr:termType rr:IRI
+    ]
+] .
+
+# ===================================================================================
+# 查询优化提示
+# ===================================================================================
+
+# 注释：本映射文件优先支持简单的直接关系查询模式：
+# 1. 对于"相关性"查询 → 使用 correlatedwith_feed_efficiency
+# 2. 对于"提高效率"查询 → 使用 increases_feed_efficiency
+# 3. 对于"基因调控"查询 → 使用 changes_gene_expression_by_microbiota
+# 4. 对于"通路参与"查询 → 使用 participates_in_pathway
+# 5. 对于"代谢物产生"查询 → 使用 generates_metabolite
+
+# Neo4j关系映射对照表：
+# significantlyassociated → correlatedwith_feed_efficiency
+# increase → increases_feed_efficiency
+# upregulate/downregulate → changes_gene_expression_by_microbiota
+# produce → generates_metabolite

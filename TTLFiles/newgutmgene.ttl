@@ -1,0 +1,154 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix onto: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#> .
+
+# Gene Mapping
+<#GeneMapping>
+    rr:logicalTable [ rr:tableName "gene" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}" ;
+        rr:class onto:Gene
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_symbol ;
+        rr:objectMap [ rr:column "gene_symbol" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:ncbi_gene_id ;
+        rr:objectMap [ rr:column "ncbi_gene_id" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] .
+
+# Metabolite Mapping
+<#MetaboliteMapping>
+    rr:logicalTable [ rr:tableName "metabolite" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}" ;
+        rr:class onto:Metabolite
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:metabolite_name ;
+        rr:objectMap [ rr:column "metabolite_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:pubchem_id ;
+        rr:objectMap [ rr:column "pubchem_id" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:hmdb_id ;
+        rr:objectMap [ rr:column "hmdb_id" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:chebi_id ;
+        rr:objectMap [ rr:column "chebi_id" ; rr:datatype xsd:string ]
+    ] .
+
+# Gut Microbiota Gene Change Results Mapping
+<#MicrobiotaGeneChangeResultMapping>
+    rr:logicalTable [ rr:tableName "gut_microbiota_gene_change_results" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_gene_result/{index}" ;
+        rr:class onto:MicrobiotaGeneChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_alteration ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_throughput ;
+        rr:objectMap [ rr:column "throughput" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_experimental_method ;
+        rr:objectMap [ rr:column "experimental_method" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_sequencing_technology ;
+        rr:objectMap [ rr:column "sequencing_technology" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_evidence ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .
+
+# Gut Microbiota Metabolite Generation Results Mapping
+<#MicrobiotaMetaboliteGenerationResultMapping>
+    rr:logicalTable [ rr:tableName "gut_microbiota_metabolite_generation_results" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_metabolite_result/{index}" ;
+        rr:class onto:MicrobiotaMetaboliteGenerationResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_metabolite_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_metabolite_host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_metabolite_substrate_name ;
+        rr:objectMap [ rr:column "substrate_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_metabolite_description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_metabolite_evidence ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .
+
+# Metabolite Gene Change Results Mapping
+<#MetaboliteGeneChangeResultMapping>
+    rr:logicalTable [ rr:tableName "metabolite_gene_change_results" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite_gene_result/{index}" ;
+        rr:class onto:MetaboliteGeneChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:result_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:alteration_type ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:substrate_name ;
+        rr:objectMap [ rr:column "substrate_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:throughput ;
+        rr:objectMap [ rr:column "throughput" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:evidence_score ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .

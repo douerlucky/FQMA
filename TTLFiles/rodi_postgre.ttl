@@ -1,0 +1,320 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix conf: <http://conference#> .
+
+# =============================================================================
+# POSTGRESQL DATABASE MAPPINGS - Based on actual schema
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Person Entity Mapping
+# Table: Person (ID, has_the_first_name, has_the_last_name, has_gender, ...)
+# -----------------------------------------------------------------------------
+<#PersonMapping>
+    rr:logicalTable [ rr:tableName "Person" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{ID}" ;
+        rr:class conf:Person
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_first_name ;
+        rr:objectMap [ rr:column "has_the_first_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_last_name ;
+        rr:objectMap [ rr:column "has_the_last_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_gender ;
+        rr:objectMap [ rr:column "has_gender" ; rr:datatype xsd:string ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Committee Entity Mapping
+# Table: Committee (ID, has_a_name, has_a_committee_chair, was_a_program_committee_of, TYPE)
+# -----------------------------------------------------------------------------
+<#CommitteeMapping>
+    rr:logicalTable [ rr:tableName "Committee" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{ID}" ;
+        rr:class conf:Committee
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [ rr:column "has_a_name" ; rr:datatype xsd:string ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Paper Entity Mapping
+# Table: Paper (ID, has_an_abstract, has_a_paper_title, is_submitted_at, TYPE)
+# -----------------------------------------------------------------------------
+<#PaperMapping>
+    rr:logicalTable [ rr:tableName "Paper" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{ID}" ;
+        rr:class conf:Paper
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_paper_title ;
+        rr:objectMap [ rr:column "has_a_paper_title" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_submitted_at ;
+        rr:objectMap [
+            rr:template "http://conference#conference_volume_{is_submitted_at}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Conference_volume Entity Mapping
+# Table: Conference_volume (ID, has_a_program_committee, has_an_organizing_committ, 
+#        has_a_location, has_a_steering_committee, has_important_dates, has_a_name)
+# -----------------------------------------------------------------------------
+<#ConferenceVolumeMapping>
+    rr:logicalTable [ rr:tableName "Conference_volume" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#conference_volume_{ID}" ;
+        rr:class conf:Conference_volume
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [ rr:column "has_a_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_location ;
+        rr:objectMap [ rr:column "has_a_location" ; rr:datatype xsd:string ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Conference_document Entity Mapping
+# Table: Conference_document (ID, has_a_date_of_issue, has_a_URL, TYPE)
+# -----------------------------------------------------------------------------
+<#ConferenceDocumentMapping>
+    rr:logicalTable [ rr:tableName "Conference_document" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#document_{ID}" ;
+        rr:class conf:Conference_document
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_date_of_issue ;
+        rr:objectMap [ rr:column "has_a_date_of_issue" ; rr:datatype xsd:date ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_URL ;
+        rr:objectMap [ rr:column "has_a_URL" ; rr:datatype xsd:string ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Conference_proceedings Entity Mapping
+# Table: Conference_proceedings (ID, has_a_publisher, has_a_volume, has_a_name, has_an_ISBN)
+# -----------------------------------------------------------------------------
+<#ConferenceProceedingsMapping>
+    rr:logicalTable [ rr:tableName "Conference_proceedings" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#proceedings_{ID}" ;
+        rr:class conf:Conference_proceedings
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [ rr:column "has_a_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_volume ;
+        rr:objectMap [ rr:column "has_a_volume" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_an_ISBN ;
+        rr:objectMap [ rr:column "has_an_ISBN" ; rr:datatype xsd:string ]
+    ] .
+
+# =============================================================================
+# JUNCTION TABLE MAPPINGS - Many-to-Many Relationships
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# has_members: Committee -> Person (via junction table)
+# Table: has_members (Committee, Committee_member)
+# -----------------------------------------------------------------------------
+<#HasMembersMapping>
+    rr:logicalTable [ rr:tableName "has_members" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{Committee}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_members ;
+        rr:objectMap [
+            rr:template "http://conference#person_{Committee_member}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# was_a_member_of: Person -> Committee (inverse of has_members)
+# Uses junction table: has_members
+# SQL: SELECT * FROM "Person" JOIN "has_members" ON "Person"."ID" = "has_members"."Committee_member" JOIN "Committee" ON "has_members"."Committee" = "Committee"."ID"
+# -----------------------------------------------------------------------------
+<#WasAMemberOfMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "Person"."ID" AS person_id, 
+                   "has_members"."Committee" AS committee_id,
+                   "Committee"."has_a_name" AS committee_name
+            FROM "Person"
+            JOIN "has_members" ON "Person"."ID" = "has_members"."Committee_member"
+            JOIN "Committee" ON "has_members"."Committee" = "Committee"."ID"
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{person_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:was_a_member_of ;
+        rr:objectMap [
+            rr:template "http://conference#committee_{committee_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# contributes: Person -> Conference_document (via junction table)
+# Table: contributes (Person, Conference_document)
+# -----------------------------------------------------------------------------
+<#ContributesMapping>
+    rr:logicalTable [ rr:tableName "contributes" ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{Person}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:contributes ;
+        rr:objectMap [
+            rr:template "http://conference#document_{Conference_document}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# has_authors: Paper -> Person (inverse of contributes)
+# Uses junction table: contributes
+# SQL: SELECT * FROM "Paper" JOIN "contributes" ON "Paper"."ID" = "contributes"."Conference_document" JOIN "Person" ON "contributes"."Person" = "Person"."ID"
+# -----------------------------------------------------------------------------
+<#HasAuthorsMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "Paper"."ID" AS paper_id,
+                   "contributes"."Person" AS author_id,
+                   "Person"."has_the_first_name" AS author_first_name,
+                   "Person"."has_the_last_name" AS author_last_name
+            FROM "Paper"
+            JOIN "contributes" ON "Paper"."ID" = "contributes"."Conference_document"
+            JOIN "Person" ON "contributes"."Person" = "Person"."ID"
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{paper_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_authors ;
+        rr:objectMap [
+            rr:template "http://conference#person_{author_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# =============================================================================
+# FOREIGN KEY RELATIONSHIPS
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Committee chair relationship
+# Table: Committee.has_a_committee_chair -> Person.ID
+# -----------------------------------------------------------------------------
+<#CommitteeChairMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "ID", "has_a_committee_chair"
+            FROM "Committee"
+            WHERE "has_a_committee_chair" IS NOT NULL
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{ID}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_committee_chair ;
+        rr:objectMap [
+            rr:template "http://conference#person_{has_a_committee_chair}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Committee to Conference relationship
+# Table: Committee.was_a_program_committee_of -> Conference_volume.ID
+# -----------------------------------------------------------------------------
+<#CommitteeConferenceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "ID", "was_a_program_committee_of"
+            FROM "Committee"
+            WHERE "was_a_program_committee_of" IS NOT NULL
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{ID}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:was_a_program_committee_of ;
+        rr:objectMap [
+            rr:template "http://conference#conference_volume_{was_a_program_committee_of}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Conference program committee relationship
+# Table: Conference_volume.has_a_program_committee -> Committee.ID
+# -----------------------------------------------------------------------------
+<#ConferenceProgramCommitteeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "ID", "has_a_program_committee"
+            FROM "Conference_volume"
+            WHERE "has_a_program_committee" IS NOT NULL
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#conference_volume_{ID}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_program_committee ;
+        rr:objectMap [
+            rr:template "http://conference#committee_{has_a_program_committee}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
+# Paper to Abstract relationship
+# Table: Paper.has_an_abstract -> Abstract.ID (Abstract is in MySQL)
+# -----------------------------------------------------------------------------
+<#PaperAbstractMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "ID", "has_an_abstract"
+            FROM "Paper"
+            WHERE "has_an_abstract" IS NOT NULL
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{ID}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_an_abstract ;
+        rr:objectMap [
+            rr:template "http://conference#abstract_{has_an_abstract}" ;
+            rr:termType rr:IRI
+        ]
+    ] .

@@ -1,0 +1,1290 @@
+[
+  {
+    "id": "1",
+    "question": "What are the genes and their associated metabolic pathways that regulate the microbial populations in Dorea, Eubacterium, and Bacteroides significantly correlated with swine feeding efficiency?"
+  },
+  {
+    "id": "2",
+    "question": "What are the genes and metabolic pathways regulating Clostridium, Lactobacillus, and Oscillibacter populations significantly associated with swine feeding efficiency?"
+  },
+  {
+    "id": "3",
+    "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency? If so, what are the regulatory genes and their metabolic pathways involved?"
+  },
+  {
+    "id": "4",
+    "question": "Which Prevotellaceae and Lachnospiraceae taxa are significantly associated with swine feeding efficiency, and what genes/metabolic pathways regulate them?"
+  },
+  {
+    "id": "5",
+    "question": "What are the genes and their metabolic pathways that regulate the microbial populations in Eubacterium, Lachnospiraceae, and Treponema bryantii significantly associated with swine feeding efficiency?"
+  },
+  {
+    "id": "6",
+    "question": "Does Bacteroides significantly associate with swine feeding efficiency? If so, what genes and metabolic pathways regulate its activity?"
+  },
+  {
+    "id": "7",
+    "question": "What are the genes and their metabolic pathways that regulate the microbial populations in Clostridiumand Treponema significantly associated with swine feeding efficiency?"
+  },
+  {
+    "id": "8",
+    "question": "What are the genes and their metabolic pathways that regulate the microbial populations in Lactobacillus and Treponema bryantii significantly associated with swine feeding efficiency?"
+  },
+  {
+    "id": "9",
+    "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency? If so, what are the regulatory genes and metabolic pathways involved?"
+  },
+  {
+    "id": "10",
+    "question": "Which microbial populations increase with improved swine feeding efficiency, and what are their regulatory genes and key metabolic pathways?"
+  },
+  {
+    "id": "11",
+    "question": "What are the microbial populations significantly associated with swine feeding efficiency, along with their regulatory genes and pathways?"
+  },
+  {
+    "id": "12",
+    "question": "Under the 'Fattening phase: Unmedicated feed/Antibiotics+zinc oxide' regimen, which microbial populations show marginal associations (0.2<p<0.21) with swine feeding efficiency, and what are their regulatory genes and metabolic pathways?"
+  },
+  {
+    "id": "13",
+    "question": "Under 'Fresh feed / Fresh feed+enzyme' conditions, which microbial populations are associated with swine feeding efficiency (P=0.19), and what are their regulatory genes and metabolic pathways?"
+  },
+  {
+    "id": "14",
+    "question": "How to regulate key genes and pathways to enhance populations in Dorea, Eubacterium, and Bacteroides that significantly associate with swine feeding efficiency?"
+  },
+  {
+    "id": "15",
+    "question": "How to regulate key genes and pathways to enhance beneficial populations in Eubacterium and Treponema bryantii associated with swine feeding efficiency?"
+  },
+  {
+    "id": "16",
+    "question": "How to regulate key genes and pathways to enhance beneficial populations in Bacteroides and Ruminococcaceae associated with swine feeding efficiency?"
+  },
+  {
+    "id": "17",
+    "question": "Is Clostridium significantly associated with swine feeding efficiency? If so, what are its key proliferation-driving genes and linked metabolic pathways?"
+  },
+  {
+    "id": "18",
+    "question": "Is Lactobacillus significantly associated with swine feeding efficiency? If so, what are its key growth-promoting genes and linked metabolic pathways?"
+  },
+  {
+    "id": "19",
+    "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency? If so, what are its key abundance-enhancing genes and linked metabolic pathways?"
+  },
+  {
+    "id": "20",
+    "question": "Which microbial populations increase with improved swine feeding efficiency, and what genes and metabolic pathways promote their abundance?"
+  },
+  {
+    "id": "21",
+    "question": "What are the microbial populations significantly associated with swine feeding efficiency, their abundance-promoting genes, and related metabolic pathways?"
+  },
+  {
+    "id": "22",
+    "question": "Under 'Fattening, Unmedicated feed formula/Antibiotics+zinc oxide' conditions, which microbial populations show marginal associations (0.2<p<0.21) with swine feeding efficiency, and what genes/pathways promote their abundance?"
+  },
+  {
+    "id": "23",
+    "question": "Under 'Fresh feed / Fresh feed+enzyme' conditions, which microbial populations are associated with swine feeding efficiency (P=0.19), and what genes and metabolic pathways promote their abundance?"
+  },
+  {
+    "id": "24",
+    "question": "Which microbial populations show marginal associations (0.28<p<0.288) with swine feeding efficiency, and what genes and metabolic pathways promote their abundance?"
+  },
+  {
+    "id": "25",
+    "question": "Which microbial populations in Dorea, Eubacterium, and Bacteroides are significantly associated with swine feeding efficiency, and what inhibitory genes and linked metabolic pathways reduce their abundance?"
+  },
+  {
+    "id": "26",
+    "question": "How to regulate the abundance of efficiency-associated microbial populations in Clostridium, Lactobacillus, and Oscillibacter through inhibitory genes and metabolic pathways?"
+  },
+  {
+    "id": "27",
+    "question": "How to modulate the abundance of feed efficiency-associated microbial populations in Prevotellaceae, Ruminococcaceae, and Lachnospiraceae through inhibitory genes and metabolic pathways?"
+  },
+  {
+    "id": "28",
+    "question": "Is Eubacterium significantly associated with swine feeding efficiency? If confirmed, what inhibitory genes and linked metabolic pathways reduce its abundance?"
+  },
+  {
+    "id": "29",
+    "question": "Is Bacteroides significantly associated with swine feeding efficiency? If confirmed, what inhibitory genes and linked metabolic pathways reduce its abundance?"
+  },
+  {
+    "id": "30",
+    "question": "Is Clostridium significantly associated with swine feeding efficiency? If confirmed, what inhibitory genes and linked metabolic pathways reduce its abundance?"
+  },
+  {
+    "id": "31",
+    "question": "Which microbial populations increase with improved swine feeding efficiency, and how to regulate their abundance through inhibitory genes and linked metabolic pathways?"
+  },
+  {
+    "id": "32",
+    "question": "What are the microbial populations significantly associated with swine feeding efficiency, their inhibitory genes, and linked metabolic pathways?"
+  },
+  {
+    "id": "33",
+    "question": "Under 'Fattening, Unmedicated feed formula/Antibiotics+zinc oxide' conditions, what are the microbial populations marginally associated (0.2<p<0.21) with swine feeding efficiency, their inhibitory genes, and linked metabolic pathways?"
+  },
+  {
+    "id": "34",
+    "question": "Which microbial populations show marginal associations (0.28<p<0.288) with swine feeding efficiency, and what inhibitory genes and linked metabolic pathways reduce their abundance?"
+  },
+  {
+    "id": "35",
+    "question": "Which microbial populations in Dorea, Eubacterium, and Bacteroides are significantly associated with swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "36",
+    "question": "Which microbial populations in Clostridium, Lactobacillus, and Oscillibacter are significantly associated with swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "37",
+    "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency? If confirmed, what are its characteristic metabolites and their linked genes and metabolic pathways?"
+  },
+  {
+    "id": "38",
+    "question": "Which microbial populations in Prevotellaceae, Ruminococcaceae, and Lachnospiraceae are significantly associated with swine feeding efficiency, and what are their signature metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "39",
+    "question": "Which microbial populations in Eubacterium and Treponema bryantii are significantly associated with swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "40",
+    "question": "Is Bacteroides significantly associated with swine feeding efficiency? If confirmed, what are its characteristic metabolites and their linked genes and metabolic pathways?"
+  },
+  {
+    "id": "41",
+    "question": "Which microbial populations in Clostridium and Treponema are significantly associated with swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "42",
+    "question": "Which microbial populations in Lactobacillus and Treponema bryantii are significantly associated with swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "43",
+    "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency? If confirmed, what are its characteristic sulfur metabolites and their linked genes and metabolic pathways?"
+  },
+  {
+    "id": "44",
+    "question": "Which microbial populations increase with improved swine feeding efficiency, and what are their key metabolites, linked genes, and metabolic pathways?"
+  },
+  {
+    "id": "45",
+    "question": "What are the microbial populations significantly associated with swine feeding efficiency, their characteristic metabolites, and linked gene-pathway networks?"
+  },
+  {
+    "id": "46",
+    "question": "Under 'Fattening, Unmedicated feed formula/Antibiotics+zinc oxide' conditions, what are the microbial populations marginally associated (0.2<p<0.21) with swine feeding efficiency, their characteristic metabolites, and linked gene-pathway networks?"
+  },
+  {
+    "id": "47",
+    "question": "Under 'Fresh feed/Fresh feed+enzyme' conditions, which microbial populations are associated (P=0.19) with swine feeding efficiency, and what are their characteristic metabolites and linked gene-pathway networks?"
+  },
+  {
+    "id": "48",
+    "question": "Which microbial populations show marginal associations (0.28<p<0.288) with swine feeding efficiency, and what are their characteristic metabolites and linked gene-pathway networks?"
+  },
+  {
+    "id": "49",
+    "question": "Which microbial populations show marginal associations (0.28<p<0.288) with swine feeding efficiency, and what are their characteristic metabolites and linked gene-pathway networks?"
+  },
+  {
+    "id": "50",
+    "question": "Which microbial populations in Clostridium, Lactobacillus, and Oscillibacter are significantly associated with swine (hsa04060), Viral protein-cytokine interaction (hsa04061)feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction , Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?",
+    {
+    },
+    {
+      "id": "51",
+      "question": "Which microbial populations in Prevotellaceae, Ruminococcaceae, and Lachnospiraceae are significantly associated with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "52",
+      "question": "Which microbial populations in Eubacterium and Treponema bryantii are significantly associated with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "53",
+      "question": "Is Bacteroides significantly associated with swine feeding efficiency? If confirmed, do its regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)？"
+    },
+    {
+      "id": "54",
+      "question": "Which microbial populations in Clostridium and Treponema are significantly associated with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "55",
+      "question": "Which microbial populations in Lactobacillus and Treponema bryantii are significantly associated with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "56",
+      "question": "Which microbial populations increase with improved swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "57",
+      "question": "What are the microbial populations significantly associated with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "58",
+      "question": "Under 'Fattening, Unmedicated feed formula/Antibiotics+zinc oxide' conditions, which microbial populations show marginal associations (0.2<p<0.21) with swine feeding efficiency, and do their regulatory genes involve these pathways: Cytokine-cytokine receptor interaction (hsa04060), Viral protein-cytokine interaction (hsa04061), Chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), Platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), Arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), Thermogenesis (mmu04714)?"
+    },
+    {
+      "id": "59",
+      "question": "Under \"Fresh/Fresh+enzyme\" conditions, which microbial taxa associate with swine feeding efficiency (P=0.19), and do their regulatory genes involve all the following pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "60",
+      "question": "Among Dorea, Eubacterium, and Bacteroides genera, which microbial taxa show significant associations with swine feeding efficiency? Which host gene expressions promote their proliferation, and are these genes significantly enriched in hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "61",
+      "question": "Among Eubacterium and Treponema bryantii, which microbial taxa demonstrate significant associations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "62",
+      "question": "Among Bacteroides and Ruminococcaceae, which microbial taxa show significant associations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in the following pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "63",
+      "question": "Among Clostridium and Treponema, which microbial taxa show significant associations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in the following pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "64",
+      "question": "Among Lactobacillus and Treponema bryantii, which microbial taxa demonstrate significant associations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in these KEGG pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "65",
+      "question": "Among Lactobacillus and Treponema bryantii, which microbial taxa demonstrate significant associations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "66",
+      "question": "Under ",
+      "Fattening",
+
+      "Unmedicated" "feed",
+      "formula/Antibiotics+zinc" "oxide\" conditions, which microbial taxa show associations with swine feeding efficiency (0.2<P<0.21)? Are the key host genes regulating their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?\""
+    },
+    {
+      "id": "67",
+      "question": "Under \"Fresh/Fresh+enzyme\" conditions with P=0.19, which microbial taxa associate with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "68",
+      "question": "Which microbial taxa show associations with swine feeding efficiency at P-values between 0.28-0.288? Are the key host genes regulating their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "69",
+      "question": "Among Dorea, Eubacterium and Bacteroides, which microbial taxa show significant negative correlations with swine feeding efficiency? Are the key host genes suppressing their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "70",
+      "question": "Among Clostridium, Lactobacillus and Oscillibacter , which microbial taxa show significant negative correlations with swine feeding efficiency? Are the key host genes suppressing their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "71",
+      "question": "Within Prevotellaceae and Lachnospiraceae , which microbial taxa demonstrate significant negative correlations with swine feeding efficiency? Are the key host genes that suppress their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "72",
+      "question": "Within Eubacterium and Treponema bryantii, which microbial taxa demonstrate significant correlations with swine feeding efficiency? Are the key host genes regulating their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "73",
+      "question": "Within Bacteroides and Ruminococcaceae, which microbial taxa demonstrate significant correlations with swine feeding efficiency? Are the key host genes that suppress their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "74",
+      "question": "Among Clostridium and Treponema genera, which microbial taxa show significant negative correlations with swine feeding efficiency? Are the key host genes suppressing their proliferation significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), or mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "75",
+      "question": "Which gut microbial taxa show significant population increases with improved swine feeding efficiency? Are the key host suppressor genes regulating their abundance enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "76",
+      "question": "Which gut microbial taxa show significant associations with swine feeding efficiency? Are the key host suppressor genes regulating their abundance significantly enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "77",
+      "question": "Under \"Fattening, Unmedicated feed/Antibiotics+zinc oxide\" conditions, which gut microbial taxa show associations with swine feeding efficiency (P=0.2-0.21)? Are the key host suppressor genes regulating their abundance enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "78",
+      "question": "Which gut microbial taxa show associations with swine feeding efficiency (P=0.28-0.288)? Are the key host suppressor genes regulating their abundance enriched in these pathways: hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), mmu04714 (thermogenesis)?"
+    },
+    {
+      "id": "79",
+      "question": "Which microbial groups among Dorea, Eubacterium, and Bacteroides are significantly associated with swine feeding efficiency, and which genes are linked to the metabolites produced by these microbes, with these genes being enriched in the pathways: hsa04060 Cytokine-cytokine receptor interaction, hsa04061 Viral protein interaction with cytokine and cytokine receptor, hsa04062 Chemokine signaling pathway, hsa01521 EGFR tyrosine kinase inhibitor resistance, mmu01521 EGFR tyrosine kinase inhibitor resistance, hsa04066 HIF-1 signaling pathway, hsa01524 Platinum drug resistance, mmu04152 AMPK signaling pathway, mmu04010 MAPK signaling pathway, mmu00220 Arginine biosynthesis, hsa04659 Th17 cell differentiation, mmu04714 Thermogenesis?"
+    },
+    {
+      "id": "80",
+      "question": "In swine production, which microbial taxa among Clostridium, Lactobacillus, and Oscillibacter show significant correlations with feeding efficiency? How do the metabolites produced by these signature microbiota regulate the expression of host genes? Are these differentially expressed genes significantly enriched in the following pathways: hsa04060 (Cytokine-cytokine receptor interaction), hsa04061 (Viral protein-cytokine receptor interaction), hsa04062 (Chemokine signaling pathway), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling pathway), hsa01524 (Platinum drug resistance), mmu04152 (AMPK signaling pathway), mmu04010 (MAPK signaling pathway), mmu00220 (Arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (Thermogenesis)?"
+    },
+    {
+      "id": "81",
+      "question": "Which microbial groups within Prevotellaceae, Ruminococcaceae, and Lachnospiraceae show significant associations with swine feeding efficiency, with their metabolites linked to specific gene expression changes, and are these genes enriched in the pathways: hsa04060 Cytokine-cytokine receptor interaction, hsa04061 Viral protein interaction with cytokine and cytokine receptor, hsa04062 Chemokine signaling pathway, hsa01521 EGFR tyrosine kinase inhibitor resistance, mmu01521 EGFR tyrosine kinase inhibitor resistance, hsa04066 HIF-1 signaling pathway, hsa01524 Platinum drug resistance, mmu04152 AMPK signaling pathway, mmu04010 MAPK signaling pathway, mmu00220 Arginine biosynthesis, hsa04659 Th17 cell differentiation, and mmu04714 Thermogenesis?"
+    },
+    {
+      "id": "82",
+      "question": "Which microbial populations in Eubacterium and Treponema bryantii show significant correlations with swine feeding efficiency, how do their metabolites influence host gene expression, and are these genes enriched in the hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine receptor interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "83",
+      "question": "Is Bacteroides significantly associated with swine feeding efficiency, which host genes are influenced by its metabolites, and are these genes enriched in hsa04060 (cytokine interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "84",
+      "question": "Which microbial populations in Clostridium and Treponema show significant correlations with swine feeding efficiency, how do their metabolites regulate host gene expression, and are these genes enriched in hsa04060 (cytokine interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "85",
+      "question": "Which microbial populations in Lactobacillus and Treponema bryantii show significant correlations with swine feeding efficiency, how do their metabolites regulate host gene expression, and are these genes enriched in hsa04060 (cytokine interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "86",
+      "question": "Is Desulfovibrionaceae significantly associated with swine feeding efficiency, which host genes are regulated by its metabolites, and are these genes enriched in hsa04060 (cytokine interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "87",
+      "question": "Which microbial populations increase in abundance with improved swine feeding efficiency, how do their metabolites regulate host gene expression, and are these genes enriched in hsa04060 (cytokine interaction), hsa04061 (viral protein-cytokine interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "88",
+      "question": "Which microbial populations are significantly associated with swine feeding efficiency, how do their metabolites regulate host gene expression, and are these differentially expressed genes enriched in the hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine receptor interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "89",
+      "question": "Which microbial populations show associations with swine feeding efficiency (P-value 0.2-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what are their metabolite-mediated gene expression effects, and do these genes show enrichment in hsa04060, hsa04061, hsa04062, hsa01521/mm01521, hsa04066, hsa01524, mmu04152, mmu04010, mmu00220, hsa04659, and mmu04714 pathways?"
+    },
+    {
+      "id": "90",
+      "question": "Which microbial populations are associated with swine feeding efficiency (P=0.19) under \"Fresh/Fresh+enzyme\" conditions, what are their metabolite-related gene expression profiles, and are these genes enriched in hsa04060, hsa04061, hsa04062, hsa01521, mmu01521, hsa04066, hsa01524, mmu04152, mmu04010, mmu00220, hsa04659, and mmu04714 pathways?"
+    },
+    {
+      "id": "91",
+      "question": "Which microbial populations show significant associations with swine feeding efficiency (P-value range 0.28-0.288), how do their metabolites influence host gene expression patterns, and are these differentially expressed genes enriched in the hsa04060 (cytokine-cytokine receptor interaction), hsa04061 (viral protein-cytokine receptor interaction), hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "92",
+      "question": "Which microbial populations demonstrate significant associations with swine feeding efficiency (P-value range 0.2-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what are their metabolite-mediated effects on host gene expression, and do these genes show significant enrichment in the hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "93",
+      "question": "Which microbial populations increase in abundance with improved swine feeding efficiency, how do their metabolites regulate host gene expression, and are these differentially expressed genes enriched in the hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "94",
+      "question": "Which microbial populations show significant associations with swine feeding efficiency (P-value 0.2-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what specific metabolites do they produce that correlate with host gene expression patterns, and are these genes functionally enriched in the hsa04062, hsa01521/mm01521, hsa04066, hsa01524, mmu04152, mmu04010, mmu00220, hsa04659, and mmu04714 signaling pathways?"
+    },
+    {
+      "id": "95",
+      "question": "Which microbial populations are significantly associated with swine feeding efficiency (P-value range 0.2-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what are their characteristic metabolite profiles that correlate with host gene expression patterns, and do these differentially expressed genes show functional enrichment in the hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR tyrosine kinase inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum drug resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 cell differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "96",
+      "question": "Which microbial taxa demonstrate significant associations with swine feeding efficiency (P=0.20-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what are their corresponding metabolite-gene expression relationships, and which of the hsa04062 (chemokine), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1), hsa01524 (platinum resistance), mmu04152 (AMPK), mmu04010 (MAPK), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways show significant enrichment of these metabolite-associated genes?"
+    },
+    {
+      "id": "97",
+      "question": "Which microbial populations show significant associations with swine feeding efficiency (P-value range 0.2-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, how do their metabolic products influence host gene expression patterns, and are these regulated genes functionally enriched in the hsa04062 (chemokine signaling), hsa01521/mm01521 (EGFR inhibitor resistance), hsa04066 (HIF-1 signaling), hsa01524 (platinum resistance), mmu04152 (AMPK signaling), mmu04010 (MAPK signaling), mmu00220 (arginine biosynthesis), hsa04659 (Th17 differentiation), and mmu04714 (thermogenesis) pathways?"
+    },
+    {
+      "id": "98",
+      "question": "Which microbial populations are significantly associated with swine feeding efficiency (P=0.20-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" conditions, what metabolite-mediated gene expression changes do they induce, and are these genes enriched in the chemokine (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 (hsa04066), platinum resistance (hsa01524), AMPK (mmu04152), MAPK (mmu04010), arginine biosynthesis (mmu00220), Th17 differentiation (hsa04659), and thermogenesis (mmu04714) pathways?"
+    },
+    {
+      "id": "99",
+      "question": "Which microbial populations demonstrate significant associations with swine feeding efficiency (P=0.20-0.21) under \"Fattening, Unmedicated feed formula/Antibiotics and zinc oxide\" dietary conditions, what are their corresponding metabolite-gene expression relationships, and do these functionally relevant genes show enrichment in the chemokine signaling (hsa04062), EGFR inhibitor resistance (hsa01521/mm01521), HIF-1 signaling (hsa04066), platinum drug resistance (hsa01524), AMPK signaling (mmu04152), MAPK signaling (mmu04010), arginine biosynthesis (mmu00220), Th17 cell differentiation (hsa04659), and thermogenesis (mmu04714) pathways?"
+    },
+    {
+      "id": "100",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by a ketogenic diet through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "101",
+      "question": "Which host genes can promote the proliferation of specific gut microbiota induced by a ketogenic diet through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "102",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by soluble corn fiber through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "103",
+      "question": "Which host genes can enhance the proliferation of specific gut microbiota induced by soluble corn fiber through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "104",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by resistant starch through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "105",
+      "question": "Which host genes can enhance the proliferation of specific gut microbiota induced by resistant starch through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "106",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by a ketogenic low-carbohydrate high-fat diet through their expression, and which metabolic pathways do these genes participate in?"
+    },
+    {
+      "id": "107",
+      "question": "Which host genes can enhance the proliferation of specific gut microbiota induced by a ketogenic low-carbohydrate high-fat diet through their expression, and which metabolic pathways are involved in these regulatory genes?"
+    },
+    {
+      "id": "108",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by dietary resistant starch type 4 through their expression, and which metabolic pathways are involved in these regulatory mechanisms?"
+    },
+    {
+      "id": "109",
+      "question": "Which host genes can promote the proliferation of specific gut microbiota induced by dietary resistant starch type 4 through their expression, and which metabolic regulatory pathways are associated with these genes?"
+    },
+    {
+      "id": "110",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by phenolic compounds from red wine and coffee through their expression, and which metabolic regulatory pathways are functionally linked to these genes?"
+    },
+    {
+      "id": "111",
+      "question": "Which host genes can enhance the proliferation of specific gut microbiota induced by phenolic compounds from red wine and coffee through their expression, and which metabolic regulatory pathways are functionally associated with these genes?"
+    },
+    {
+      "id": "112",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by carbohydrates through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "113",
+      "question": "Which host genes can stimulate the proliferation of specific gut microbiota induced by carbohydrates through their expression, and which metabolic regulatory pathways are functionally coupled with these genes?"
+    },
+    {
+      "id": "114",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by sea buckthorn protein through their expression, and which metabolic regulatory pathways are mechanistically associated with these genes?"
+    },
+    {
+      "id": "115",
+      "question": "Which host genes can enhance the proliferation of specific gut microbiota induced by sea buckthorn protein through their expression, and which metabolic regulatory pathways are functionally coordinated with these genes?"
+    },
+    {
+      "id": "116",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by a high caloric diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "117",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by a high caloric diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "118",
+      "question": "Which host genes can stimulate the proliferation of specific gut microbiota induced by Synbiotic through their expression, and which microbiota-host co-metabolic pathways are functionally orchestrated by these genes?"
+    },
+    {
+      "id": "119",
+      "question": "Which host genes can suppress the proliferation of specific gut microbiota induced by Synbiotic through their expression, and which microbiota-host interaction pathways are mechanistically regulated by these genes?"
+    },
+    {
+      "id": "120",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Infliximab through their expression, and which immuno-metabolic pathways are transcriptionally activated by these genes?"
+    },
+    {
+      "id": "121",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Infliximab through their expression, and which immuno-metabolic negative regulatory pathways are transcriptionally repressed by these genes?"
+    },
+    {
+      "id": "122",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Vitamin A through their expression, and which retinoic acid metabolic pathways are transcriptionally activated by these genes?"
+    },
+    {
+      "id": "123",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Vitamin A through their expression, and which retinoic acid negative regulatory pathways are transcriptionally suppressed by these genes?"
+    },
+    {
+      "id": "124",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Propidium Monoazide through their expression, and which nucleic acid metabolic pathways are functionally modulated by these genes?"
+    },
+    {
+      "id": "125",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Propidium Monoazide through their expression, and which DNA damage repair pathways are functionally engaged by these genes?"
+    },
+    {
+      "id": "126",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Prebiotics through their expression, and which dietary fiber metabolic pathways are functionally activated by these genes?"
+    },
+    {
+      "id": "127",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Prebiotics through their expression, and which dietary fiber negative regulatory pathways are functionally suppressed by these genes?"
+    },
+    {
+      "id": "128",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Metformin through their expression, and which glucose metabolism-microbiota co-regulatory pathways are transcriptionally activated by these genes?"
+    },
+    {
+      "id": "129",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Metformin through their expression, and which glucose metabolism-microbiota negative regulatory pathways are transcriptionally repressed by these genes?"
+    },
+    {
+      "id": "130",
+      "question": "Which host genes can upregulate the proliferation of specific gut microbiota induced by Insulin Aspart through their expression, and which insulin-microbiota co-metabolic pathways are functionally activated by these genes?"
+    },
+    {
+      "id": "131",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by anticholinergic drugs through their expression, and which neuro-microbial metabolic pathways are functionally modulated by these genes?"
+    },
+    {
+      "id": "132",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a high-fat diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "133",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under a high-fat diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "134",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under soluble fiber dextrin from tapioca through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "135",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under acidic pH water through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "136",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under acidic pH water through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "137",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under dietary trans-10,cis-12-conjugated linoleic acid through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "138",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under dietary trans-10,cis-12-conjugated linoleic acid through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "139",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under polysaccharides from the ink of Ommastrephes bartrami through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "140",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under polysaccharides from the ink of Ommastrephes bartrami through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "141",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under cranberry extract through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "142",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under cranberry extract through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "143",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under milk through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "144",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under gluten-containing chow through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "145",
+      "question": " Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under gluten-containing chow through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "146",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under gluten-free chow through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "147",
+      "question": " Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under gluten-free chow through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "148",
+      "question": " Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under dietary polysaccharide from Enteromorpha clathrata through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "149",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under dietary polysaccharide from Enteromorpha clathrata through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "150",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under phycocyanin through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "151",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a fasting-mimicking diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "152",
+      "question": " Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under a fasting-mimicking diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "153",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under refined olive oil through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "154",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under mulberry through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "155",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under mulberry through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "156",
+      "question": " Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under dietary supplementation with strawberry through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "157",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under dietary supplementation with strawberry through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "158",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under oil tea through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "159",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a Western diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "160",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under a Western diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "161",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under molecular hydrogen-dissolved alkaline electrolyzed water through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "162",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under proanthocyanidin-rich grape seed extract through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "163",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under proanthocyanidin-rich grape seed extract through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "164",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a galactooligosaccharide-rich diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "165",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under a galactooligosaccharide-rich diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "166",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under sugar through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "167",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under sugar through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "168",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a short-term vegetarian and inulin-supplemented diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "169",
+      "question": " Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under bamboo shoot fiber through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "170",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under bamboo shoot fiber through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "171",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under oligofructose-maltodextrin through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "172",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under dietary fiber through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "173",
+      "question": " Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under lingonberry through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "174",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under lingonberry through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "175",
+      "question": " Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under meat protein through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "176",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under meat protein through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "177",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under a heat-treated high-fat diet through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "178",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under a heat-treated high-fat diet through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "179",
+      "question": "Which host genes can suppress the proliferation of gut microbiota taxa that increase in abundance under dietary flaxseed through their expression, and which metabolic regulatory pathways are mechanistically linked to these genes?"
+    },
+    {
+      "id": "180",
+      "question": "Which host genes can potentiate the proliferation of gut microbiota taxa that increase in abundance under dietary flaxseed through their expression, and which energy metabolic regulatory pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "181",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by antispasmodic drugs through their expression, and which neuro-microbial metabolic pathways are functionally modulated by these genes?"
+    },
+    {
+      "id": "182",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by enrofloxacin through their expression, and which antibiotic resistance-associated metabolic pathways are transcriptionally activated by these genes?"
+    },
+    {
+      "id": "183",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by enrofloxacin through their expression, and which microbial homeostasis pathways are negatively regulated by these genes?"
+    },
+    {
+      "id": "184",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by advanced glycation end products (AGEs) through their expression, and which AGE-receptor-mediated inflammatory pathways are functionally linked to these genes?"
+    },
+    {
+      "id": "185",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Bifidobacteria through their expression, and which short-chain fatty acid (SCFA) synthesis pathways are enhanced by these genes?"
+    },
+    {
+      "id": "186",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by probiotic Lactobacillus paracasei CBA L74 through their expression, and which immunomodulatory metabolic pathways are activated by these genes?"
+    },
+    {
+      "id": "187",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by polydextrose through their expression, and which carbohydrate fermentation pathways are suppressed by these genes?"
+    },
+    {
+      "id": "188",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by polydextrose through their expression, and which prebiotic fiber degradation pathways are upregulated by these genes?"
+    },
+    {
+      "id": "189",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by probiotic Lactobacillus casei strain Shirota through their expression, and which gut barrier integrity-associated pathways are modulated by these genes?"
+    },
+    {
+      "id": "190",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by probiotic Lactobacillus casei strain Shirota through their expression, and which pro-inflammatory pathways are inhibited by these genes?"
+    },
+    {
+      "id": "191",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by probiotics through their expression, and which pathogen competition pathways are transcriptionally repressed by these genes?"
+    },
+    {
+      "id": "192",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by probiotics through their expression, and which symbiosis-promoting metabolic pathways are activated by these genes?"
+    },
+    {
+      "id": "193",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by adalimumab through their expression, and which TNF-α-mediated inflammatory pathways are suppressed by these genes?"
+    },
+    {
+      "id": "194",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by adalimumab through their expression, and which anti-inflammatory immune pathways are functionally engaged with these genes?"
+    },
+    {
+      "id": "195",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Rehmannia glutinosa root through their expression, and which bile acid metabolism pathways are altered by these genes?"
+    },
+    {
+      "id": "196",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Rehmannia glutinosa root through their expression, and which herbal polysaccharide utilization pathways are upregulated by these genes?"
+    },
+    {
+      "id": "197",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by acarbose through their expression, and which starch degradation bypass pathways are activated by these genes?"
+    },
+    {
+      "id": "198",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by acarbose through their expression, and which glucose absorption-related pathways are inhibited by these genes?"
+    },
+    {
+      "id": "199",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by cocaine through their expression, and which dopamine-associated gut-brain axis pathways are disrupted by these genes?"
+    },
+    {
+      "id": "200",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by cocaine through their expression, and which stress-responsive metabolic pathways are dysregulated by these genes?"
+    },
+    {
+      "id": "201",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by prebiotic inulin-type fructan through their expression, and which competing fiber fermentation pathways are suppressed by these genes?"
+    },
+    {
+      "id": "202",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by prebiotic inulin-type fructan through their expression, and which bifidogenic pathways are enriched by these genes?"
+    },
+    {
+      "id": "203",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by amoxicillin-clavulanate and Saccharomyces boulardii CNCM I-745 through their expression, and which antibiotic resistance gene transfer pathways are blocked by these genes?"
+    },
+    {
+      "id": "204",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by amoxicillin-clavulanate and Saccharomyces boulardii CNCM I-745 through their expression, and which yeast-bacterial cross-feeding pathways are promoted by these genes?"
+    },
+    {
+      "id": "205",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Moutan Cortex and Paeoniae Radix Rubra through their expression, and which traditional Chinese medicine (TCM)-associated detoxification pathways are activated by these genes?"
+    },
+    {
+      "id": "206",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Moutan Cortex and Paeoniae Radix Rubra through their expression, and which anti-inflammatory phytochemical degradation pathways are upregulated by these genes?"
+    },
+    {
+      "id": "207",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by systemic antibiotics through their expression, and which broad-spectrum antimicrobial resistance pathways are triggered by these genes?"
+    },
+    {
+      "id": "208",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by systemic antibiotics through their expression, and which opportunistic pathogen expansion pathways are facilitated by these genes?"
+    },
+    {
+      "id": "209",
+      "question": " Which host genes can potentiate the proliferation of specific gut microbiota induced by Saccharomyces boulardii through their expression, and which probiotic-yeast symbiosis pathways are enhanced by these genes?"
+    },
+    {
+      "id": "210",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by antiretroviral drugs through their expression, and which HIV-associated gut dysbiosis pathways are modulated by these genes?"
+    },
+    {
+      "id": "211",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by antiretroviral drugs through their expression, and which mucosal immunity restoration pathways are activated by these genes?"
+    },
+    {
+      "id": "212",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by ginseng polysaccharide through their expression, and which immunosenescence-related pathways are reversed by these genes?"
+    },
+    {
+      "id": "213",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by ginseng polysaccharide through their expression, and which adaptogen-enhanced metabolic pathways are stimulated by these genes?"
+    },
+    {
+      "id": "214",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by epigallocatechin gallate (EGCG) through their expression, and which polyphenol toxicity mitigation pathways are induced by these genes?"
+    },
+    {
+      "id": "215",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by epigallocatechin gallate (EGCG) through their expression, and which antioxidant-responsive microbial pathways are upregulated by these genes?"
+    },
+    {
+      "id": "216",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Bifico through their expression, and which multi-strain probiotic synergy pathways are activated by these genes?"
+    },
+    {
+      "id": "217",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Lactobacillus casei CCFM419 through their expression, and which lactose intolerance-associated pathways are alleviated by these genes?"
+    },
+    {
+      "id": "218",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Lactobacillus casei CCFM419 through their expression, and which postbiotic signaling pathways are enhanced by these genes?"
+    },
+    {
+      "id": "219",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by Danshensu Bingpian Zhi through their expression, and which cardiovascular-protective microbial metabolite pathways are regulated by these genes?"
+    },
+    {
+      "id": "220",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Danshensu Bingpian Zhi through their expression, and which TCM-derived bioactive compound metabolism pathways are enriched by these genes?"
+    },
+    {
+      "id": "221",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by dextran sodium sulfate (DSS) through their expression, and which colitis-exacerbating inflammatory pathways are suppressed by these genes?"
+    },
+    {
+      "id": "222",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by dextran sodium sulfate (DSS) through their expression, and which mucosal repair-promoting pathways are activated by these genes?"
+    },
+    {
+      "id": "223",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by propolis wax through their expression, and which bee product-associated antimicrobial pathways are induced by these genes?"
+    },
+    {
+      "id": "224",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by propolis wax through their expression, and which flavonoid-dependent prebiotic pathways are upregulated by these genes?"
+    },
+    {
+      "id": "225",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by cadmium through their expression, and which heavy metal detoxification pathways are activated by these genes?"
+    },
+    {
+      "id": "226",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by cadmium through their expression, and which oxidative stress-resistant microbial pathways are selected by these genes?"
+    },
+    {
+      "id": "227",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by inulin through their expression, and which fructan utilization gene clusters (e.g., fos, fru) are co-expressed with these genes?"
+    },
+    {
+      "id": "228",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by carbendazim through their expression, and which fungicide toxicity response pathways are triggered by these genes?"
+    },
+    {
+      "id": "229",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by carbendazim through their expression, and which pesticide degradation pathways are enriched by these genes?"
+    },
+    {
+      "id": "230",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by Lactobacillus casei variety rhamnosus through their expression, and which strain-specific adhesion protein expression pathways are co-regulated by these genes?"
+    },
+    {
+      "id": "231",
+      "question": "Which host genes can potentiate the proliferation of specific gut microbiota induced by vancomycin through their expression, and which glycopeptide resistance gene transfer pathways are facilitated by these genes?"
+    },
+    {
+      "id": "232",
+      "question": "Which host genes can downregulate the proliferation of specific gut microbiota induced by vancomycin through their expression, and which Gram-positive pathogen clearance pathways are enhanced by these genes?"
+    },
+    {
+      "id": "233",
+      "question": "Which gut microbiota that show increased abundance in frail elderly can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "234",
+      "question": "Which gut microbiota that show increased abundance in obesity can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "235",
+      "question": "Which gut microbiota that show increased abundance in obesity can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "236",
+      "question": "Which gut microbiota that show increased abundance in autism spectrum disorder can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "237",
+      "question": "Which gut microbiota that show increased abundance in autism spectrum disorder can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "238",
+      "question": "Which gut microbiota that show increased abundance in cystic fibrosis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "239",
+      "question": "Which gut microbiota that show increased abundance in cystic fibrosis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "240",
+      "question": "Which gut microbiota that show increased abundance in anorexia nervosa can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "241",
+      "question": "Which gut microbiota that show increased abundance in anorexia nervosa can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "242",
+      "question": "Which gut microbiota that show increased abundance in gastritis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "243",
+      "question": "Which gut microbiota that show increased abundance in gastritis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "244",
+      "question": "Which gut microbiota that show increased abundance in epilepsy can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "245",
+      "question": "Which gut microbiota that show increased abundance in epilepsy can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "246",
+      "question": "Which gut microbiota that show increased abundance in type 2 diabetes mellitus can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "247",
+      "question": "Which gut microbiota that show increased abundance in type 2 diabetes mellitus can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "248",
+      "question": "Which gut microbiota that show increased abundance in thyroiditis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "249",
+      "question": "Which gut microbiota that show increased abundance in thyroiditis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "250",
+      "question": "Which gut microbiota that show increased abundance in familial GUCY2C diarrhea syndrome can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?,
+
+      "
+    },
+    {
+      "id": "251",
+      "question": "Which gut microbiota that show increased abundance in familial GUCY2C diarrhea syndrome can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "252",
+      "question": "Which gut microbiota that show increased abundance in gastrointestinal helminths infection can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "253",
+      "question": "Which gut microbiota that show increased abundance in gastrointestinal helminths infection can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "254",
+      "question": "Which gut microbiota that show increased abundance in attention deficit hyperactivity disorder can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "255",
+      "question": "Which gut microbiota that show increased abundance in attention deficit hyperactivity disorder can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "256",
+      "question": "Which gut microbiota that show increased abundance in nonalcoholic fatty liver disease can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "257",
+      "question": "Which gut microbiota that show increased abundance in nonalcoholic fatty liver disease can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "258",
+      "question": "Which gut microbiota that show increased abundance in dysentery can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "259",
+      "question": "Which gut microbiota that show increased abundance in abdominal obesity-metabolic syndrome can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "260",
+      "question": "Which gut microbiota that show increased abundance in colorectal cancer can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "261",
+      "question": "Which gut microbiota that show increased abundance in colorectal cancer can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "262",
+      "question": "Which gut microbiota that show increased abundance in rheumatoid arthritis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "263",
+      "question": "Which gut microbiota that show increased abundance in irritable bowel syndrome can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "264",
+      "question": "Which gut microbiota that show increased abundance in irritable bowel syndrome can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "265",
+      "question": "Which gut microbiota that show increased abundance in hyperthyroidism can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "266",
+      "question": "Which gut microbiota that show increased abundance in hyperthyroidism can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "267",
+      "question": "Which gut microbiota that show increased abundance in allergic hypersensitivity disease can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "268",
+      "question": "Which gut microbiota that show increased abundance in allergic hypersensitivity disease can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "269",
+      "question": "Which gut microbiota that show increased abundance in acne can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "270",
+      "question": "Which gut microbiota that show increased abundance in liver cirrhosis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "271",
+      "question": "Which gut microbiota that show increased abundance in ulcerative colitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "272",
+      "question": "Which gut microbiota that show increased abundance in ulcerative colitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "273",
+      "question": "Which gut microbiota that show increased abundance in atopic dermatitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "274",
+      "question": "Which gut microbiota that show increased abundance in atopic dermatitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "275",
+      "question": "Which gut microbiota that show increased abundance in hepatitis B cirrhosis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "276",
+      "question": "Which gut microbiota that show increased abundance in hepatitis B cirrhosis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "277",
+      "question": "Which gut microbiota that show increased abundance in perinatal necrotizing enterocolitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "278",
+      "question": "Which gut microbiota that show increased abundance in perinatal necrotizing enterocolitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "279",
+      "question": "Which gut microbiota that show increased abundance in acquired immunodeficiency syndrome can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "280",
+      "question": "Which gut microbiota that show increased abundance in acquired immunodeficiency syndrome can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "281",
+      "question": "Which gut microbiota that show increased abundance in cholecystitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "282",
+      "question": "Which gut microbiota that show increased abundance in cholecystitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "283",
+      "question": "Which gut microbiota that show increased abundance in inflammatory bowel disease can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "284",
+      "question": "Which gut microbiota that show increased abundance in inflammatory bowel disease can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "285",
+      "question": "Which gut microbiota that show increased abundance in gastroenteritis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "286",
+      "question": "Which gut microbiota that show increased abundance in hypoglycemia can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "287",
+      "question": "Which gut microbiota that show increased abundance in Clostridium difficile infection can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "288",
+      "question": "Which gut microbiota that show increased abundance in Clostridium difficile infection can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "289",
+      "question": "Which gut microbiota that show increased abundance in multiple sclerosis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "290",
+      "question": "Which gut microbiota that show increased abundance in multiple sclerosis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "291",
+      "question": "Which gut microbiota that show increased abundance in colorectal carcinoma can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "292",
+      "question": "Which gut microbiota that show increased abundance in colorectal carcinoma can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "293",
+      "question": "Which gut microbiota that show increased abundance in primary sclerosing cholangitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "294",
+      "question": "Which gut microbiota that show increased abundance in primary sclerosing cholangitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "295",
+      "question": "Which gut microbiota that show increased abundance in abdominal dysfunction can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "296",
+      "question": "Which gut microbiota that show increased abundance in abdominal dysfunction can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "297",
+      "question": "Which gut microbiota that show increased abundance in type 1 diabetes mellitus can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "298",
+      "question": "Which gut microbiota that show increased abundance in type 1 diabetes mellitus can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "299",
+      "question": "Which gut microbiota that show increased abundance in Wilson disease can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "300",
+      "question": "Which gut microbiota that show increased abundance in Wilson disease can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "301",
+      "question": "Which gut microbiota that show increased abundance in metabolic syndrome can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "302",
+      "question": "Which gut microbiota that show increased abundance in metabolic syndrome can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "303",
+      "question": "Which gut microbiota that show increased abundance in autoimmune liver disease can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "304",
+      "question": "Which gut microbiota that show increased abundance in autoimmune liver disease can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "305",
+      "question": "Which gut microbiota that show increased abundance in keratitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "306",
+      "question": "Which gut microbiota that show increased abundance in gestational diabetes can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "307",
+      "question": "Which gut microbiota that show increased abundance in gestational diabetes can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "308",
+      "question": "Which gut microbiota that show increased abundance in recurrent idiopathic calcium stone can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "309",
+      "question": "Which gut microbiota that show increased abundance in recurrent idiopathic calcium stone can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "310",
+      "question": "Which gut microbiota that show increased abundance in Henoch-Schoenlein purpura can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "311",
+      "question": "Which gut microbiota that show increased abundance in Henoch-Schoenlein purpura can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "312",
+      "question": "Which gut microbiota that show increased abundance in preterm neonate can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "313",
+      "question": "Which gut microbiota that show increased abundance in preterm neonate can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "314",
+      "question": "Which gut microbiota that show increased abundance in acute pancreatitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "315",
+      "question": "Which gut microbiota that show increased abundance in acute pancreatitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "316",
+      "question": "Which gut microbiota that show increased abundance in colitis can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "317",
+      "question": "Which gut microbiota that show increased abundance in colitis can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "318",
+      "question": "Which gut microbiota that show increased abundance in constipation can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "319",
+      "question": "Which gut microbiota that show increased abundance in bloodstream infections in pediatric oncology  populations can be reduced through host gene expression regulation, and what are the key metabolic pathways involved in this process?"
+    },
+    {
+      "id": "320",
+      "question": "Which gut microbiota that show increased abundance in bloodstream infections in pediatric oncology populations can be promoted through host gene expression regulation, and what are the key metabolic pathways involved in this process? "
+    },
+
+]

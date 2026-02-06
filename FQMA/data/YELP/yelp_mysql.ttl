@@ -1,0 +1,597 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix yelp: <http://yelp#> .
+
+# ===================================================================================
+# MYSQL DATABASE MAPPINGS FOR YELP ONTOLOGY
+# 对应表: business, review_stats, user
+# ===================================================================================
+
+# ===================================================================================
+# Business Entity Mapping - 商家基础映射
+# 对应MySQL表: business
+# ===================================================================================
+<#BusinessMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT business_id, name, address, city, state, postal_code,
+                   latitude, longitude, stars, review_count, is_open, categories
+            FROM business
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}" ;
+        rr:class yelp:Business
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_id ;
+        rr:objectMap [ 
+            rr:column "business_id" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_name ;
+        rr:objectMap [ 
+            rr:column "name" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_address ;
+        rr:objectMap [ 
+            rr:column "address" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_city ;
+        rr:objectMap [ 
+            rr:column "city" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_state ;
+        rr:objectMap [ 
+            rr:column "state" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_postal_code ;
+        rr:objectMap [ 
+            rr:column "postal_code" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_latitude ;
+        rr:objectMap [ 
+            rr:column "latitude" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_longitude ;
+        rr:objectMap [ 
+            rr:column "longitude" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [ 
+            rr:column "stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review_count ;
+        rr:objectMap [ 
+            rr:column "review_count" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_is_open ;
+        rr:objectMap [ 
+            rr:column "is_open" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_categories ;
+        rr:objectMap [ 
+            rr:column "categories" ; 
+            rr:datatype xsd:string 
+        ]
+    ] .
+
+# Business按城市查询映射
+<#BusinessByCityMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT business_id, name, city, state, stars
+            FROM business
+            WHERE city IS NOT NULL
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_business_name ;
+        rr:objectMap [ 
+            rr:column "name" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_city ;
+        rr:objectMap [ 
+            rr:column "city" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_state ;
+        rr:objectMap [ 
+            rr:column "state" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [ 
+            rr:column "stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] .
+
+# ===================================================================================
+# User Entity Mapping - 用户基础映射
+# 对应MySQL表: user
+# ===================================================================================
+<#UserMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT user_id, name, review_count, yelping_since, useful, funny, cool,
+                   elite, fans, average_stars,
+                   compliment_hot, compliment_more, compliment_profile, compliment_cute,
+                   compliment_list, compliment_note, compliment_plain, compliment_cool,
+                   compliment_funny, compliment_writer, compliment_photos
+            FROM user
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}" ;
+        rr:class yelp:User
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_id ;
+        rr:objectMap [ 
+            rr:column "user_id" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_name ;
+        rr:objectMap [ 
+            rr:column "name" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review_count ;
+        rr:objectMap [ 
+            rr:column "review_count" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_yelping_since ;
+        rr:objectMap [ 
+            rr:column "yelping_since" ; 
+            rr:datatype xsd:dateTime 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_useful ;
+        rr:objectMap [ 
+            rr:column "useful" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_funny ;
+        rr:objectMap [ 
+            rr:column "funny" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_cool ;
+        rr:objectMap [ 
+            rr:column "cool" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_elite ;
+        rr:objectMap [ 
+            rr:column "elite" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_fans ;
+        rr:objectMap [ 
+            rr:column "fans" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_average_stars ;
+        rr:objectMap [ 
+            rr:column "average_stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_hot ;
+        rr:objectMap [ 
+            rr:column "compliment_hot" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_more ;
+        rr:objectMap [ 
+            rr:column "compliment_more" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_profile ;
+        rr:objectMap [ 
+            rr:column "compliment_profile" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_cute ;
+        rr:objectMap [ 
+            rr:column "compliment_cute" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_list ;
+        rr:objectMap [ 
+            rr:column "compliment_list" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_note ;
+        rr:objectMap [ 
+            rr:column "compliment_note" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_plain ;
+        rr:objectMap [ 
+            rr:column "compliment_plain" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_cool ;
+        rr:objectMap [ 
+            rr:column "compliment_cool" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_funny ;
+        rr:objectMap [ 
+            rr:column "compliment_funny" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_writer ;
+        rr:objectMap [ 
+            rr:column "compliment_writer" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_compliment_photos ;
+        rr:objectMap [ 
+            rr:column "compliment_photos" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] .
+
+# Elite用户映射 - 筛选有elite标识的用户
+<#EliteUserMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT user_id, name, elite, review_count, fans, average_stars
+            FROM user
+            WHERE elite IS NOT NULL AND elite != ''
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#user_{user_id}" ;
+        rr:class yelp:EliteUser
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_user_name ;
+        rr:objectMap [ 
+            rr:column "name" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_elite ;
+        rr:objectMap [ 
+            rr:column "elite" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review_count ;
+        rr:objectMap [ 
+            rr:column "review_count" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_fans ;
+        rr:objectMap [ 
+            rr:column "fans" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_average_stars ;
+        rr:objectMap [ 
+            rr:column "average_stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] .
+
+# ===================================================================================
+# Review Stats Entity Mapping - 评论统计映射
+# 对应MySQL表: review_stats
+# ===================================================================================
+<#ReviewStatsMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT review_id, user_id, business_id, stars, useful, funny, cool, date
+            FROM review_stats
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}" ;
+        rr:class yelp:Review
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review_id ;
+        rr:objectMap [ 
+            rr:column "review_id" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [ 
+            rr:column "stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_useful ;
+        rr:objectMap [ 
+            rr:column "useful" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_funny ;
+        rr:objectMap [ 
+            rr:column "funny" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_cool ;
+        rr:objectMap [ 
+            rr:column "cool" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [ 
+            rr:column "date" ; 
+            rr:datatype xsd:dateTime 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Review到User关系映射
+<#ReviewUserMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT review_id, user_id
+            FROM review_stats
+            WHERE user_id IS NOT NULL
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Review到Business关系映射
+<#ReviewBusinessMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT review_id, business_id
+            FROM review_stats
+            WHERE business_id IS NOT NULL
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Business has_review 反向关系映射
+<#BusinessHasReviewMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT business_id, review_id
+            FROM review_stats
+            WHERE business_id IS NOT NULL
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#business_{business_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_review ;
+        rr:objectMap [
+            rr:template "http://yelp#review_{review_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# ===================================================================================
+# 复合查询映射
+# ===================================================================================
+
+# 用户的所有评论（带商家信息）
+<#UserReviewsWithBusinessMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT r.review_id, r.user_id, r.business_id, r.stars as review_stars, r.date,
+                   b.name as business_name, b.city, b.stars as business_stars
+            FROM review_stats r
+            JOIN business b ON r.business_id = b.business_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}" ;
+        rr:class yelp:Review
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [ 
+            rr:column "review_stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [ 
+            rr:column "date" ; 
+            rr:datatype xsd:dateTime 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# 商家的所有评论（带用户信息）
+<#BusinessReviewsWithUserMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT r.review_id, r.user_id, r.business_id, r.stars, r.useful, r.date,
+                   u.name as user_name, u.average_stars as user_avg_stars
+            FROM review_stats r
+            JOIN user u ON r.user_id = u.user_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://yelp#review_{review_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_stars ;
+        rr:objectMap [ 
+            rr:column "stars" ; 
+            rr:datatype xsd:decimal 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_useful ;
+        rr:objectMap [ 
+            rr:column "useful" ; 
+            rr:datatype xsd:integer 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:has_date ;
+        rr:objectMap [ 
+            rr:column "date" ; 
+            rr:datatype xsd:dateTime 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:written_by ;
+        rr:objectMap [
+            rr:template "http://yelp#user_{user_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate yelp:reviews_business ;
+        rr:objectMap [
+            rr:template "http://yelp#business_{business_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .

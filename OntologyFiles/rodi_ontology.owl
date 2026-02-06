@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://conference#"
+     xml:base="http://conference"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <owl:Ontology rdf:about="http://conference"/>
+
+
+    <!--
+    ================================================================
+    Classes - 类定义
+    ================================================================
+    -->
+
+    <!-- 核心类 -->
+    <owl:Class rdf:about="http://conference#Person">
+        <rdfs:label>Person</rdfs:label>
+        <rdfs:comment>People associated with the conference</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Paper">
+        <rdfs:label>Full Paper</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Abstract">
+        <rdfs:label>Abstract</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Conference_volume">
+        <rdfs:label>Conference Volume</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Committee">
+        <rdfs:label>Conference Committee</rdfs:label>
+        <rdfs:comment>Any conference committee, such as, e.g., the program committee.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Review">
+        <rdfs:label>Review</rdfs:label>
+    </owl:Class>
+
+    <!-- 子类关系：使用简单的 rdfs:subClassOf -->
+    <owl:Class rdf:about="http://conference#Committee_member">
+        <rdfs:subClassOf rdf:resource="http://conference#Person"/>
+        <rdfs:label>Committee member</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Chair">
+        <rdfs:subClassOf rdf:resource="http://conference#Committee_member"/>
+        <rdfs:label>Chair</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Co-chair">
+        <rdfs:subClassOf rdf:resource="http://conference#Committee_member"/>
+        <rdfs:label>Co-chair</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Reviewer">
+        <rdfs:subClassOf rdf:resource="http://conference#Person"/>
+        <rdfs:label>Reviewer</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Conference_contributor">
+        <rdfs:subClassOf rdf:resource="http://conference#Person"/>
+        <rdfs:label>Conference contributor</rdfs:label>
+    </owl:Class>
+
+    <!-- 委员会类型 -->
+    <owl:Class rdf:about="http://conference#Program_committee">
+        <rdfs:subClassOf rdf:resource="http://conference#Committee"/>
+        <rdfs:label>Program Committee</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Organizing_committee">
+        <rdfs:subClassOf rdf:resource="http://conference#Committee"/>
+        <rdfs:label>Organizing Committee</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://conference#Steering_committee">
+        <rdfs:subClassOf rdf:resource="http://conference#Committee"/>
+        <rdfs:label>Steering Committee</rdfs:label>
+    </owl:Class>
+
+
+    <!--
+    ================================================================
+    Object Properties - 对象属性（关系）
+    ================================================================
+    -->
+
+    <!-- Neo4j 关系 -->
+    <owl:ObjectProperty rdf:about="http://conference#contributes">
+        <rdfs:label>contributes</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Person"/>
+        <rdfs:range rdf:resource="http://conference#Paper"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_authors">
+        <rdfs:label>has author</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Paper"/>
+        <rdfs:range rdf:resource="http://conference#Person"/>
+        <owl:inverseOf rdf:resource="http://conference#contributes"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_members">
+        <rdfs:label>has member</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Committee"/>
+        <rdfs:range rdf:resource="http://conference#Committee_member"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#was_a_member_of">
+        <rdfs:label>was member of</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Committee_member"/>
+        <rdfs:range rdf:resource="http://conference#Committee"/>
+        <owl:inverseOf rdf:resource="http://conference#has_members"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_contributions">
+        <rdfs:label>has contributions</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Conference_volume"/>
+        <rdfs:range rdf:resource="http://conference#Paper"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#is_submitted_at">
+        <rdfs:label>submitted at</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Paper"/>
+        <rdfs:range rdf:resource="http://conference#Conference_volume"/>
+        <owl:inverseOf rdf:resource="http://conference#has_contributions"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#reviews">
+        <rdfs:label>is review for</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Review"/>
+        <rdfs:range rdf:resource="http://conference#Paper"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_a_review">
+        <rdfs:label>has review</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Paper"/>
+        <rdfs:range rdf:resource="http://conference#Review"/>
+        <owl:inverseOf rdf:resource="http://conference#reviews"/>
+    </owl:ObjectProperty>
+
+    <!-- MySQL 关系 -->
+    <owl:ObjectProperty rdf:about="http://conference#is_the_1th_part_of">
+        <rdfs:label>is first part of</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Abstract"/>
+        <rdfs:range rdf:resource="http://conference#Paper"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_an_abstract">
+        <rdfs:label>has abstract</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Paper"/>
+        <rdfs:range rdf:resource="http://conference#Abstract"/>
+        <owl:inverseOf rdf:resource="http://conference#is_the_1th_part_of"/>
+    </owl:ObjectProperty>
+
+    <!-- 委员会关系 -->
+    <owl:ObjectProperty rdf:about="http://conference#has_a_program_committee">
+        <rdfs:label>has program committee</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Conference_volume"/>
+        <rdfs:range rdf:resource="http://conference#Program_committee"/>
+        <rdfs:subPropertyOf rdf:resource="http://conference#has_a_commtitee"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_an_organizing_committee">
+        <rdfs:label>has organizing committee</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Conference_volume"/>
+        <rdfs:range rdf:resource="http://conference#Organizing_committee"/>
+        <rdfs:subPropertyOf rdf:resource="http://conference#has_a_commtitee"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_a_commtitee">
+        <rdfs:label>has committee</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Conference_volume"/>
+        <rdfs:range rdf:resource="http://conference#Committee"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://conference#has_a_committee_chair">
+        <rdfs:label>has committee chair</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Committee"/>
+        <rdfs:range rdf:resource="http://conference#Chair"/>
+    </owl:ObjectProperty>
+
+
+    <!--
+    ================================================================
+    Data Properties - 数据属性
+    ================================================================
+    -->
+
+    <!-- Person 属性 (PostgreSQL) -->
+    <owl:DatatypeProperty rdf:about="http://conference#has_the_first_name">
+        <rdfs:label>has first name</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://conference#has_the_last_name">
+        <rdfs:label>has last name</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://conference#has_an_email">
+        <rdfs:label>has e-mail</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://conference#has_gender">
+        <rdfs:label>has gender</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Paper 属性 (PostgreSQL) -->
+    <owl:DatatypeProperty rdf:about="http://conference#has_a_paper_title">
+        <rdfs:label>title</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Paper"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Abstract 属性 (MySQL) -->
+    <owl:DatatypeProperty rdf:about="http://conference#has_text">
+        <rdfs:label>abstract text</rdfs:label>
+        <rdfs:comment>Abstract (as plain text)</rdfs:comment>
+        <rdfs:domain rdf:resource="http://conference#Abstract"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Review 属性 (MySQL) -->
+    <owl:DatatypeProperty rdf:about="http://conference#has_detailed_comments">
+        <rdfs:label>review comments</rdfs:label>
+        <rdfs:domain rdf:resource="http://conference#Review"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Conference 属性 (PostgreSQL) -->
+    <owl:DatatypeProperty rdf:about="http://conference#has_a_name">
+        <rdfs:label>has name</rdfs:label>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://conference#Committee"/>
+                    <rdf:Description rdf:about="http://conference#Conference_volume"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://conference#has_a_location">
+        <rdfs:label>has location</rdfs:label>
+        <rdfs:comment>Name of conference location (city, country).</rdfs:comment>
+        <rdfs:domain rdf:resource="http://conference#Conference_volume"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+
+    <!--
+    ================================================================
+    Annotations - 注解
+    ================================================================
+    -->
+
+    <rdf:Description rdf:about="http://conference#Committee">
+        <rdfs:comment>Any conference committee, such as, e.g., the program committee.</rdfs:comment>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://conference#Person">
+        <rdfs:comment>People associated with the conference</rdfs:comment>
+    </rdf:Description>
+
+</rdf:RDF>

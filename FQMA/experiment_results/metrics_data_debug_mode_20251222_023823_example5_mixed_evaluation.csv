@@ -1,0 +1,7 @@
+question_id,fex,ex,execution_time,total_tokens,tokens_per_subquery,total_subqueries,correct_subqueries,example_count,repair_attempts,repair_successes,repair_success_rate,query_planner_tokens,sparql_generator_tokens,query_repairer_tokens,subquery_scheduler_tokens,evaluation_mode,sq1_ex,sq2_ex,sq3_ex,sq3_similarity
+1,1,1.0,17.696161031723022,753,251.0,3,3,5,0,0,0,111,343,0,299,mixed_evaluation_third_query_count_based,1,1,1,1.0
+2,0,0.0,16.20120906829834,682,227.33333333333334,3,0,5,0,0,0,95,313,0,274,mixed_evaluation_third_query_count_based,0,0,0,0.0
+3,0,0.6666666666666666,16.979363918304443,662,220.66666666666666,3,2,5,0,0,0,89,306,0,267,mixed_evaluation_third_query_count_based,1,0,1,1.0
+4,1,1.0,15.285691976547241,696,232.0,3,3,5,0,0,0,96,319,0,281,mixed_evaluation_third_query_count_based,1,1,1,1.0
+5,0,0.3333333333333333,17.558431148529053,724,241.33333333333334,3,1,5,0,0,0,108,329,0,287,mixed_evaluation_third_query_count_based,1,0,0,-1.6
+6,0,0.0,16.1810200214386,690,230.0,3,0,5,0,0,0,98,318,0,274,mixed_evaluation_third_query_count_based,0,0,0,-8.8

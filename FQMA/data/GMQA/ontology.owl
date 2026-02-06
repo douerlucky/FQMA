@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#"
+     xml:base="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology">
+        <owl:versionIRI rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/1.0"/>
+        <rdfs:comment>An integrated ontology for gut microbiota research covering swine feed efficiency, gene expression, metabolite production, disease interactions, food and drug effects. This ontology prioritizes simple direct relationships over complex association patterns.</rdfs:comment>
+    </owl:Ontology>
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties - PRIORITIZED SIMPLE DIRECT RELATIONSHIPS
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <!-- PRIMARY RELATIONSHIPS: Always use these for standard queries -->
+    
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#correlatedwith_feed_efficiency">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#FeedEfficiency"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示微生物与饲养效率显著相关的关系。对应Neo4j中的significantlyassociated关系。用于所有"相关"、"显著相关"、"关联"查询。</rdfs:comment>
+        <rdfs:label>correlatedwith_feed_efficiency</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#increases_feed_efficiency">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#FeedEfficiency"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示微生物能够提高饲养效率的关系。对应Neo4j中的increase关系。用于"提高"、"增加"、"改善"查询。</rdfs:comment>
+        <rdfs:label>increases_feed_efficiency</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#changes_gene_expression_by_microbiota">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示微生物调控基因表达的关系。对应Neo4j中的upregulate/downregulate关系。用于"调控"、"影响"、"控制"查询。</rdfs:comment>
+        <rdfs:label>changes_gene_expression_by_microbiota</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#participates_in_pathway">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#KEGGPathway"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示基因参与KEGG代谢通路的关系。用于"参与通路"、"代谢通路"查询。</rdfs:comment>
+        <rdfs:label>participates_in_pathway</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#generates_metabolite">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示微生物产生代谢物的关系。对应Neo4j中的produce关系。</rdfs:comment>
+        <rdfs:label>generates_metabolite</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- 添加微生物与表型（包括饲养效率）的直接关联关系 -->
+<owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#has_phenotype_association">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Phenotype"/>
+    <rdfs:comment>PRIMARY RELATIONSHIP: 表示微生物与表型（包括饲养效率）的直接关联，带有pvalue和condition_name属性。对应Neo4j中的ASSOCIATED_WITH关系。用于需要p值和条件筛选的查询。</rdfs:comment>
+    <rdfs:label>has_phenotype_association</rdfs:label>
+</owl:ObjectProperty>
+
+    <!-- NEW: 通用的基因调控微生物丰度关系（不区分增加或减少） -->
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#regulates_microbiota_abundance">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示基因调控微生物丰度的通用关系（包括增加和减少）。当问题只提到"调控"而不指定方向时使用。</rdfs:comment>
+        <rdfs:label>regulates_microbiota_abundance</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#increases_microbiota_abundance">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示基因表达增加微生物丰度的关系。仅在明确说明"增加"时使用。</rdfs:comment>
+        <rdfs:label>increases_microbiota_abundance</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#decreases_microbiota_abundance">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示基因表达减少微生物丰度的关系。仅在明确说明"减少"时使用。</rdfs:comment>
+        <rdfs:label>decreases_microbiota_abundance</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- NEW: Food and Drug relationships -->
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#increases_microbiota_abundance_by_food">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Food"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示食物增加微生物丰度的关系。</rdfs:comment>
+        <rdfs:label>increases_microbiota_abundance_by_food</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#decreases_microbiota_abundance_by_food">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Food"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示食物减少微生物丰度的关系。</rdfs:comment>
+        <rdfs:label>decreases_microbiota_abundance_by_food</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#increases_microbiota_abundance_by_drug">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Drug"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示药物增加微生物丰度的关系。</rdfs:comment>
+        <rdfs:label>increases_microbiota_abundance_by_drug</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#decreases_microbiota_abundance_by_drug">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Drug"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>PRIMARY RELATIONSHIP: 表示药物减少微生物丰度的关系。</rdfs:comment>
+        <rdfs:label>decreases_microbiota_abundance_by_drug</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- Original supporting properties -->
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#changes_microbiota_abundance_by_disorder">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Disorder"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#has_association">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:comment>Connects microbiota to association with phenotype</rdfs:comment>
+        <rdfs:label>has_association</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#association_source">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:comment>The source microbiota of the association</rdfs:comment>
+        <rdfs:label>association_source</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#associated_with_phenotype">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Phenotype"/>
+        <rdfs:comment>The target phenotype of the association</rdfs:comment>
+        <rdfs:label>associated_with_phenotype</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <!-- PRIMARY entity data properties -->
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>REQUIRED: The name of the microbiota. Always use this for microbiota names.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_symbol">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>REQUIRED: The symbol of the gene. Always use this for gene names.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#pathway_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#KEGGPathway"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>REQUIRED: The full name/description of the KEGG pathway. May contain pathway ID and description.</rdfs:comment> 
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#efficiency_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#FeedEfficiency"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>The name/type of feed efficiency measure.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#metabolite_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#food_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Food"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>REQUIRED: The name of the food item. Always use this for food names.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#drug_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Drug"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>REQUIRED: The name of the drug. Always use this for drug names.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <!-- Supporting data properties -->
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#ncbi_gene_id">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_host_type">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#pubchem_id">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#hmdb_id">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#chebi_id">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#network_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#KEGGPathway"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#brite_category">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#KEGGPathway"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#disorder_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Disorder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#phenotype_name">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Phenotype"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#pvalue">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:comment>Statistical significance p-value of the association</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#condition">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:comment>Experimental condition description</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <!-- PRIMARY entity classes -->
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#MicrobiotaName">
+        <rdfs:comment>REQUIRED CLASS: A microorganism that is part of the gut microbiota community. Always use this class for microbiota entities.</rdfs:comment>
+        <rdfs:label>MicrobiotaName</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Gene">
+        <rdfs:comment>REQUIRED CLASS: A gene that can be expressed and regulated. Always use this class for gene entities.</rdfs:comment>
+        <rdfs:label>Gene</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#KEGGPathway">
+        <rdfs:comment>REQUIRED CLASS: A biological pathway from the KEGG database. Always use this class for pathway entities.</rdfs:comment>
+        <rdfs:label>KEGGPathway</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#FeedEfficiency">
+        <rdfs:comment>REQUIRED CLASS: A measure of feed conversion efficiency in livestock, particularly swine.</rdfs:comment>
+        <rdfs:label>FeedEfficiency</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Food">
+        <rdfs:comment>REQUIRED CLASS: A food item that can affect microbiota abundance. Always use this class for food entities.</rdfs:comment>
+        <rdfs:label>Food</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Drug">
+        <rdfs:comment>REQUIRED CLASS: A pharmaceutical compound that can affect microbiota abundance. Always use this class for drug entities.</rdfs:comment>
+        <rdfs:label>Drug</rdfs:label>
+    </owl:Class>
+
+    <!-- Supporting classes -->
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite">
+        <rdfs:comment>A chemical compound produced by metabolic processes.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Disorder">
+        <rdfs:comment>A disease or medical condition that can affect microbiota abundance.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Phenotype">
+        <rdfs:comment>An observable characteristic or trait that can be associated with microbiota.</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association">
+        <rdfs:comment>Association between entities with properties like pvalue and condition</rdfs:comment>
+        <rdfs:label>Association</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#PhenotypeAssociation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Association"/>
+        <rdfs:comment>Association between microbiota and phenotype with statistical properties</rdfs:comment>
+        <rdfs:label>PhenotypeAssociation</rdfs:label>
+    </owl:Class>
+
+</rdf:RDF>

@@ -1,0 +1,83 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#> .
+
+#==============================================================
+# KEGG PostgreSQL映射 - 零硬编码版本
+#
+# 重要：pathway字段需要模糊匹配，因为数据库存储的是完整名称
+# 例如：数据库存储 "hsa04060 Cytokine-cytokine receptor interaction"
+#       但查询时用户只提供 "hsa04060"
+#
+# 解决方案：使用 ont:matchType "partial" 标记需要LIKE匹配的列
+#==============================================================
+
+<#GeneMap>
+    rr:logicalTable [ rr:tableName "kegg" ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/gene/{gene_symbol}" ;
+        rr:class ont:Gene ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ont:gene_symbol ;
+        rr:objectMap [
+            rr:column "gene_symbol" ;
+            rr:datatype xsd:string ;
+            # gene_symbol使用精确匹配（默认）
+        ] ;
+    ] .
+
+
+<#KEGGPathwayMap>
+    rr:logicalTable [ rr:tableName "kegg" ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/pathway/{pathway}" ;
+        rr:class ont:KEGGPathway ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ont:pathway_name ;
+        rr:objectMap [
+            rr:column "pathway" ;
+            rr:datatype xsd:string ;
+            #==============================================================
+            # 🔧 关键配置：标记pathway列需要模糊匹配
+            #
+            # ont:matchType 可选值：
+            #   - "partial" / "like" / "contains" : 使用 LIKE '%value%'
+            #   - "exact" (默认) : 使用 IN ('value') 或 = 'value'
+            #
+            # 添加此属性后，SPARQL2PostgreSQL.py会自动生成：
+            #   ("pathway" LIKE '%hsa04060%' OR "pathway" LIKE '%hsa04061%')
+            # 而不是：
+            #   "pathway" IN ('hsa04060', 'hsa04061')
+            #==============================================================
+            ont:matchType "partial" ;
+        ] ;
+    ] .
+
+
+<#GenePathwayRelation>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "gene_symbol", "pathway"
+            FROM "kegg"
+        """
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/gene/{gene_symbol}" ;
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ont:participates_in_pathway ;
+        rr:objectMap [
+            rr:template "http://example.org/pathway/{pathway}" ;
+            rr:termType rr:IRI ;
+        ] ;
+    ] .

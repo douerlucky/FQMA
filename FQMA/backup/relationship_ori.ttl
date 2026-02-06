@@ -1,0 +1,636 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix onto: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#> .
+
+# ====================================================================
+# 核心关系映射 - Core Relationship Mappings
+# ====================================================================
+
+# Gene regulates microbiota abundance relationship mapping (包括increase和decrease)
+<#GeneRegulatesMicrobiotaAbundanceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+            ON hecrbm.index = gmgcr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_experimental_method ;
+        rr:objectMap [ rr:column "experimental_method" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_sequencing_technology ;
+        rr:objectMap [ rr:column "sequencing_technology" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_evidence ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .
+
+# MetaboliteGeneChangeResult包含metabolite_name信息
+<#MetaboliteGeneChangeResultWithNameMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT mgcr.*, hecrbm.relationship as metabolite_name
+            FROM newgutmgene.metabolite_gene_change_results mgcr
+            JOIN relationship.has_expression_change_results_by_metabolite hecrbm
+            ON mgcr.index = hecrbm.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite_gene_result/{index}" ;
+        rr:class onto:MetaboliteGeneChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:metabolite_name_in_result ;
+        rr:objectMap [ rr:column "metabolite_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:result_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:alteration_type ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:substrate_name ;
+        rr:objectMap [ rr:column "substrate_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:throughput ;
+        rr:objectMap [ rr:column "throughput" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:evidence_score ;
+        rr:objectMap [ rr:column "Evidence" ; rr:datatype xsd:integer ]
+    ] .r:predicate onto:regulates_microbiota_abundance ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# Generates Relationship Mapping - 微生物产生代谢物关系
+<#GeneratesMapping>
+    rr:logicalTable [ rr:tableName "generates" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:generates_metabolite ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}"
+        ]
+    ] .
+
+# ====================================================================
+# 基因-微生物关系映射 - Gene-Microbiota Relationship Mappings
+# ====================================================================
+
+# 修复：微生物-基因表达调控关系映射（不限制Alteration类型）
+<#GeneralMicrobiotaGeneExpressionMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+            ON hecrbm.index = gmgcr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_gene_expression_by_microbiota ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# 修复：基因增加微生物丰度关系映射
+<#GeneIncreasesMicrobiotaMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+            ON hecrbm.index = gmgcr.index
+            WHERE gmgcr.Alteration = 'increase'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:increases_microbiota_abundance ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# 修复：基因减少微生物丰度关系映射
+<#GeneDecreasesMicrobiotaMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+            ON hecrbm.index = gmgcr.index
+            WHERE gmgcr.Alteration = 'decrease'
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:decreases_microbiota_abundance ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# ====================================================================
+# 代谢物-基因关系映射 - Metabolite-Gene Relationship Mappings
+# ====================================================================
+
+# 关键修复：代谢物-基因表达变化关系映射
+<#MetaboliteGeneExpressionChangeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrb.gene_symbol, hecrb.relationship as metabolite_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrb
+            JOIN newgutmgene.metabolite_gene_change_results mgcr
+            ON hecrb.index = mgcr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_gene_expression_by_metabolite ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# ====================================================================
+# 复合查询映射 - Complex Query Mappings (新增关键部分)
+# ====================================================================
+
+# 修复：简化的微生物-代谢物-基因查询映射（不使用JOIN）
+<#SimpleMicrobiotaMetaboliteGeneMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_gene_expression_by_metabolite ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# 最重要的修复：微生物通过代谢物影响基因表达的复合关系映射
+<#MicrobiotaGeneratesMetaboliteChangesGeneMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name, gmmgr.microbiota_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+            JOIN newgutmgene.gut_microbiota_metabolite_generation_results gmmgr
+            ON hecrbm.index = gmmgr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:generates_metabolite ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}"
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:compound_generates_affects_gene ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# 为组合查询模式添加专门的映射标记
+<#CompoundQueryPattern_MicrobiotaMetaboliteGene>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name, gmmgr.microbiota_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+            JOIN newgutmgene.gut_microbiota_metabolite_generation_results gmmgr
+            ON hecrbm.index = gmmgr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/compound_pattern/microbiota_metabolite_gene"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:compound_query_pattern ;
+        rr:objectMap [ rr:constant "microbiota_generates_metabolite_changes_gene" ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:includes_relation ;
+        rr:objectMap [ rr:constant "generates_metabolite" ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:includes_relation ;
+        rr:objectMap [ rr:constant "changes_gene_expression_by_metabolite" ]
+    ] .
+
+# ====================================================================
+# 复合查询映射 - Complex Query Mappings
+# ====================================================================
+
+# 关键修复：完整的微生物-代谢物-基因复合查询映射
+<#ComplexMicrobiotaMetaboliteGeneMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name, gmmgr.microbiota_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+            JOIN newgutmgene.gut_microbiota_metabolite_generation_results gmmgr
+            ON hecrbm.index = gmmgr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:generates_metabolite_changes_gene_expression ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# 新增：微生物产生代谢物并影响基因表达的复合关系映射（用于处理复合SPARQL查询）
+<#MicrobiotaMetaboliteGenePathwayMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name, gmmgr.microbiota_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+            JOIN newgutmgene.gut_microbiota_metabolite_generation_results gmmgr
+            ON hecrbm.index = gmmgr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_metabolite_gene_pathway/{microbiota_name}_{metabolite_name}_{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:metabolite_name ;
+        rr:objectMap [ rr:column "metabolite_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_symbol ;
+        rr:objectMap [ rr:column "gene_symbol" ; rr:datatype xsd:string ]
+    ] .
+
+# 修复：处理复合SPARQL查询的特殊映射 - 专门用于generates_metabolite + changes_gene_expression_by_metabolite组合
+<#GeneratesMetaboliteChangesGeneMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT hecrbm.gene_symbol, hecrbm.relationship as metabolite_name
+            FROM relationship.has_expression_change_results_by_metabolite hecrbm
+            JOIN newgutmgene.gut_microbiota_metabolite_generation_results gmmgr
+            ON hecrbm.index = gmmgr.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/complex_relation/{microbiota_name}_{metabolite_name}_{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:complex_generates_metabolite_changes_gene ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+        ]
+    ] .
+
+# ====================================================================
+# 表关系映射 - Table Relationship Mappings
+# ====================================================================
+
+# Has Expression Change Results by Microbiota Mapping
+<#HasExpressionChangeResultsByMicrobiotaMapping>
+    rr:logicalTable [ rr:tableName "has_expression_change_results_by_microbiota" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:has_expression_change_results_by_microbiota ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_gene_result/{index}"
+        ]
+    ] .
+
+# Has Expression Change Results by Metabolite Mapping
+<#HasExpressionChangeResultsByMetaboliteMapping>
+    rr:logicalTable [ rr:tableName "has_expression_change_results_by_metabolite" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:has_expression_change_results_by_metabolite ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite_gene_result/{index}"
+        ]
+    ] .
+
+# Has Abundance Change Results by Disorder Mapping
+<#HasAbundanceChangeResultsByDisorderMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_disorder" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:has_abundance_change_results_by_disorder ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/disorder_microbiota_result/{index_num}"
+        ]
+    ] .
+
+# Direct disorder-microbiota abundance change relationship
+<#DisorderMicrobiotaAbundanceChangeMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_disorder" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/disorder/{relationship}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_microbiota_abundance_by_disorder ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# Has Abundance Change Results by Drug Mapping
+<#HasAbundanceChangeResultsByDrugMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_drug" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:has_abundance_change_results_by_drug ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug_microbiota_result/{index_num}"
+        ]
+    ] .
+
+# Direct drug-microbiota abundance change relationship
+<#DrugMicrobiotaAbundanceChangeMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_drug" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{relationship}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_microbiota_abundance_by_drug ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# Has Abundance Change Results by Food Mapping
+<#HasAbundanceChangeResultsByFoodMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_food" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:has_abundance_change_results_by_food ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food_microbiota_result/{index_num}"
+        ]
+    ] .
+
+# Direct food-microbiota abundance change relationship
+<#FoodMicrobiotaAbundanceChangeMapping>
+    rr:logicalTable [ rr:tableName "has_abundance_change_results_by_food" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{relationship}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:changes_microbiota_abundance_by_food ;
+        rr:objectMap [
+            rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
+        ]
+    ] .
+
+# ====================================================================
+# 实体映射 - Entity Mappings
+# ====================================================================
+
+# Disorder entity mapping
+<#DisorderMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as disorder_name
+            FROM relationship.has_abundance_change_results_by_disorder
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/disorder/{disorder_name}" ;
+        rr:class onto:Disorder
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:disorder_name ;
+        rr:objectMap [ rr:column "disorder_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Drug entity mapping
+<#DrugMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as drug_name
+            FROM relationship.has_abundance_change_results_by_drug
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/drug/{drug_name}" ;
+        rr:class onto:Drug
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:drug_name ;
+        rr:objectMap [ rr:column "drug_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Food entity mapping
+<#FoodMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as food_name
+            FROM relationship.has_abundance_change_results_by_food
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/food/{food_name}" ;
+        rr:class onto:Food
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:food_name ;
+        rr:objectMap [ rr:column "food_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Metabolite entities from expression change results
+<#MetaboliteFromExpressionMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as metabolite_name
+            FROM relationship.has_expression_change_results_by_metabolite
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite/{metabolite_name}" ;
+        rr:class onto:Metabolite
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:metabolite_name ;
+        rr:objectMap [ rr:column "metabolite_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Microbiota entities from expression change results
+<#MicrobiotaFromExpressionMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT relationship as microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}" ;
+        rr:class onto:MicrobiotaName
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] .
+
+# Gene entities from expression change results
+<#GeneFromExpressionMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT DISTINCT gene_symbol
+            FROM relationship.has_expression_change_results_by_microbiota
+            UNION
+            SELECT DISTINCT gene_symbol
+            FROM relationship.has_expression_change_results_by_metabolite
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/gene/{gene_symbol}" ;
+        rr:class onto:Gene
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_symbol ;
+        rr:objectMap [ rr:column "gene_symbol" ; rr:datatype xsd:string ]
+    ] .
+
+# ====================================================================
+# 关系属性映射 - Relationship Property Mappings
+# ====================================================================
+
+# Expression Change Microbiota Relationship Property Mapping
+<#ExpressionChangeMicrobiotaRelationshipPropertyMapping>
+    rr:logicalTable [ rr:tableName "has_expression_change_results_by_microbiota" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_gene_relationship/{gene_symbol}_{index}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name ;
+        rr:objectMap [ rr:column "relationship" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_symbol ;
+        rr:objectMap [ rr:column "gene_symbol" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:result_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] .
+
+# Expression Change Metabolite Relationship Property Mapping
+<#ExpressionChangeMetaboliteRelationshipPropertyMapping>
+    rr:logicalTable [ rr:tableName "has_expression_change_results_by_metabolite" ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/metabolite_gene_relationship/{gene_symbol}_{index}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:metabolite_name ;
+        rr:objectMap [ rr:column "relationship" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:gene_symbol ;
+        rr:objectMap [ rr:column "gene_symbol" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:result_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] .
+
+# ====================================================================
+# 增强的结果映射 - Enhanced Result Mappings
+# ====================================================================
+
+# 确保MicrobiotaGeneChangeResult包含microbiota_name信息
+<#MicrobiotaGeneChangeResultWithNameMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT gmgcr.*, hecrbm.relationship as microbiota_name
+            FROM newgutmgene.gut_microbiota_gene_change_results gmgcr
+            JOIN relationship.has_expression_change_results_by_microbiota hecrbm
+            ON gmgcr.index = hecrbm.index
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota_gene_result/{index}" ;
+        rr:class onto:MicrobiotaGeneChangeResult
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_name_in_result ;
+        rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_alteration ;
+        rr:objectMap [ rr:column "Alteration" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_index ;
+        rr:objectMap [ rr:column "index" ; rr:datatype xsd:integer ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_throughput ;
+        rr:objectMap [ rr:column "throughput" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:microbiota_gene_description ;
+        rr:objectMap [ rr:column "description" ; rr:datatype xsd:string ]
+    ] ;

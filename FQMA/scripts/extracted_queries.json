@@ -1,0 +1,2753 @@
+[
+  {
+    "id": "1",
+    "question": "Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "调控Dorea，Eubacterium，Bacteroides的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Dorea','Eubacterium', 'Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "SELECT \"gene_symbol\", \"pathway\" FROM \"kegg\" WHERE \"gene_symbol\" IN ('BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas')"
+      }
+    }
+  },
+  {
+    "id": "2",
+    "question": "Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "调控Clostridium，Lactobacillus，Oscillibacter的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "SELECT \"gene_symbol\", \"pathway\" FROM \"kegg\" WHERE \"gene_symbol\" IN ('IL22','MAPK14 ',Prkaa2', 'Prkaa1', 'Gcg', 'Tjp1', 'Il6', 'Tnf', 'Il1b', 'Nos2', 'Chrm2', 'Tlr2', 'Arg1', 'Srebf1', 'Fas', 'Srebf2', 'Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "3",
+    "question": "Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\"] return s"
+      },
+      "query_2": {
+        "description": "调控Desulfovibrionaceae的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results  gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "Ahr基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr')"
+      }
+    }
+  },
+  {
+    "id": "4",
+    "question": "（families）Prevotellaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae和Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "调控Prevotellaceae和Lachnospiraceae的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from relationship.has_expression_change_results_by_microbiota hecrbm join newgutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and hecrbm.relationship in ('Prevotellaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "EGFR基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR')"
+      }
+    }
+  },
+  {
+    "id": "5",
+    "question": "（genera）Eubacterium，Lachnospiraceae，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Lachnospiraceae、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Lachnospiraceae\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "调控Eubacterium和Lachnospiraceae的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Eubacterium','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','BCL2','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "6",
+    "question": "Bacteroides是否对生猪饲养效率是显著相关的？它受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\",\"Ruminococcaceae\",\"Methanobrevibacter\"] return s"
+      },
+      "query_2": {
+        "description": "调控Bacteroides的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas')"
+      }
+    }
+  },
+  {
+    "id": "7",
+    "question": "（genera）Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "调控Clostridium的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "8",
+    "question": "（genera）Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\",\"Lactobacillaceae\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "调控Lactobacillus的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Lactobacillus')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1')"
+      }
+    }
+  },
+  {
+    "id": "9",
+    "question": "Desulfovibrionaceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\"] return s"
+      },
+      "query_2": {
+        "description": "调控Desulfovibrionaceae的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr')"
+      }
+    }
+  },
+  {
+    "id": "10",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','MAPK14','BAX','CASP3','IL22','Gcg','Tjp1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1')"
+      }
+    }
+  },
+  {
+    "id": "11",
+    "question": "哪些微生物群与生猪饲养效率显著相关？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.index = gmmgr.index and hecrbm.relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','MAPK14','BCL2','CASP3','IL22','Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Fas','Arg1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1','Ahr','Srebf','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "12",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下的Pvalue在0.2与0.21之间？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下pvalue在0.2-0.21间与饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results  gmmgr where hecrbm.index = gmmgr.index and hecrbm.relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "13",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？这些微生物受哪些基因的调控？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下pvalue=0.19与饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name,r"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.index = gmmgr.index and hecrbm.relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1')"
+      }
+    }
+  },
+  {
+    "id": "14",
+    "question": "（genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1','Nr1h4','Fgf15','Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "15",
+    "question": "（genera）Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Eubacterium数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Eubacterium','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "16",
+    "question": "（genera）Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides、Ruminococcaceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\",\"Ruminococcaceae\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Bacteroides、Ruminococcaceae数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Nr1h4','Fgf15','Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "17",
+    "question": "Clostridium中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Prevotellaceae\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Clostridium数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2')"
+      }
+    }
+  },
+  {
+    "id": "18",
+    "question": "Lactobacillus是否对生猪饲养效率是显著相关的？哪些基因的表达能够增加它的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus是否与生猪饲养效率显著相关",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Lactobacillus数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Lactobacillus')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1')"
+      }
+    }
+  },
+  {
+    "id": "19",
+    "question": "Desulfovibrionaceae是否对生猪饲养效率是显著相关的？哪些基因的表达能够增加它的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae是否与生猪饲养效率显著相关",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Desulfovibrionaceae数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr')"
+      }
+    }
+  },
+  {
+    "id": "20",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1','BAX','CASP3','Nr1h4','Fgf15','Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "21",
+    "question": "哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "能够增加相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','BAX','Prkaa2','Prkaa1','Tjp1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Nr1h4','Fgf15','Fgfr4','Fas','Arg1','Ahr')"
+      }
+    }
+  },
+  {
+    "id": "22",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "能够增加相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "23",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下Pvalue=0.19的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name,r"
+      },
+      "query_2": {
+        "description": "能够增加相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1')"
+      }
+    }
+  },
+  {
+    "id": "24",
+    "question": "哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Pvalue在0.28与0.288之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "能够增加相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL17A','RORA','CXCL1','CXCL5','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "25",
+    "question": "（genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2')"
+      }
+    }
+  },
+  {
+    "id": "26",
+    "question": "（genera）Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Gcg','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "27",
+    "question": "（families）Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Ruminococcaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Prevotellaceae','Ruminococcaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR')"
+      }
+    }
+  },
+  {
+    "id": "28",
+    "question": "Eubacterium是否对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium是否与生猪饲养效率显著相关",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少Eubacterium数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2')"
+      }
+    }
+  },
+  {
+    "id": "29",
+    "question": "Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少Bacteroides数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "30",
+    "question": "Clostridium中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少Clostridium数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Gcg','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "31",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "32",
+    "question": "哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "33",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2')"
+      }
+    }
+  },
+  {
+    "id": "34",
+    "question": "哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Pvalue在0.28与0.288之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "能够减少相关微生物群数量的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2')"
+      }
+    }
+  },
+  {
+    "id": "35",
+    "question": "（genera）Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "相关微生物产生的代谢物与基因表达量的关系",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas')"
+      }
+    }
+  },
+  {
+    "id": "36",
+    "question": "(genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','Prkaa2','Prkaa1','Gcg','Tjp1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Arg1','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "37",
+    "question": "Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\"] return s"
+      },
+      "query_2": {
+        "description": "Desulfovibrionaceae产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr')"
+      }
+    }
+  },
+  {
+    "id": "38",
+    "question": "(genera)Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Ruminococcaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Prevotellaceae','Ruminococcaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR')"
+      }
+    }
+  },
+  {
+    "id": "39",
+    "question": "Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "Eubacterium产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "40",
+    "question": "Bacteroides是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "Bacteroides产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas')"
+      }
+    }
+  },
+  {
+    "id": "41",
+    "question": "(genera) Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "Clostridium产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "42",
+    "question": "Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\",\"Lactobacillaceae\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "Lactobacillus产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Lactobacillus','Lactobacillaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','Tjp1','Arg1')"
+      }
+    }
+  },
+  {
+    "id": "43",
+    "question": "Desulfovibrionaceae是否对生猪饲养效率是显著相关的？它产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\",\"Treponema porcinum\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "Desulfovibrionaceae产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr')"
+      }
+    }
+  },
+  {
+    "id": "44",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','IL22','Gcg','Tjp1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1')"
+      }
+    }
+  },
+  {
+    "id": "45",
+    "question": "哪些微生物群与生猪饲养效率显著相关？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的所有微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "所有显著相关微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','BCL2','CASP3','IL22','Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Fas','Arg1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1','Ahr','Srebf','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "46",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "47",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下Pvalue=0.19的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1')"
+      }
+    }
+  },
+  {
+    "id": "48",
+    "question": "哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？这些微生物产生的代谢物和哪些基因的表达量有关？这些基因的代谢通路有哪些？",
+    "queries": {
+      "query_1": {
+        "description": "Pvalue在0.28与0.288之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1')"
+      }
+    }
+  },
+  {
+    "id": "49",
+    "question": "(genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "50",
+    "question": "(genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Prkaa2','Prkaa1','Gcg','Tjp1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Arg1','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "51",
+    "question": "(families)Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Ruminococcaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Prevotellaceae','Ruminococcaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在EGFR的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "52",
+    "question": "Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "调控Eubacterium的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "53",
+    "question": "Bacteroides是否对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides与生猪饲养效率的显著相关性",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "调控Bacteroides的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "54",
+    "question": "Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "调控Clostridium的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "55",
+    "question": "Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "调控Lactobacillus的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Lactobacillus')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "56",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','MAPK14','BAX','CASP3','IL22','Gcg','Tjp1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "57",
+    "question": "哪些微生物群与生猪饲养效率显著相关？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的所有微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','MAPK14','BCL2','CASP3','IL22','Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Fas','Arg1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1','Ahr','Srebf','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "58",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "59",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？这些微生物受哪些基因的调控？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下Pvalue=0.19的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name,r"
+      },
+      "query_2": {
+        "description": "调控这些微生物的基因",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results  gmmgr where hecrbm.`index` = gmmgr.`index` and hecrbm.relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "60",
+    "question": "(genera) Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1','Nr1h4','Fgf15','Fgfr4','Fas') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "62",
+    "question": "Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Eubacterium数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "63",
+    "question": "(genera) Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides、Ruminococcaceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\",\"Ruminococcaceae\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Nr1h4','Fgf15','Fgfr4','Fas') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "64",
+    "question": "Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Clostridium数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "65",
+    "question": "Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "能够增加Lactobacillus数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Lactobacillus')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "66",
+    "question": "哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的所有微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','MAPK14','Tjp1','Arg1','BAX','CASP3','Nr1h4','Fgf15','Fgfr4','Fas') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "67",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "68",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下Pvalue=0.19的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name,r"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "69",
+    "question": "哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够增加这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Pvalue在0.28与0.288之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL17A','RORA','CXCL1','CXCL5','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "70",
+    "question": "(genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在BCL2的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "71",
+    "question": "(genera)Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Gcg','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "72",
+    "question": "(genera) Prevotellaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae、Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "这些微生物群相关的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_gene_change_results  gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Prevotellaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在EGFR的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "73",
+    "question": "Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "Eubacterium相关的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "74",
+    "question": "Bacteroides，Ruminococcaceae中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides、Ruminococcaceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\",\"Ruminococcaceae\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少Bacteroides数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "75",
+    "question": "Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "能够减少Clostridium数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Gcg','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "76",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "77",
+    "question": "哪些微生物群与生猪饲养效率显著相关？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的所有微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "78",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下Pvalue在0.2与0.21之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在BCL2的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "79",
+    "question": "哪些微生物群关联于生猪饲养效率且Pvalue在0.28与0.288之间？哪些基因的表达能够减少这些微生物群的数量？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Pvalue在0.28与0.288之间的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在BCL2的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "80",
+    "question": "(genera)Dorea，Eubacterium，Bacteroides中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Dorea、Eubacterium、Bacteroides中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Dorea\",\"Eubacterium\",\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物相关的基因表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index`and relationship in ('Dorea','Eubacterium','Bacteroides')"
+      },
+      "query_3": {
+        "description": "检查指定代谢通路是否在相关基因的代谢通路中",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','BCL2','Prkaa2','Prkaa1','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas')and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "81",
+    "question": "（genera）Clostridium，Lactobacillus，Oscillibacter中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Lactobacillus\",\"Oscillibacter\"] return s"
+      },
+      "query_2": {
+        "description": "Clostridium、Lactobacillus、Oscillibacter产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Clostridium','Lactobacillus','Oscillibacter')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','Prkaa2','Prkaa1','Gcg','Tjp1','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Arg1','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "82",
+    "question": "（families）Prevotellaceae，Ruminococcaceae，Lachnospiraceae中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Prevotellaceae\",\"Ruminococcaceae\",\"Lachnospiraceae\"] return s"
+      },
+      "query_2": {
+        "description": "Prevotellaceae、Ruminococcaceae、Lachnospiraceae产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Prevotellaceae','Ruminococcaceae','Lachnospiraceae')"
+      },
+      "query_3": {
+        "description": "EGFR基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "83",
+    "question": "（genera）Eubacterium，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Eubacterium、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Eubacterium\",\"Lachnospiraceae\",\"Treponema bryantii\"] return s"
+      },
+      "query_2": {
+        "description": "Eubacterium产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "84",
+    "question": "Bacteroides是否对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Bacteroides是否与生猪饲养效率显著相关",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Bacteroides\"] return s"
+      },
+      "query_2": {
+        "description": "Bacteroides产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Bacteroides')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Gcg','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "85",
+    "question": "Clostridium，Treponema中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance，mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway，hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway，mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation，mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Clostridium、Treponema中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Clostridium\",\"Prevotellaceae\",\"Treponema\"] return s"
+      },
+      "query_2": {
+        "description": "Clostridium产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Clostridium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Tlr2','Srebf1','Fas','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "86",
+    "question": "Lactobacillus，Treponema bryantii中哪些微生物群对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Lactobacillus、Treponema bryantii中与生猪饲养效率显著相关的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Lactobacillus\"] return s"
+      },
+      "query_2": {
+        "description": "Lactobacillus产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Lactobacillus')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22','Tjp1','Arg1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "87",
+    "question": "Desulfovibrionaceae是否对生猪饲养效率是显著相关的？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "Desulfovibrionaceae是否与生猪饲养效率显著相关",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) where s.name in [\"Desulfovibrionaceae\"] return s"
+      },
+      "query_2": {
+        "description": "Desulfovibrionaceae产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Desulfovibrionaceae')"
+      },
+      "query_3": {
+        "description": "Ahr基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Ahr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "88",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','IL22','Gcg','Tjp1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "89",
+    "question": "哪些微生物群与生猪饲养效率显著相关？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "与生猪饲养效率显著相关的微生物群（全面调查）",
+        "query_type": "cypher",
+        "query": "match (s:MicrobiotaName)-[r:significantly_associated]->(o:FE{name:\"FE\"}) return s"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Anaerovibrio','Dorea','Eubacterium','Bacteroides','Clostridium','Lactobacillus','Oscillibacter','Ruminococcus','Faecalibacterium','Desulfovibrionaceae','Rikenellaceae','Streptococcaceae','Lactobacillaceae','Prevotellaceae','Ruminococcaceae','Lachnospiraceae','Lactobacillus johnsonii L531')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('EGFR','BCL2','CASP3','IL22','Prkaa2','Prkaa1','Gcg','Il6','Tnf','Il1b','Nos2','Chrm2','Fas','Arg1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1','Ahr','Srebf','Srebf2','Hmgcr') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "90",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "91",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fresh / Fresh+enzyme\"条件下Pvalue=0.19？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在Fresh / Fresh+enzyme条件下p值等于0.19的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue=0.19 and r.condition_name='Fresh / Fresh+enzyme' RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Defluviitaleaceae','Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1','Tnf','Ccl2','Tgfb1','Fn1','Col1a1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "92",
+    "question": "哪些微生物群关联于生猪饲养效率，在条件下Pvalue在0.28与0.288之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04060 Cytokine-cytokine receptor interaction，hsa04061 Viral protein interaction with cytokine and cytokine receptor，hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "p值在0.28-0.288间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.28 and r.pvalue<0.288 RETURN DISTINCT s.name"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Deltaproteobacteria','Eubacteriaceae','Alloprevotella','Cloacibacillus','Clostridium XlVa','Clostridium XlVb','Collinsella','Dorea','Dysgonomonas','Eubacterium','Holdemanella','Lysinibacillus','Pseudochrobactrum','Pseudomonas','Sutterella','Pseudomonadales','Euryarchaeota')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "93",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（不包含hsa04060和hsa04061）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "94",
+    "question": "生猪饲养效率的提高会导致哪些微生物群的数量增加？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "生猪饲养效率提高导致数量增加的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:FE{name:\"FE\"})-[r:increase]->(o:MicrobiotaName) return o"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Cellulosilyticum','Leeia','Subdoligranulum','Rothia','Methanobrevibacter','Bacteroides','Lactobacillus','Oscillibacter','Ruminococcaceae')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（不包含hsa04060和hsa04061）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','IL22','Gcg','Tjp1','Nr1h4','Fgf15','Fgfr4','Cyp7a1','Sirpa','Cpt1b','Fas','Arg1') and (pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "95",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（不包含hsa04060和hsa04061）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "96",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（包含hsa04060, hsa04061, mmu01521等）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like'%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "97",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（包含hsa04060, hsa04061, hsa04062等）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04060%' or pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%')"
+      }
+    }
+  },
+  {
+    "id": "98",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（排除hsa04060）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like '%hsa04061%' or pathway like '%hsa04062%'or pathway like '%hsa01521%'or pathway like '%mmu01521%'or pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "99",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在指定代谢通路中的分布（进一步限制范围）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like'%hsa04066%'or pathway like'%hsa01524%'or pathway like'%mmu04152%'or pathway like'%mmu04010%'or pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "100",
+    "question": "哪些微生物群关联于生猪饲养效率，在\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"条件下Pvalue在0.2与0.21之间？这些微生物产生的代谢物和哪些基因的表达量有关？hsa04062 Chemokine signaling pathway，hsa01521 EGFR tyrosine kinase inhibitor resistance,mmu01521 EGFR tyrosine kinase inhibitor resistance，hsa04066 HIF-1 signaling pathway,hsa01524 Platinum drug resistance，mmu04152 AMPK signaling pathway,mmu04010 MAPK signaling pathway，mmu00220 Arginine biosynthesis，hsa04659 Th17 cell differentiation,mmu04714 Thermogenesis中哪些在这些基因的代谢通路里？",
+    "queries": {
+      "query_1": {
+        "description": "在特定条件下p值在0.2-0.21间与生猪饲养效率关联的微生物群",
+        "query_type": "cypher",
+        "query": "match (s:Microbiota)-[r:ASSOCIATED_WITH]->(o) where r.pvalue>0.2 and r.pvalue<0.21 AND r.condition='\"Fattening, Unmedicated feed formula / Antibiotics and zinc oxide\"' return s.name,r"
+      },
+      "query_2": {
+        "description": "这些微生物产生的代谢物和相关基因的表达量",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_metabolite hecrbm join gutmgene.gut_microbiota_metabolite_generation_results gmmgr where hecrbm.`index` = gmmgr.`index` and relationship in ('Eubacteriaceae','Moraxellaceae','Acinetobacter','Anaeroplasma','Cellulosilyticum','Eubacterium')"
+      },
+      "query_3": {
+        "description": "相关基因在最严格限制的代谢通路中的分布（仅3个通路）",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2','BAX','CASP3','Prkaa2','Prkaa1') and (pathway like'%mmu00220%'or pathway like'%hsa04659%'or pathway like'%mmu04714%')"
+      }
+    }
+  },
+  {
+    "id": "101",
+    "question": "给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?",
+    "queries": {
+      "query_1": {
+        "description": "ketogenic diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": "Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results fgmcr join relationship.has_abundance_change_results_by_food hacrbf where hacrbf.index = fgmcr.index and fgmcr.Alteration = 'increase' and relationship = 'ketogenic diet'"
+      },
+      "query_2": {
+        "description": "能够减少Bacteroides,Prevotella数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides','Prevotella')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2' ,'Gcg' ,'Cyp7a1' ,'Sirpa' ,'Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "102",
+    "question": "给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够增加这些微生物的数量?这些基因的代谢通路是什么?",
+    "queries": {
+      "query_1": {
+        "description": "ketogenic diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": "Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results fgmcr join relationship.has_abundance_change_results_by_food hacrbf where hacrbf.index = fgmcr.index and fgmcr.Alteration = 'increase' and relationship = 'ketogenic diet'"
+      },
+      "query_2": {
+        "description": "能够增加Bacteroides,Prevotella数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Prevotella')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX' ,'CASP3' ,'Nr1h4' ,'Fgf15' ,'Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "103",
+    "question": "给soluble corn fiber食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?",
+    "queries": {
+      "query_1": {
+        "description": "soluble corn fiber食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": "Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results fgmcr join relationship.has_abundance_change_results_by_food hacrbf where hacrbf.index = fgmcr.index and fgmcr.Alteration = 'increase' and relationship = 'soluble corn fiber'"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'decrease' and relationship in ('Faecalibacterium','Lactobacillus','Faecalibacterium prausnitzii','Clostridiaceae','Veillonellaceae','Phascolarctobacterium','Dialister','Lactobacillaceae','Alcaligenaceae','Roseburia sp.','Parabacteroides','Clostridium','Clostridiaceae SMB53')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL12B', 'IL12A', 'NFKB1', 'CXCL8', 'IFNG', 'Gcg', 'HDAC3', 'Cd40', 'Il6', 'Il4', 'Ffar2', 'Pparg', 'Arnt', 'Onecut1', 'Stat3', 'Sox11', 'Relb', 'Gata4', 'Cdx2', 'Ets2', 'Hnf1b', 'Ppargc1a', 'Notch1', 'Ahr', 'Irf6', 'Sin3a', 'Brd7', 'Tcf4', 'Mybl2', 'Mtpn', 'Esr1', 'Foxm1', 'E2f2', 'E2f3', 'Zbtb17', 'Bmi1', 'Mta1', 'Phf1', 'Foxa1', 'Smad2', 'Smad3', 'Smad4', 'Tfdp1', 'Pgr', 'Clock', 'Hey1', 'Ppara', 'Cdx1', 'Hif1a', 'Yy1', 'Hic1', 'Lef1', 'Myc', 'Fos', 'Tfap2c', 'Stat1', 'Klf5', 'Ezh2', 'Elp1', 'Creb1', 'Nfya', 'E2f1', 'Hnf1a', 'Nfe2l2', 'Gli1', 'Neurog3', 'Fli1', 'Ctnnb1', 'Egr1', 'Ep300', 'Pdx1', 'Plag1', 'Mnt', 'Tnf', 'Srebf1', 'Fas', 'Srebf2', 'Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "104",
+    "question": "给soluble corn fiber食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够增加这些微生物的数量?这些基因的代谢通路是什么?",
+    "queries": {
+      "query_1": {
+        "description": "soluble corn fiber食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": "Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results fgmcr join relationship.has_abundance_change_results_by_food hacrbf where hacrbf.index = fgmcr.index and fgmcr.Alteration = 'increase' and relationship = 'soluble corn fiber'"
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'increase' and relationship in ('Faecalibacterium','Lactobacillus','Faecalibacterium prausnitzii','Clostridiaceae','Veillonellaceae','Phascolarctobacterium','Dialister','Lactobacillaceae','Alcaligenaceae','Roseburia sp.','Parabacteroides','Clostridium','Clostridiaceae SMB53')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL10', 'TGFB1', 'FOXP3', 'IL22', 'MAPK14', 'Prkaa2', 'Prkaa1', 'Tjp1', 'Il6', 'Tnf', 'Il1b', 'Nos2', 'Chrm2', 'Tlr2', 'Ffar3', 'Ffar2', 'Nfkb1', 'Hcar2', 'Angptl4', 'Hdac3', 'Hdac5', 'Mtdh', 'Pias2', 'Gfi1', 'Dbp', 'Atf3', 'Fbxw7', 'Nacc', 'Hdac1', 'Rbl1', 'Zeb1', 'Zeb2', 'Rnf2', 'Vhl', 'Trp53', 'Nr3c1', 'Pttg1', 'Trp73', 'Rb1', 'Foxo4', 'Taf4', 'Lyl1', 'Crem', 'Trp63', 'Foxo1', 'Klf2', 'Tob1', 'Tcf3', 'Stat4', 'Bcl6', 'Arg1')"
+      }
+    }
+  },
+  {
+    "id": "105",
+    "question": "给resistant starch食物导致肠道微生物丰度上升的微生物有哪些?哪些基因的表达能够减少这些微生物的数量?这些基因的代谢通路是什么?",
+    "queries": {
+      "query_1": {
+        "description": "resistant starch食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": "Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results fgmcr join relationship.has_abundance_change_results_by_food hacrbf where hacrbf.index = fgmcr.index and fgmcr.Alteration = 'increase' and relationship = 'resistant starch'"
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.index = gmgcr.index and gmgcr.Alteration = 'decrease' and relationship in ('Ruminococcus','Roseburia','Faecalibacterium','prausnitzii','Prevotellaceae','Akkermansia muciniphila','Eubacterium rectale','Roseburia faecis','Bacteroidetes','Lactobacillus','Allobaculum')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('DUOX2' ,'CXCL6' ,'IL12B' ,'IL12A' ,'NR1H4','C5AR1','CXCR2','TNF','CCL3','Cd40','Il6','Il12b','Pdcd1lg2','Cd86','Cd40','Ffar2','Pparg','Skil','Neurod1','Sox2','Gata3','Cebpb','Stat5b','Klf15','Meox2','Sox9','Smad7','Stat5a','Sqstm1','Vdr','Nr5a1','Rest','Gabpa','Ddit3','Nrf1','Nr4a1','Nr1i2','Hic1','Epas1','Arntl','Cdkn2a','Notch1','Notch2','Notch3','Notch4','Atf4','Brca1','Hnf4a','Tbx2','Nupr1','Mnt','Plag1','Pdx1','Ep300','Egr1','Ctnnb1','Fli1','Neurog3','Gli1','Nkx2-3','Hnf1a','Ezh2','Klf5','Stat1','Tfap2c','Fos','Myc','Lef1')"
+      }
+    }
+  },
+  {
+    "id": "106",
+    "question": "给resistant starch食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给resistant starch食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Ruminococcus','Roseburia','Faecalibacterium','prausnitzii','Prevotellaceae','Akkermansia muciniphila','Eubacterium rectale','Roseburia faecis','Bacteroidetes','Lactobacillus','Allobaculum')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL10', 'GLP1R', 'IL22', 'MAPK14', 'CLGN', 'CLDN4', 'TJP2', 'TJP3', 'TLR2', 'TLR4', 'Tjp1', 'Ffar3', 'Ffar2', 'Nfkb1', 'Hcar2', 'Foxp3', 'Gcg', 'Hdac3', 'Angptl4', 'Hdac5', 'Sim1', 'Stat6', 'Ptf1a', 'Rara', 'Arnt2', 'Isl1', 'Nr3c1', 'Trim24', 'Kdm5b', 'Rela', 'Nfkbia', 'Tonsl', 'Foxo3', 'Gata2', 'Crebbp', 'Bach1', 'Jun', 'Esr2', 'Ifi204', 'Lyl1', 'Ruvbl1', 'Taf4', 'Foxo4', 'Rb1', 'Trp73', 'Hic1', 'Pttg1', 'Trp53', 'Yy1', 'Hif1a', 'Vhl', 'Epas1', 'Arntl', 'Cdkn2a', 'Hnf4a', 'Egr1', 'Stat4', 'Tcf3', 'Tob1', 'Klf2', 'Trp63', 'E2f1', 'Nfya', 'Creb1', 'Elp1', 'Crem', 'Arg1')"
+      }
+    }
+  },
+  {
+    "id": "107",
+    "question": "给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides','Dorea sp.')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2' ,'Gcg' ,'Cyp7a1' ,'Sirpa' ,'Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "108",
+    "question": "给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给ketogenic low carbohydrate high fat diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Dorea sp.')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX' ,'CASP3' ,'Nr1h4' ,'Fgf15' ,'Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "109",
+    "question": "给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides','Ruminococcus','Parabacteroides','Blautia','Oscillospira','Eubacterium','Christensenella')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2' ,'Gcg' ,'Cyp7a1' ,'Sirpa' ,'Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "110",
+    "question": "给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给dietary resistant starch type 4食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Ruminococcus','Parabacteroides','Blautia','Oscillospira','Eubacterium','Christensenella')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Tjp1', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Fas')"
+      }
+    }
+  },
+  {
+    "id": "111",
+    "question": "给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides','Lactobacillus','Clostridium','Lactococcus')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2' ,'Gcg' ,'Cyp7a1' ,'Sirpa' ,'Cpt1b','Srebf1','Fas','Srebf2','Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "112",
+    "question": "给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给phenolic compounds from red wine and coffee食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides','Lactobacillus','Clostridium','Lactococcus')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22', 'MAPK14', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Tjp1', 'Il6', 'Tnf', 'Il1b', 'Nos2', 'Chrm2', 'Tlr2', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Fas', 'Arg1')"
+      }
+    }
+  },
+  {
+    "id": "113",
+    "question": "给carbohydrates食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给carbohydrates食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bifidobacterium')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2')"
+      }
+    }
+  },
+  {
+    "id": "114",
+    "question": "给carbohydrates食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给carbohydrates食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bifidobacterium')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX' ,'CASP3' ,'Ido1' )"
+      }
+    }
+  },
+  {
+    "id": "115",
+    "question": "给sea buckthorn protein食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给sea buckthorn protein食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bifidobacterium','Lactobacillus','Bacteroides','Clostridium coccoides')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL22' ,'MAPK14' ,'BAX', 'CASP3','Tjp1','Nr1h4','Fgf15','Fgfr4','Fas','Arg1','Ido1')"
+      }
+    }
+  },
+  {
+    "id": "116",
+    "question": "给sea buckthorn protein食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给sea buckthorn protein食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bifidobacterium','Lactobacillus','Bacteroides','Clostridium coccoides')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ( 'BCL2','Gcg','Cyp7a1','Sirpa','Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "117",
+    "question": "给high caloric diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给high caloric diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroidaceae','Peptostreptococcaceae','Erysipelotrichaceae')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Cyp7a1' ,'Sirpa' ,'Cpt1b')"
+      }
+    }
+  },
+  {
+    "id": "118",
+    "question": "给high caloric diet食物导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "给high caloric diet食物导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroidaceae','Peptostreptococcaceae','Erysipelotrichaceae')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Nr1h4' ,'Fgf15' ,'Fgfr4','Fas')"
+      }
+    }
+  },
+  {
+    "id": "119",
+    "question": "使用药物Synbiotic导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Synbiotic导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Prevotella_9','Bifidobacterium','Enterococcus','Bifidobacterium','Firmicutes','Bacteroides','Lactobacillus','Lachnospira','Streptococcus','Acinetobacter','Escherichia/Shigella sp.','Klebsiella','Lactococcus','Rothia','Enterobacter','Corynebacterium','Weissella','Citrobacter','Propionibacterium','Bacteria','Diaphorobacter')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('FOS' ,'MAPK3' ,'MAPK1' ,'JUN' ,'IL22','MAPK14','BAX','CASP3','TLR2','Tjp1','Nr1h4','Fgf15','Fgfr4','Fas','Ffar3','Ffar2','Nfkb1','Arg1','Ido1')"
+      }
+    }
+  },
+  {
+    "id": "120",
+    "question": "使用药物Synbiotic导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Synbiotic导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Prevotella_9','Bifidobacterium','Enterococcus','Bifidobacterium','Firmicutes','Bacteroides','Lactobacillus','Lachnospira','Streptococcus','Acinetobacter','Escherichia/Shigella sp.','Klebsiella','Lactococcus','Rothia','Enterobacter','Corynebacterium','Weissella','Citrobacter','Propionibacterium','Bacteria','Diaphorobacter')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('CXCL6', 'CCL20', 'BCL2', 'Gcg', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Pdcd1lg2', 'Cd86', 'Cd40', 'Il6', 'Il12b')"
+      }
+    }
+  },
+  {
+    "id": "121",
+    "question": "使用药物Infliximab导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Infliximab导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Enterobacteriaceae', 'Enterococcus', 'Streptococcus', 'Veillonella', 'Klebsiella', 'Streptococcaceae', 'Actinomyces', 'Enterococcaceae', 'Actinomycetaceae', 'Planococcaceae')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX', 'CASP3', 'Slco4c1', 'Tnf', 'Ccl2', 'Tgfb1', 'Fn1', 'Col1a1')"
+      }
+    }
+  },
+  {
+    "id": "122",
+    "question": "使用药物Infliximab导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Infliximab导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Enterobacteriaceae', 'Enterococcus', 'Streptococcus', 'Veillonella', 'Klebsiella', 'Streptococcaceae', 'Actinomyces', 'Enterococcaceae', 'Actinomycetaceae', 'Planococcaceae')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('CXCL6', 'CCL20', 'BCL2')"
+      }
+    }
+  },
+  {
+    "id": "123",
+    "question": "使用药物Vitamin A导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Vitamin A导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Bacteroides', 'Bacteroidetes', 'Prevotella')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('GLP1R', 'BAX', 'CASP3', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Fas', 'Ffar3', 'Ffar2', 'Nfkb1', 'Gcg')"
+      }
+    }
+  },
+  {
+    "id": "124",
+    "question": "使用药物Vitamin A导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Vitamin A导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Bacteroides', 'Bacteroidetes', 'Prevotella')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('NR1H4', 'BCL2', 'C5AR1', 'CXCR2', 'TNF', 'CCL3', 'Gcg', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Pdcd1lg2', 'Cd86', 'Cd40', 'Il6', 'Il12b')"
+      }
+    }
+  },
+  {
+    "id": "125",
+    "question": "使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Clostridium', 'Enterococcus', 'Peptoniphilus,Actinomyces sp.')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Il6', 'Tnf', 'Il1b', 'Nos2', 'Chrm2', 'Tlr2')"
+      }
+    }
+  },
+  {
+    "id": "126",
+    "question": "使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Propidium Monoazide导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Clostridium', 'Enterococcus', 'Peptoniphilus,Actinomyces sp.')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('BCL2', 'Gcg', 'Srebf1', 'Fas', 'Srebf2', 'Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "126",
+    "question": "使用药物Prebiotics导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Prebiotics导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Actinobacteria', 'Bifidobacterium sp.', 'Bacteroidetes')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('GLP1R', 'Ffar3', 'Ffar2', 'Nfkb1', 'Gcg')"
+      }
+    }
+  },
+  {
+    "id": "127",
+    "question": "使用药物Prebiotics导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Prebiotics导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够减少这些微生物群数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'decrease' and relationship in ('Actinobacteria', 'Bifidobacterium sp.', 'Bacteroidetes')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('NR1H4', 'C5AR1', 'CXCR2', 'TNF', 'CCL3', 'Pdcd1lg2', 'Cd86', 'Cd40', 'Il6', 'Il12b')"
+      }
+    }
+  },
+  {
+    "id": "128",
+    "question": "使用药物Metformin导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Metformin导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Akkermansia muciniphila','Bifidobacterium','Enterobacteriaceae','Akkermansia')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL10', 'BAX', 'CASP3', 'CLGN', 'CLDN4', 'TJP2', 'TJP3', 'TLR2', 'TLR4', 'Slco4c1', 'Tnf', 'Ccl2', 'Tgfb1', 'Fn1', 'Col1a1', 'Hdac3', 'Angptl4', 'Hdac5', 'Sim1', 'Stat6', 'Ptf1a', 'Rara', 'Arnt2', 'Isl1', 'Nr3c1', 'Trim24', 'Kdm5b', 'Rela', 'Nfkbia', 'Tonsl', 'Foxo3', 'Gata2', 'Crebbp', 'Bach1', 'Jun', 'Esr2', 'Ifi204', 'Lyl1', 'Ruvbl1', 'Taf4', 'Foxo4', 'Rb1', 'Trp73', 'Hic1', 'Pttg1', 'Trp53', 'Yy1', 'Hif1a', 'Vhl', 'Epas1', 'Arntl', 'Cdkn2a', 'Hnf4a', 'Egr1', 'Stat4', 'Tcf3', 'Tob1', 'Klf2', 'Trp63', 'E2f1', 'Nfya', 'Creb1', 'Elp1', 'Crem', 'Ido1', 'Ahr')"
+      }
+    }
+  },
+  {
+    "id": "129",
+    "question": "使用药物Metformin导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够减少这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Metformin导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加这些微生物数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Akkermansia muciniphila','Bifidobacterium','Akkermansia')"
+      },
+      "query_3": {
+        "description": "这些基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('IL12B', 'IL12A', 'BCL2', 'Ffar2', 'Pparg', 'Skil', 'Neurod1', 'Sox2', 'Gata3', 'Cebpb', 'Stat5b', 'Klf15', 'Meox2', 'Sox9', 'Smad7', 'Stat5a', 'Sqstm1', 'Vdr', 'Nr5a1', 'Rest', 'Gabpa', 'Ddit3', 'Nrf1', 'Nr4a1', 'Nr1i2', 'Hic1', 'Epas1', 'Arntl', 'Cdkn2a', 'Notch1', 'Notch2', 'Notch3', 'Notch4', 'Atf4', 'Brca1', 'Hnf4a', 'Tbx2', 'Nupr1', 'Mnt', 'Plag1', 'Pdx1', 'Ep300', 'Egr1', 'Ctnnb1', 'Fli1', 'Neurog3', 'Gli1', 'Nkx2-3', 'Hnf1a', 'Ezh2', 'Klf5', 'Stat1', 'Tfap2c', 'Fos', 'Myc', 'Lef1', 'Srebf1', 'Fas', 'Srebf2', 'Hmgcr')"
+      }
+    }
+  },
+  {
+    "id": "130",
+    "question": "使用药物Insulin Aspart导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Insulin Aspart导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加Enterobacteriaceae数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1', 'Tnf', 'Ccl2', 'Tgfb1', 'Fn1', 'Col1a1')"
+      }
+    }
+  },
+  {
+    "id": "131",
+    "question": "使用药物Anticholinergic drug导致肠道微生物丰度上升的微生物有哪些？哪些基因的表达能够增加这些微生物群的数量？这些基因的代谢通路是什么？",
+    "queries": {
+      "query_1": {
+        "description": "使用药物Anticholinergic drug导致肠道微生物丰度上升的微生物",
+        "query_type": "cypher",
+        "query": null
+      },
+      "query_2": {
+        "description": "能够增加Enterobacteriaceae数量的基因表达",
+        "query_type": "sql",
+        "query": "Select Distinct gene_symbol,relationship from has_expression_change_results_by_microbiota hecrbm join gutmgene.gut_microbiota_gene_change_results gmgcr where hecrbm.`index` = gmgcr.`index` and gmgcr.Alteration = 'increase' and relationship in ('Enterobacteriaceae')"
+      },
+      "query_3": {
+        "description": "相关基因的代谢通路",
+        "query_type": "sql",
+        "query": "select \"gene_symbol\",\"pathway\" from \"kegg\" where \"gene_symbol\" in ('Slco4c1', 'Tnf', 'Ccl2', 'Tgfb1', 'Fn1', 'Col1a1')"
+      }
+    }
+  }
+]

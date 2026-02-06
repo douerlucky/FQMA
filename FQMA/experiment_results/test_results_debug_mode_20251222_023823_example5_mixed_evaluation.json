@@ -1,0 +1,3583 @@
+{
+  "test_config": {
+    "use_ontology": true,
+    "use_repair": false,
+    "llm_temperature": 0.15,
+    "iter_nums": 2,
+    "test_mode": "all",
+    "selected_ids": null,
+    "experiment_tag": "debug_mode",
+    "model_type": "deepseek",
+    "example_count": 5,
+    "evaluation_mode": "mixed_evaluation_third_query_count_based"
+  },
+  "test_summary": {
+    "total_questions": 6,
+    "correct_questions_fex": 2,
+    "total_fex_sum": 2,
+    "total_ex_sum": 3.0,
+    "total_subqueries": 18,
+    "correct_subqueries": 9,
+    "total_time": 99.9018771648407,
+    "total_repair_attempts": 0,
+    "total_repair_successes": 0,
+    "total_repair_checks": 0,
+    "before_repair_correct": 0,
+    "after_repair_correct": 0,
+    "total_tokens": 4207,
+    "evaluation_mode": "mixed_evaluation_third_query_count_based"
+  },
+  "question_results": [
+    {
+      "question_id": "1",
+      "question": "查询ID为3的作者所著的前10篇论文，这些论文的摘要，之后在另一数据库他们的标题和提交的会议ID又是什么",
+      "execution_time": 17.696161031723022,
+      "question_correct": true,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "查询ID为3的作者所著的前10篇论文的ID。",
+          "ex_value": 1,
+          "expected_count": 2,
+          "actual_count": 2,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [],
+            "expected_count": 2,
+            "actual_count": 2
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "查询步骤1中获取的论文ID列表对应的摘要",
+          "ex_value": 1,
+          "expected_count": 2,
+          "actual_count": 2,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [],
+            "expected_count": 2,
+            "actual_count": 2
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "查询步骤1中获取的论文ID列表对应的标题和提交的会议ID。",
+          "ex_value": 1,
+          "expected_count": 2,
+          "actual_count": 2,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 2,
+            "actual_rows": 2,
+            "row_difference": 0,
+            "similarity_ratio": 1.0,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望2行，实际2行，相似度1.000",
+            "is_within_threshold": true,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 1.0,
+        "fex": 1,
+        "subquery_ex_values": [
+          1,
+          1,
+          1
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 3,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 29,
+          "output_tokens": 82,
+          "total_tokens": 111
+        },
+        "sparql_generator": {
+          "input_tokens": 91,
+          "output_tokens": 252,
+          "total_tokens": 343
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 292,
+          "output_tokens": 7,
+          "total_tokens": 299
+        },
+        "total_tokens": 753,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?author rdf:type conf:Person .\n  FILTER (?author = 3)\n  ?author conf:contributes ?paper .\n  ?paper rdf:type conf:Paper .\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?abstract ?abstract_text WHERE {\n  ?abstract rdf:type conf:Abstract .\n  ?abstract conf:is_the_1th_part_of ?paper .\n  ?abstract conf:has_text ?abstract_text .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper ?title ?conference_id WHERE {\n    ?paper rdf:type conf:Paper .\n    ?paper conf:has_a_paper_title ?title .\n    ?paper conf:is_submitted_at ?conference_id .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?author rdf:type conf:Person .\n  FILTER (?author = 3)\n  ?author conf:contributes ?paper .\n  ?paper rdf:type conf:Paper .\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?abstract ?abstract_text WHERE {\n  ?abstract rdf:type conf:Abstract .\n  ?abstract conf:is_the_1th_part_of ?paper .\n  ?abstract conf:has_text ?abstract_text .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper ?title ?conference_id WHERE {\n    ?paper rdf:type conf:Paper .\n    ?paper conf:has_a_paper_title ?title .\n    ?paper conf:is_submitted_at ?conference_id .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (a:Person)-[:AUTHORED]->(p:Paper)\nWHERE a.ID = 3\nRETURN p.ID AS paper_id",
+            "result_count": 2
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT ID as abstract_id, has_text as abstract_text FROM Abstract\n            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)",
+            "result_count": 2
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT \"Paper\".\"ID\", \"Paper\".\"has_a_paper_title\", \"Paper\".\"is_submitted_at\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (600, 0)",
+            "result_count": 2
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 3.2672228813171387,
+          "sparql_generation": 10.822022199630737,
+          "semantic_repair": 1.9788742065429688e-05,
+          "database_execution": 3.6064538955688477
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            600
+          ],
+          [
+            0
+          ]
+        ],
+        "2": [
+          [
+            4,
+            "tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical"
+          ],
+          [
+            1652,
+            "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill"
+          ]
+        ],
+        "3": [
+          [
+            600,
+            "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill",
+            256
+          ],
+          [
+            0,
+            "tibetans slavishly hipless prs bluejays cuppier nonsurgical",
+            7
+          ]
+        ]
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "查询ID为3的作者所著的前10篇论文的ID。",
+          "cypher_query": "MATCH (a:Person)-[:AUTHORED]->(p:Paper)\nWHERE a.ID = 3\nRETURN p.ID AS paper_id",
+          "results": [
+            [
+              "600"
+            ],
+            [
+              "0"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "查询步骤1中获取的论文ID列表对应的摘要",
+          "sql_query": "SELECT ID as abstract_id, has_text as abstract_text FROM Abstract\nWHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)",
+          "results": [
+            [
+              "4",
+              "tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical"
+            ],
+            [
+              "1652",
+              "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "查询步骤1中获取的论文ID列表对应的标题和提交的会议ID。",
+          "sql_query": "SELECT \"Paper\".\"ID\", \"Paper\".\"has_a_paper_title\", \"Paper\".\"is_submitted_at\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (<<SUBQUERY_1>>)",
+          "results": [
+            [
+              "600",
+              "bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill",
+              "256"
+            ],
+            [
+              "0",
+              "tibetans slavishly hipless prs bluejays cuppier nonsurgical",
+              "7"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:37:00.930147"
+    },
+    {
+      "question_id": "2",
+      "question": "查询ID为1000的委员会的成员 ID，获取对应的邮箱地址，这些成员的名字、姓氏又是什么呢？",
+      "execution_time": 16.20120906829834,
+      "question_correct": false,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "在Neo4j中查询ID为1000的委员会的成员ID，限制10条。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 5,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "1800",
+              "998",
+              "56",
+              "1396",
+              "800"
+            ],
+            "extra_items": [
+              "1000 1396",
+              "1000 800",
+              "1000 1800",
+              "1000 998",
+              "1000 56"
+            ],
+            "expected_count": 5,
+            "actual_count": 5
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 0,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "1800 xiomara.plowe@secretresearch.tld",
+              "800 llyn.hardge@secretresearch.tld",
+              "998 cenon.colon@secretresearch.tld",
+              "1396 jace.ruotolo@secretresearch.tld",
+              "56 raimund.widdowson@secretresearch.tld"
+            ],
+            "extra_items": [],
+            "expected_count": 5,
+            "actual_count": 0
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 0,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 5,
+            "actual_rows": 0,
+            "row_difference": 5,
+            "similarity_ratio": 0.0,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望5行，实际0行，相似度0.000",
+            "is_within_threshold": false,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 0.0,
+        "fex": 0,
+        "subquery_ex_values": [
+          0,
+          0,
+          0
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 0,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 25,
+          "output_tokens": 70,
+          "total_tokens": 95
+        },
+        "sparql_generator": {
+          "input_tokens": 75,
+          "output_tokens": 238,
+          "total_tokens": 313
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 267,
+          "output_tokens": 7,
+          "total_tokens": 274
+        },
+        "total_tokens": 682,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?committee ?member_id WHERE {\n    ?committee rdf:type conf:Committee .\n    FILTER (?committee = 1000)\n    ?committee conf:has_members ?member_id .\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?email WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_an_email ?email .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?first_name ?last_name WHERE {\n  ?person rdf:type conf:Person .\n  ?person conf:has_the_first_name ?first_name .\n  ?person conf:has_the_last_name ?last_name .\n  FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?committee ?member_id WHERE {\n    ?committee rdf:type conf:Committee .\n    FILTER (?committee = 1000)\n    ?committee conf:has_members ?member_id .\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?email WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_an_email ?email .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?first_name ?last_name WHERE {\n  ?person rdf:type conf:Person .\n  ?person conf:has_the_first_name ?first_name .\n  ?person conf:has_the_last_name ?last_name .\n  FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (c:Committee)<-[:MEMBER_OF]-(m:Person)\nWHERE c.ID = 1000\nRETURN c.ID AS committee_id, m.ID AS member_id_id",
+            "result_count": 5
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT Person as person_id, VALUE as email FROM has_an_email WHERE Person IN (1000, 1000, 1000, 1000, 1000)",
+            "result_count": 0
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT \"Person\".\"ID\", \"Person\".\"has_the_first_name\", \"Person\".\"has_the_last_name\"\nFROM \"Person\"\nWHERE \"Person\".\"ID\" IN (1000, 1000, 1000, 1000, 1000)",
+            "result_count": 0
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 2.246035099029541,
+          "sparql_generation": 10.733345031738281,
+          "semantic_repair": 1.5735626220703125e-05,
+          "database_execution": 3.221637010574341
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            1000,
+            1800
+          ],
+          [
+            1000,
+            1396
+          ],
+          [
+            1000,
+            998
+          ],
+          [
+            1000,
+            800
+          ],
+          [
+            1000,
+            56
+          ]
+        ],
+        "2": [],
+        "3": []
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "在Neo4j中查询ID为1000的委员会的成员ID，限制10条。",
+          "cypher_query": "MATCH (p:Person)-[:MEMBER_OF]->(c:Committee)\nWHERE c.ID = 1000\nRETURN p.ID AS person_id\nLIMIT 10",
+          "results": [
+            [
+              "1800"
+            ],
+            [
+              "1396"
+            ],
+            [
+              "998"
+            ],
+            [
+              "800"
+            ],
+            [
+              "56"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+          "sql_query": "SELECT h.Person AS person_id, h.VALUE AS email\nFROM has_an_email h\nWHERE h.Person IN (1800, 1396, 998, 800, 56)",
+          "results": [
+            [
+              "56",
+              "Raimund.Widdowson@secretresearch.tld"
+            ],
+            [
+              "800",
+              "Llyn.Hardge@secretresearch.tld"
+            ],
+            [
+              "998",
+              "Cenon.Colon@secretresearch.tld"
+            ],
+            [
+              "1396",
+              "Jace.Ruotolo@secretresearch.tld"
+            ],
+            [
+              "1800",
+              "Xiomara.Plowe@secretresearch.tld"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+          "sql_query": "SELECT\n  p.\"ID\" AS person_id,\n  p.\"has_the_first_name\",\n  p.\"has_the_last_name\"\nFROM \"Person\" p\nWHERE p.\"ID\" IN (1800, 1396, 998, 800, 56)",
+          "results": [
+            [
+              "1800",
+              "Xiomara",
+              "Plowe"
+            ],
+            [
+              "56",
+              "Raimund",
+              "Widdowson"
+            ],
+            [
+              "998",
+              "Cenon",
+              "Colon"
+            ],
+            [
+              "1396",
+              "Jace",
+              "Ruotolo"
+            ],
+            [
+              "800",
+              "Llyn",
+              "Hardge"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:37:17.131680"
+    },
+    {
+      "question_id": "3",
+      "question": "查找ID为3的作者所著的所有论文,查询这些论文的审稿意见,查询每篇论文的作者数量",
+      "execution_time": 16.979363918304443,
+      "question_correct": false,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "在Neo4j中查找ID为3的作者（Person）所著的所有论文（Paper），返回这些论文的ID，限制10条。",
+          "ex_value": 1,
+          "expected_count": 2,
+          "actual_count": 2,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [],
+            "expected_count": 2,
+            "actual_count": 2
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的审稿意见。",
+          "ex_value": 0,
+          "expected_count": 4,
+          "actual_count": 4,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "0 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "600 in their paper 'sigxyz-2014' the authors discuss sigxyz-2014.\nthough apparently a contribution of remarkable novelty, 'sigxyz-2014' also has its weaknesses.",
+              "0 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "600 the paper \"sigxyz-2014\" is mainly about sigxyz-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight sigxyz-2014 in particular"
+            ],
+            "extra_items": [
+              "1 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1139 in their paper 'sigxyz-2014' the authors discuss sigxyz-2014.\nthough apparently a contribution of remarkable novelty, 'sigxyz-2014' also has its weaknesses.",
+              "1653 the paper \"sigxyz-2014\" is mainly about sigxyz-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight sigxyz-2014 in particular",
+              "2 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular"
+            ],
+            "expected_count": 4,
+            "actual_count": 4
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "根据Neo4j返回的论文ID列表，在PostgreSQL的Paper表和contributes表中查询每篇论文的作者数量。",
+          "ex_value": 1,
+          "expected_count": 2,
+          "actual_count": 2,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 2,
+            "actual_rows": 2,
+            "row_difference": 0,
+            "similarity_ratio": 1.0,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望2行，实际2行，相似度1.000",
+            "is_within_threshold": true,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 0.6666666666666666,
+        "fex": 0,
+        "subquery_ex_values": [
+          1,
+          0,
+          1
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 2,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 22,
+          "output_tokens": 67,
+          "total_tokens": 89
+        },
+        "sparql_generator": {
+          "input_tokens": 72,
+          "output_tokens": 234,
+          "total_tokens": 306
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 260,
+          "output_tokens": 7,
+          "total_tokens": 267
+        },
+        "total_tokens": 662,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?author rdf:type conf:Person .\n  FILTER (?author = 3) .\n  ?author conf:contributes ?paper .\n  ?paper rdf:type conf:Paper .\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?review ?comments WHERE {\n    ?review rdf:type conf:Review .\n    ?review conf:reviews ?paper .\n    ?review conf:has_detailed_comments ?comments .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper (COUNT(?author) AS ?author_count) WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:has_authors ?author .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?author rdf:type conf:Person .\n  FILTER (?author = 3) .\n  ?author conf:contributes ?paper .\n  ?paper rdf:type conf:Paper .\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?review ?comments WHERE {\n    ?review rdf:type conf:Review .\n    ?review conf:reviews ?paper .\n    ?review conf:has_detailed_comments ?comments .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper (COUNT(?author) AS ?author_count) WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:has_authors ?author .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (a:Person)-[:AUTHORED]->(p:Paper)\nWHERE a.ID = 3\nRETURN p.ID AS paper_id",
+            "result_count": 2
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT ID as review_id, has_detailed_comments FROM Review WHERE reviews IN (600, 0)",
+            "result_count": 4
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT COUNT(\"Paper\".\"ID\") AS author_count, \"Paper\".\"ID\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (600, 0)\nGROUP BY \"Paper\".\"ID\"",
+            "result_count": 2
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 2.221101760864258,
+          "sparql_generation": 11.003429174423218,
+          "semantic_repair": 1.2159347534179688e-05,
+          "database_execution": 3.7546000480651855
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            600
+          ],
+          [
+            0
+          ]
+        ],
+        "2": [
+          [
+            1,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1139,
+            "In their paper 'SIGXYZ-2014' the authors discuss SIGXYZ-2014.\nThough apparently a contribution of remarkable novelty, 'SIGXYZ-2014' also has its weaknesses."
+          ],
+          [
+            1653,
+            "The paper \"SIGXYZ-2014\" is mainly about SIGXYZ-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight SIGXYZ-2014 in particular"
+          ]
+        ],
+        "3": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            600
+          ]
+        ]
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "在Neo4j中查找ID为3的作者（Person）所著的所有论文（Paper），返回这些论文的ID，限制10条。",
+          "cypher_query": "MATCH (p:Person)-[:AUTHORED]->(paper:Paper)\nWHERE p.ID = 3\nRETURN paper.ID AS paper_id\nLIMIT 10",
+          "results": [
+            [
+              "0"
+            ],
+            [
+              "600"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的审稿意见。",
+          "sql_query": "SELECT r.reviews AS paper_id, r.has_detailed_comments\nFROM Review r\nWHERE r.reviews IN (0, 600)",
+          "results": [
+            [
+              "0",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "0",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "600",
+              "In their paper 'SIGXYZ-2014' the authors discuss SIGXYZ-2014.\nThough apparently a contribution of remarkable novelty, 'SIGXYZ-2014' also has its weaknesses."
+            ],
+            [
+              "600",
+              "The paper \"SIGXYZ-2014\" is mainly about SIGXYZ-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight SIGXYZ-2014 in particular"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "根据Neo4j返回的论文ID列表，在PostgreSQL的Paper表和contributes表中查询每篇论文的作者数量。",
+          "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    COUNT(c.\"Person\") AS author_count\nFROM \"Paper\" p\nLEFT JOIN contributes c ON p.\"ID\" = c.\"Conference_document\"\nWHERE p.\"ID\" IN (0, 600)\nGROUP BY p.\"ID\"",
+          "results": [
+            [
+              "0",
+              "3"
+            ],
+            [
+              "600",
+              "2"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:37:34.111437"
+    },
+    {
+      "question_id": "4",
+      "question": "查询ID=1000委员会的成员,查询这些成员的电子邮件地址,然后查询这些成员名字、姓氏",
+      "execution_time": 15.285691976547241,
+      "question_correct": true,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "在Neo4j中查询ID=1000的委员会的成员ID，限制10条。",
+          "ex_value": 1,
+          "expected_count": 5,
+          "actual_count": 5,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [],
+            "expected_count": 5,
+            "actual_count": 5
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+          "ex_value": 1,
+          "expected_count": 5,
+          "actual_count": 5,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [],
+            "expected_count": 5,
+            "actual_count": 5
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+          "ex_value": 1,
+          "expected_count": 5,
+          "actual_count": 5,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 5,
+            "actual_rows": 5,
+            "row_difference": 0,
+            "similarity_ratio": 1.0,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望5行，实际5行，相似度1.000",
+            "is_within_threshold": true,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 1.0,
+        "fex": 1,
+        "subquery_ex_values": [
+          1,
+          1,
+          1
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 3,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 23,
+          "output_tokens": 73,
+          "total_tokens": 96
+        },
+        "sparql_generator": {
+          "input_tokens": 76,
+          "output_tokens": 243,
+          "total_tokens": 319
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 274,
+          "output_tokens": 7,
+          "total_tokens": 281
+        },
+        "total_tokens": 696,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person WHERE {\n  ?committee rdf:type conf:Committee .\n  FILTER (?committee = 1000)\n  ?committee conf:has_members ?person .\n  ?person rdf:type conf:Person .\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?email WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_an_email ?email .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?first_name ?last_name WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_the_first_name ?first_name .\n    ?person conf:has_the_last_name ?last_name .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person WHERE {\n  ?committee rdf:type conf:Committee .\n  FILTER (?committee = 1000)\n  ?committee conf:has_members ?person .\n  ?person rdf:type conf:Person .\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?email WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_an_email ?email .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?person ?first_name ?last_name WHERE {\n    ?person rdf:type conf:Person .\n    ?person conf:has_the_first_name ?first_name .\n    ?person conf:has_the_last_name ?last_name .\n    FILTER (?person IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (c:Committee)<-[:MEMBER_OF]-(p:Person)\nWHERE c.ID = 1000\nRETURN p.ID AS person_id",
+            "result_count": 5
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT Person as person_id, VALUE as email FROM has_an_email WHERE Person IN (1800, 1396, 998, 800, 56)",
+            "result_count": 5
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT \"Person\".\"ID\", \"Person\".\"has_the_first_name\", \"Person\".\"has_the_last_name\"\nFROM \"Person\"\nWHERE \"Person\".\"ID\" IN (1800, 1396, 998, 800, 56)",
+            "result_count": 5
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 2.273996114730835,
+          "sparql_generation": 10.19645094871521,
+          "semantic_repair": 6.9141387939453125e-06,
+          "database_execution": 2.8150362968444824
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            1800
+          ],
+          [
+            1396
+          ],
+          [
+            998
+          ],
+          [
+            800
+          ],
+          [
+            56
+          ]
+        ],
+        "2": [
+          [
+            56,
+            "Raimund.Widdowson@secretresearch.tld"
+          ],
+          [
+            800,
+            "Llyn.Hardge@secretresearch.tld"
+          ],
+          [
+            998,
+            "Cenon.Colon@secretresearch.tld"
+          ],
+          [
+            1396,
+            "Jace.Ruotolo@secretresearch.tld"
+          ],
+          [
+            1800,
+            "Xiomara.Plowe@secretresearch.tld"
+          ]
+        ],
+        "3": [
+          [
+            1800,
+            "Xiomara",
+            "Plowe"
+          ],
+          [
+            56,
+            "Raimund",
+            "Widdowson"
+          ],
+          [
+            998,
+            "Cenon",
+            "Colon"
+          ],
+          [
+            1396,
+            "Jace",
+            "Ruotolo"
+          ],
+          [
+            800,
+            "Llyn",
+            "Hardge"
+          ]
+        ]
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "在Neo4j中查询ID=1000的委员会的成员ID，限制10条。",
+          "cypher_query": "MATCH (p:Person)-[:MEMBER_OF]->(c:Committee)\nWHERE c.ID = 1000\nRETURN p.ID AS person_id\nLIMIT 10",
+          "results": [
+            [
+              "1800"
+            ],
+            [
+              "1396"
+            ],
+            [
+              "998"
+            ],
+            [
+              "800"
+            ],
+            [
+              "56"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "根据Neo4j查询得到的成员ID列表，在MySQL中查询这些成员的电子邮件地址。",
+          "sql_query": "SELECT h.Person AS person_id, h.VALUE AS email\nFROM has_an_email h\nWHERE h.Person IN (1800, 1396, 998, 800, 56)",
+          "results": [
+            [
+              "56",
+              "Raimund.Widdowson@secretresearch.tld"
+            ],
+            [
+              "800",
+              "Llyn.Hardge@secretresearch.tld"
+            ],
+            [
+              "998",
+              "Cenon.Colon@secretresearch.tld"
+            ],
+            [
+              "1396",
+              "Jace.Ruotolo@secretresearch.tld"
+            ],
+            [
+              "1800",
+              "Xiomara.Plowe@secretresearch.tld"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "根据Neo4j查询得到的成员ID列表，在PostgreSQL中查询这些成员的名字和姓氏。",
+          "sql_query": "SELECT\n  p.\"ID\" AS person_id,\n  p.\"has_the_first_name\",\n  p.\"has_the_last_name\"\nFROM \"Person\" p\nWHERE p.\"ID\" IN (1800, 1396, 998, 800, 56)",
+          "results": [
+            [
+              "1800",
+              "Xiomara",
+              "Plowe"
+            ],
+            [
+              "56",
+              "Raimund",
+              "Widdowson"
+            ],
+            [
+              "998",
+              "Cenon",
+              "Colon"
+            ],
+            [
+              "1396",
+              "Jace",
+              "Ruotolo"
+            ],
+            [
+              "800",
+              "Llyn",
+              "Hardge"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:37:49.397443"
+    },
+    {
+      "question_id": "5",
+      "question": "查找会议ID=7的投稿论文限制10条,这些论文的所有审稿意见是是什么,每篇论文的标题和对应的会议是什么",
+      "execution_time": 17.558431148529053,
+      "question_correct": false,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "在Neo4j图数据库中查找会议ID=7的所有投稿论文，限制15条。",
+          "ex_value": 1,
+          "expected_count": 15,
+          "actual_count": 54,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [],
+            "extra_items": [
+              "943",
+              "826",
+              "119",
+              "1069",
+              "873",
+              "333",
+              "286",
+              "0",
+              "485",
+              "1334",
+              "791",
+              "329",
+              "716",
+              "543",
+              "351",
+              "835",
+              "265",
+              "226",
+              "483",
+              "1216",
+              "388",
+              "1309",
+              "77",
+              "194",
+              "113",
+              "25",
+              "1119",
+              "1094",
+              "645",
+              "50",
+              "362",
+              "9",
+              "1747",
+              "1505",
+              "233",
+              "75",
+              "1156",
+              "532",
+              "1973"
+            ],
+            "expected_count": 15,
+            "actual_count": 54
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的所有审稿意见。",
+          "ex_value": 0,
+          "expected_count": 30,
+          "actual_count": 108,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "505 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1828 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "423 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "423 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1689 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "63 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "53 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1635 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "302 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "541 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1195 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "322 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1195 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "505 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1689 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "302 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "53 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1025 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "541 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1124 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "288 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1828 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "322 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1236 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1124 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "288 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "63 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1635 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1025 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1236 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular"
+            ],
+            "extra_items": [
+              "118 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1316 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1720 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "864 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "663 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1024 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1074 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1681 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "630 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "13 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1492 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "872 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1480 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1240 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "235 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "544 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1746 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1311 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1066 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1414 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1974 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "736 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1200 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "2093 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1582 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1239 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1469 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1558 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "484 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1687 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "2127 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "2254 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "2001 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "687 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1911 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "58 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1381 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "330 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "714 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1073 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1144 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1082 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "94 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "287 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1179 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "2160 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1785 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "301 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1312 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1874 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1921 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1495 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1177 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1201 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1827 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "173 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "405 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "364 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1661 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1292 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "425 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1793 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "197 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1686 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "2134 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1197 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1335 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "2 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "979 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "195 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1353 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "237 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "35 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "918 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "350 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "790 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "531 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1220 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "508 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "387 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1528 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1064 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "777 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1758 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1626 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1894 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1694 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1050 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "2128 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "2062 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1616 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1376 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1862 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1175 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1976 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "2044 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "504 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "758 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "426 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1649 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1061 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "1643 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "715 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "825 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1691 the paper \"zswc-2014\" is mainly about zswc-2014.\nthis says about all about both its strong and weak suits.\nhowever, the reviewer would like to highlight zswc-2014 in particular",
+              "332 the paper \"zswc-2014\" is mainly about zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses.",
+              "1634 in their paper 'zswc-2014' the authors discuss zswc-2014.\nthough apparently a contribution of remarkable novelty, 'zswc-2014' also has its weaknesses."
+            ],
+            "expected_count": 30,
+            "actual_count": 108
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的详细信息和对应的会议信息。",
+          "ex_value": 0,
+          "expected_count": 15,
+          "actual_count": 54,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 15,
+            "actual_rows": 54,
+            "row_difference": 39,
+            "similarity_ratio": -1.6,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望15行，实际54行，相似度-1.600",
+            "is_within_threshold": false,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 0.3333333333333333,
+        "fex": 0,
+        "subquery_ex_values": [
+          1,
+          0,
+          0
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 1,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 28,
+          "output_tokens": 80,
+          "total_tokens": 108
+        },
+        "sparql_generator": {
+          "input_tokens": 87,
+          "output_tokens": 242,
+          "total_tokens": 329
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 280,
+          "output_tokens": 7,
+          "total_tokens": 287
+        },
+        "total_tokens": 724,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:is_submitted_at ?conference .\n  FILTER (?conference = 7)\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?review ?comments WHERE {\n    ?review rdf:type conf:Review .\n    ?review conf:reviews ?paper .\n    ?review conf:has_detailed_comments ?comments .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper ?title ?conference_id WHERE {\n    ?paper rdf:type conf:Paper .\n    ?paper conf:has_a_paper_title ?title .\n    ?paper conf:is_submitted_at ?conference_id .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:is_submitted_at ?conference .\n  FILTER (?conference = 7)\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?review ?comments WHERE {\n    ?review rdf:type conf:Review .\n    ?review conf:reviews ?paper .\n    ?review conf:has_detailed_comments ?comments .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper ?title ?conference_id WHERE {\n    ?paper rdf:type conf:Paper .\n    ?paper conf:has_a_paper_title ?title .\n    ?paper conf:is_submitted_at ?conference_id .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (p:Paper)-[:SUBMITTED_AT]->(c:Conference)\nWHERE c.ID = 7\nRETURN p.ID AS paper_id",
+            "result_count": 54
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT ID as review_id, has_detailed_comments FROM Review WHERE reviews IN (1236, 329, 9, 226, 543, 1747, 302, 1216, 119, 1505, 505, 333, 483, 351, 233, 1025, 388, 716, 873, 1069, 1094, 1124, 1309, 1195, 77, 1156, 1689, 265, 1828, 835, 1973, 1119, 791, 113, 1635, 423, 826, 485, 541, 1334, 63, 75, 194, 532, 25, 50, 288, 943, 322, 0, 645, 53, 286, 362)",
+            "result_count": 108
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT \"Paper\".\"ID\", \"Paper\".\"has_a_paper_title\", \"Paper\".\"is_submitted_at\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (1236, 329, 9, 226, 543, 1747, 302, 1216, 119, 1505, 505, 333, 483, 351, 233, 1025, 388, 716, 873, 1069, 1094, 1124, 1309, 1195, 77, 1156, 1689, 265, 1828, 835, 1973, 1119, 791, 113, 1635, 423, 826, 485, 541, 1334, 63, 75, 194, 532, 25, 50, 288, 943, 322, 0, 645, 53, 286, 362)",
+            "result_count": 54
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 2.9872801303863525,
+          "sparql_generation": 11.00620698928833,
+          "semantic_repair": 5.9604644775390625e-06,
+          "database_execution": 3.5644562244415283
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            1236
+          ],
+          [
+            329
+          ],
+          [
+            9
+          ],
+          [
+            226
+          ],
+          [
+            543
+          ],
+          [
+            1747
+          ],
+          [
+            302
+          ],
+          [
+            1216
+          ],
+          [
+            119
+          ],
+          [
+            1505
+          ],
+          [
+            505
+          ],
+          [
+            333
+          ],
+          [
+            483
+          ],
+          [
+            351
+          ],
+          [
+            233
+          ],
+          [
+            1025
+          ],
+          [
+            388
+          ],
+          [
+            716
+          ],
+          [
+            873
+          ],
+          [
+            1069
+          ],
+          [
+            1094
+          ],
+          [
+            1124
+          ],
+          [
+            1309
+          ],
+          [
+            1195
+          ],
+          [
+            77
+          ],
+          [
+            1156
+          ],
+          [
+            1689
+          ],
+          [
+            265
+          ],
+          [
+            1828
+          ],
+          [
+            835
+          ],
+          [
+            1973
+          ],
+          [
+            1119
+          ],
+          [
+            791
+          ],
+          [
+            113
+          ],
+          [
+            1635
+          ],
+          [
+            423
+          ],
+          [
+            826
+          ],
+          [
+            485
+          ],
+          [
+            541
+          ],
+          [
+            1334
+          ],
+          [
+            63
+          ],
+          [
+            75
+          ],
+          [
+            194
+          ],
+          [
+            532
+          ],
+          [
+            25
+          ],
+          [
+            50
+          ],
+          [
+            288
+          ],
+          [
+            943
+          ],
+          [
+            322
+          ],
+          [
+            0
+          ],
+          [
+            645
+          ],
+          [
+            53
+          ],
+          [
+            286
+          ],
+          [
+            362
+          ]
+        ],
+        "2": [
+          [
+            1,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            35,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1921,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1558,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1649,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            2127,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2128,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            173,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1179,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            918,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1862,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1316,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1528,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            544,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2134,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            94,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2044,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            118,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1785,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            195,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            197,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            687,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1144,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            235,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            237,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            330,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1381,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            508,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1911,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            13,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            287,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            301,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1376,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1064,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1066,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            758,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2160,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            332,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            2093,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            350,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1492,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1082,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1793,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            387,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2254,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            425,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            426,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            714,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1061,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            484,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            777,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            504,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1050,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            531,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1469,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            364,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1894,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            630,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1495,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            736,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1201,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            715,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1720,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            790,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1874,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            825,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1626,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            979,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1643,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            872,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1661,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1686,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1687,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1024,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1758,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1073,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1074,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1480,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            2001,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1616,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            2062,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1175,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1177,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1582,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1681,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1197,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1200,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            864,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1220,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1239,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1240,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1311,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1312,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1292,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1335,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            405,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1353,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            58,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1634,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1691,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1694,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            663,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1746,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1414,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ],
+          [
+            1827,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1974,
+            "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+          ],
+          [
+            1976,
+            "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+          ]
+        ],
+        "3": [
+          [
+            1828,
+            "kinkiest xix recollected householder overeducated objurgate",
+            7
+          ],
+          [
+            1236,
+            "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths",
+            7
+          ],
+          [
+            302,
+            "islanded burlily thanklessly swiveled",
+            7
+          ],
+          [
+            1195,
+            "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing",
+            7
+          ],
+          [
+            322,
+            "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling",
+            7
+          ],
+          [
+            1124,
+            "villainousness miscalling firefanged skeins",
+            7
+          ],
+          [
+            1025,
+            "loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs",
+            7
+          ],
+          [
+            288,
+            "bering evasiveness toto teashop reaccepts gunneries exorcises",
+            7
+          ],
+          [
+            541,
+            "fobbed transcribed swifters redigesting ostinato recalculation",
+            7
+          ],
+          [
+            53,
+            "giros podgy vagus kinkiest xix",
+            7
+          ],
+          [
+            63,
+            "coreless tuberculoses environs hulled preexamination",
+            7
+          ],
+          [
+            505,
+            "undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation",
+            7
+          ],
+          [
+            1635,
+            "splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned",
+            7
+          ],
+          [
+            1689,
+            "unrealistic substituting surges preheats loggias reconciliating photocatalyst",
+            7
+          ],
+          [
+            423,
+            "dissociated heartier petitionee brill",
+            7
+          ],
+          [
+            645,
+            "slipcases phenylketonuria grunts venturers valiantly",
+            7
+          ],
+          [
+            265,
+            "summable heliocentricity excretions recelebrating",
+            7
+          ],
+          [
+            226,
+            "apnea maxillary dumpers bering evasiveness toto",
+            7
+          ],
+          [
+            1309,
+            "householder overeducated objurgate treaties preprocessor despising loftily",
+            7
+          ],
+          [
+            532,
+            "reoccupations embossers cerebrum gloves mohairs admiralties",
+            7
+          ],
+          [
+            1334,
+            "safest signiory latchets inflecting trephines hops exec junketeers",
+            7
+          ],
+          [
+            1094,
+            "batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching",
+            7
+          ],
+          [
+            362,
+            "reducing nethermost nonfiction retrogressions eliminates",
+            7
+          ],
+          [
+            1069,
+            "resonates overbites terminals giros",
+            7
+          ],
+          [
+            1505,
+            "teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity",
+            7
+          ],
+          [
+            0,
+            "tibetans slavishly hipless prs bluejays cuppier nonsurgical",
+            7
+          ],
+          [
+            194,
+            "treaties preprocessor despising loftily yabber reprovingly blungers dwarflike",
+            7
+          ],
+          [
+            233,
+            "inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction",
+            7
+          ],
+          [
+            1216,
+            "hulled preexamination oralogy tibetans slavishly hipless",
+            7
+          ],
+          [
+            943,
+            "swiveled polers oinked apnea maxillary",
+            7
+          ],
+          [
+            119,
+            "gloves mohairs admiralties bewigged playgoers cheques batting",
+            7
+          ],
+          [
+            1156,
+            "debiting parrots paraguayans resonates overbites terminals giros podgy vagus",
+            7
+          ],
+          [
+            1747,
+            "jambing sodality outcrop slipcases",
+            7
+          ],
+          [
+            791,
+            "retrogressions eliminates unknowns mongoloids danker raunchiness",
+            7
+          ],
+          [
+            9,
+            "redigesting ostinato recalculation safest signiory latchets inflecting",
+            7
+          ],
+          [
+            1973,
+            "midmonths labium peeped daydreams permuting immediately canzona interrelated cooked",
+            7
+          ],
+          [
+            333,
+            "floweret arcadian acridities unrealistic substituting surges",
+            7
+          ],
+          [
+            50,
+            "kerneling napoleons rifer splinting surmisers satisfying undamped",
+            7
+          ],
+          [
+            77,
+            "conditione loathly cancels debiting parrots paraguayans resonates overbites",
+            7
+          ],
+          [
+            75,
+            "nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular",
+            7
+          ],
+          [
+            286,
+            "photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts",
+            7
+          ],
+          [
+            329,
+            "blungers dwarflike effulgences coreless",
+            7
+          ],
+          [
+            483,
+            "perspicuously disjoined nigglings midmonths labium peeped daydreams permuting",
+            7
+          ],
+          [
+            1119,
+            "funnyman commuted lachrymation floweret arcadian",
+            7
+          ],
+          [
+            485,
+            "bewitchment cheaters riffled kerneling napoleons rifer",
+            7
+          ],
+          [
+            25,
+            "recelebrating dually plateauing reoccupations embossers",
+            7
+          ],
+          [
+            873,
+            "extradites stollens ponderers conditione loathly cancels debiting",
+            7
+          ],
+          [
+            388,
+            "prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier",
+            7
+          ],
+          [
+            716,
+            "preheats loggias reconciliating photocatalyst lenity tautological jambing sodality",
+            7
+          ],
+          [
+            543,
+            "exec junketeers isolators reducing",
+            7
+          ],
+          [
+            835,
+            "brill neologic intermuscular fobbed transcribed",
+            7
+          ],
+          [
+            113,
+            "anesthetization undermentioned outflanking funnyman",
+            7
+          ],
+          [
+            826,
+            "skeins equalled sandwiching bewitchment cheaters",
+            7
+          ],
+          [
+            351,
+            "venturers valiantly unremorsefully extradites stollens ponderers",
+            7
+          ]
+        ]
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "在Neo4j图数据库中查找会议ID=7的所有投稿论文，限制15条。",
+          "cypher_query": "MATCH (paper:Paper)-[:SUBMITTED_AT]->(conf:Conference)\nWHERE conf.ID = 7\nRETURN paper.ID AS paper_id\nLIMIT 15",
+          "results": [
+            [
+              "1828"
+            ],
+            [
+              "1236"
+            ],
+            [
+              "302"
+            ],
+            [
+              "1195"
+            ],
+            [
+              "322"
+            ],
+            [
+              "1124"
+            ],
+            [
+              "1025"
+            ],
+            [
+              "288"
+            ],
+            [
+              "541"
+            ],
+            [
+              "53"
+            ],
+            [
+              "63"
+            ],
+            [
+              "505"
+            ],
+            [
+              "1635"
+            ],
+            [
+              "1689"
+            ],
+            [
+              "423"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "根据Neo4j返回的论文ID列表，在MySQL的Review表中查询这些论文的所有审稿意见。",
+          "sql_query": "SELECT r.reviews AS paper_id, r.has_detailed_comments\nFROM Review r\nWHERE r.reviews IN (1828, 1236, 302, 1195, 322, 1124, 1025, 288, 541, 53, 63, 505, 1635, 1689, 423)",
+          "results": [
+            [
+              "53",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "53",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "63",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "63",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "288",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "288",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "302",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "302",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "322",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "322",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "423",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "423",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "505",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "505",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "541",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "541",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1025",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1025",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "1124",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1124",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1195",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1195",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "1236",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1236",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1635",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1635",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "1689",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1689",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ],
+            [
+              "1828",
+              "The paper \"ZSWC-2014\" is mainly about ZSWC-2014.\nThough apparently a contribution of remarkable novelty, 'ZSWC-2014' also has its weaknesses."
+            ],
+            [
+              "1828",
+              "In their paper 'ZSWC-2014' the authors discuss ZSWC-2014.\nThis says about all about both its strong and weak suits.\nHowever, the reviewer would like to highlight ZSWC-2014 in particular"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的详细信息和对应的会议信息。",
+          "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    p.\"has_a_paper_title\",\n    cv.\"has_a_name\" AS conference_name,\n    cv.\"has_a_location\"\nFROM \"Paper\" p\nJOIN \"Conference_volume\" cv ON p.\"is_submitted_at\" = cv.\"ID\"\nWHERE p.\"ID\" IN (1828, 1236, 302, 1195, 322, 1124, 1025, 288, 541, 53, 63, 505, 1635, 1689, 423)",
+          "results": [
+            [
+              "1828",
+              "kinkiest xix recollected householder overeducated objurgate",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1236",
+              "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "302",
+              "islanded burlily thanklessly swiveled",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1195",
+              "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "322",
+              "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1124",
+              "villainousness miscalling firefanged skeins",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1025",
+              "loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "288",
+              "bering evasiveness toto teashop reaccepts gunneries exorcises",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "541",
+              "fobbed transcribed swifters redigesting ostinato recalculation",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "53",
+              "giros podgy vagus kinkiest xix",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "63",
+              "coreless tuberculoses environs hulled preexamination",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "505",
+              "undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1635",
+              "splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "1689",
+              "unrealistic substituting surges preheats loggias reconciliating photocatalyst",
+              "ZSWC",
+              "Annaba"
+            ],
+            [
+              "423",
+              "dissociated heartier petitionee brill",
+              "ZSWC",
+              "Annaba"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:38:06.956908"
+    },
+    {
+      "question_id": "6",
+      "question": "查找所有提交到会议ID=7的前5篇论文，投稿论文摘要是什么，每篇论文的作者数量",
+      "execution_time": 16.1810200214386,
+      "question_correct": false,
+      "subquery_metrics": [
+        {
+          "query_index": 1,
+          "query_question": "在Neo4j图数据库中查找所有提交到会议ID=7的论文，返回论文ID和标题，限制10条。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 54,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "1236 mongoloids danker raunchiness perspicuously disjoined nigglings midmonths",
+              "302 islanded burlily thanklessly swiveled",
+              "1828 kinkiest xix recollected householder overeducated objurgate",
+              "1195 exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing",
+              "322 bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"
+            ],
+            "extra_items": [
+              "943",
+              "826",
+              "119",
+              "1069",
+              "1973",
+              "505",
+              "873",
+              "333",
+              "286",
+              "63",
+              "0",
+              "485",
+              "1334",
+              "791",
+              "329",
+              "716",
+              "543",
+              "351",
+              "835",
+              "265",
+              "226",
+              "1689",
+              "483",
+              "1216",
+              "388",
+              "288",
+              "1828",
+              "1309",
+              "77",
+              "194",
+              "1195",
+              "113",
+              "53",
+              "25",
+              "322",
+              "1119",
+              "1124",
+              "1025",
+              "302",
+              "541",
+              "645",
+              "50",
+              "362",
+              "1236",
+              "9",
+              "1747",
+              "1505",
+              "233",
+              "75",
+              "423",
+              "1156",
+              "532",
+              "1635",
+              "1094"
+            ],
+            "expected_count": 5,
+            "actual_count": 54
+          }
+        },
+        {
+          "query_index": 2,
+          "query_question": "根据Neo4j返回的论文ID列表，在MySQL中查询会议ID=7的前5篇投稿摘要。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 54,
+          "comparison_details": {
+            "evaluation_method": "fallback_logic",
+            "reason": "Fallback判断: 匹配度基于标准化比较",
+            "missing_items": [
+              "1236 mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths",
+              "1828 kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate",
+              "1195 exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing",
+              "302 islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled",
+              "322 bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"
+            ],
+            "extra_items": [
+              "1072 resonates overbites terminals giros resonates overbites terminals giros resonates overbites terminals giros",
+              "1367 preheats loggias reconciliating photocatalyst lenity tautological jambing sodality preheats loggias reconciliating photocatalyst lenity tautological jambing sodality preheats loggias reconciliating photocatalyst lenity tautological jambing sodality",
+              "1812 anesthetization undermentioned outflanking funnyman anesthetization undermentioned outflanking funnyman anesthetization undermentioned outflanking funnyman",
+              "1770 splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned",
+              "114 nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular",
+              "1975 midmonths labium peeped daydreams permuting immediately canzona interrelated cooked midmonths labium peeped daydreams permuting immediately canzona interrelated cooked midmonths labium peeped daydreams permuting immediately canzona interrelated cooked",
+              "1861 coreless tuberculoses environs hulled preexamination coreless tuberculoses environs hulled preexamination coreless tuberculoses environs hulled preexamination",
+              "1065 bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling",
+              "540 fobbed transcribed swifters redigesting ostinato recalculation fobbed transcribed swifters redigesting ostinato recalculation fobbed transcribed swifters redigesting ostinato recalculation",
+              "428 dissociated heartier petitionee brill dissociated heartier petitionee brill dissociated heartier petitionee brill",
+              "1390 exec junketeers isolators reducing exec junketeers isolators reducing exec junketeers isolators reducing",
+              "1380 loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs",
+              "1817 giros podgy vagus kinkiest xix giros podgy vagus kinkiest xix giros podgy vagus kinkiest xix",
+              "2133 reoccupations embossers cerebrum gloves mohairs admiralties reoccupations embossers cerebrum gloves mohairs admiralties reoccupations embossers cerebrum gloves mohairs admiralties",
+              "1690 unrealistic substituting surges preheats loggias reconciliating photocatalyst unrealistic substituting surges preheats loggias reconciliating photocatalyst unrealistic substituting surges preheats loggias reconciliating photocatalyst",
+              "1471 brill neologic intermuscular fobbed transcribed brill neologic intermuscular fobbed transcribed brill neologic intermuscular fobbed transcribed",
+              "1888 venturers valiantly unremorsefully extradites stollens ponderers venturers valiantly unremorsefully extradites stollens ponderers venturers valiantly unremorsefully extradites stollens ponderers",
+              "1118 funnyman commuted lachrymation floweret arcadian funnyman commuted lachrymation floweret arcadian funnyman commuted lachrymation floweret arcadian",
+              "1051 undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation",
+              "285 photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts",
+              "1336 safest signiory latchets inflecting trephines hops exec junketeers safest signiory latchets inflecting trephines hops exec junketeers safest signiory latchets inflecting trephines hops exec junketeers",
+              "1202 slipcases phenylketonuria grunts venturers valiantly slipcases phenylketonuria grunts venturers valiantly slipcases phenylketonuria grunts venturers valiantly",
+              "225 apnea maxillary dumpers bering evasiveness toto apnea maxillary dumpers bering evasiveness toto apnea maxillary dumpers bering evasiveness toto",
+              "1263 extradites stollens ponderers conditione loathly cancels debiting extradites stollens ponderers conditione loathly cancels debiting extradites stollens ponderers conditione loathly cancels debiting",
+              "328 blungers dwarflike effulgences coreless blungers dwarflike effulgences coreless blungers dwarflike effulgences coreless",
+              "1313 householder overeducated objurgate treaties preprocessor despising loftily householder overeducated objurgate treaties preprocessor despising loftily householder overeducated objurgate treaties preprocessor despising loftily",
+              "1684 swiveled polers oinked apnea maxillary swiveled polers oinked apnea maxillary swiveled polers oinked apnea maxillary",
+              "1910 kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate",
+              "1876 retrogressions eliminates unknowns mongoloids danker raunchiness retrogressions eliminates unknowns mongoloids danker raunchiness retrogressions eliminates unknowns mongoloids danker raunchiness",
+              "2092 floweret arcadian acridities unrealistic substituting surges floweret arcadian acridities unrealistic substituting surges floweret arcadian acridities unrealistic substituting surges",
+              "1853 jambing sodality outcrop slipcases jambing sodality outcrop slipcases jambing sodality outcrop slipcases",
+              "1174 villainousness miscalling firefanged skeins villainousness miscalling firefanged skeins villainousness miscalling firefanged skeins",
+              "4 tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical",
+              "2090 islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled",
+              "763 perspicuously disjoined nigglings midmonths labium peeped daydreams permuting perspicuously disjoined nigglings midmonths labium peeped daydreams permuting perspicuously disjoined nigglings midmonths labium peeped daydreams permuting",
+              "76 conditione loathly cancels debiting parrots paraguayans resonates overbites conditione loathly cancels debiting parrots paraguayans resonates overbites conditione loathly cancels debiting parrots paraguayans resonates overbites",
+              "1920 redigesting ostinato recalculation safest signiory latchets inflecting redigesting ostinato recalculation safest signiory latchets inflecting redigesting ostinato recalculation safest signiory latchets inflecting",
+              "234 inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction",
+              "1199 exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing",
+              "1789 debiting parrots paraguayans resonates overbites terminals giros podgy vagus debiting parrots paraguayans resonates overbites terminals giros podgy vagus debiting parrots paraguayans resonates overbites terminals giros podgy vagus",
+              "1784 gloves mohairs admiralties bewigged playgoers cheques batting gloves mohairs admiralties bewigged playgoers cheques batting gloves mohairs admiralties bewigged playgoers cheques batting",
+              "2154 bering evasiveness toto teashop reaccepts gunneries exorcises bering evasiveness toto teashop reaccepts gunneries exorcises bering evasiveness toto teashop reaccepts gunneries exorcises",
+              "24 recelebrating dually plateauing reoccupations embossers recelebrating dually plateauing reoccupations embossers recelebrating dually plateauing reoccupations embossers",
+              "1233 summable heliocentricity excretions recelebrating summable heliocentricity excretions recelebrating summable heliocentricity excretions recelebrating",
+              "1238 mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths",
+              "1279 prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier",
+              "1249 bewitchment cheaters riffled kerneling napoleons rifer bewitchment cheaters riffled kerneling napoleons rifer bewitchment cheaters riffled kerneling napoleons rifer",
+              "1093 batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching",
+              "361 reducing nethermost nonfiction retrogressions eliminates reducing nethermost nonfiction retrogressions eliminates reducing nethermost nonfiction retrogressions eliminates",
+              "49 kerneling napoleons rifer splinting surmisers satisfying undamped kerneling napoleons rifer splinting surmisers satisfying undamped kerneling napoleons rifer splinting surmisers satisfying undamped",
+              "196 treaties preprocessor despising loftily yabber reprovingly blungers dwarflike treaties preprocessor despising loftily yabber reprovingly blungers dwarflike treaties preprocessor despising loftily yabber reprovingly blungers dwarflike",
+              "1217 hulled preexamination oralogy tibetans slavishly hipless hulled preexamination oralogy tibetans slavishly hipless hulled preexamination oralogy tibetans slavishly hipless",
+              "1851 teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity",
+              "1881 skeins equalled sandwiching bewitchment cheaters skeins equalled sandwiching bewitchment cheaters skeins equalled sandwiching bewitchment cheaters"
+            ],
+            "expected_count": 5,
+            "actual_count": 54
+          }
+        },
+        {
+          "query_index": 3,
+          "query_question": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的作者数量。",
+          "ex_value": 0,
+          "expected_count": 5,
+          "actual_count": 54,
+          "comparison_details": {
+            "evaluation_method": "row_count_similarity_third_query",
+            "expected_rows": 5,
+            "actual_rows": 54,
+            "row_difference": 49,
+            "similarity_ratio": -8.8,
+            "threshold": 0.8,
+            "reason": "第三个子查询行数比较: 期望5行，实际54行，相似度-8.800",
+            "is_within_threshold": false,
+            "note": "只比较行数，不关注列数和具体内容"
+          }
+        }
+      ],
+      "overall_metrics": {
+        "ex": 0.0,
+        "fex": 0,
+        "subquery_ex_values": [
+          0,
+          0,
+          0
+        ],
+        "total_subqueries": 3,
+        "correct_subqueries": 0,
+        "evaluation_mode": "mixed_evaluation_third_query_count_based"
+      },
+      "repair_metrics": {},
+      "token_stats": {
+        "query_planner": {
+          "input_tokens": 22,
+          "output_tokens": 76,
+          "total_tokens": 98
+        },
+        "sparql_generator": {
+          "input_tokens": 85,
+          "output_tokens": 233,
+          "total_tokens": 318
+        },
+        "query_repairer": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "subquery_scheduler": {
+          "input_tokens": 267,
+          "output_tokens": 7,
+          "total_tokens": 274
+        },
+        "total_tokens": 690,
+        "steps_count": {
+          "query_planner_calls": 1,
+          "sparql_generator_calls": 3,
+          "query_repairer_calls": 0,
+          "subquery_scheduler_calls": 3
+        }
+      },
+      "example_count": 5,
+      "pipeline_info": {
+        "subqueries_count": 3,
+        "repair_attempts": 0,
+        "repair_successes": 0,
+        "repair_total_checks": 0,
+        "repair_before_correct": 0,
+        "repair_after_correct": 0,
+        "database_selections": [
+          {
+            "query_index": 1,
+            "selected_database": "Neo4j",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:is_submitted_at ?conference .\n  FILTER (?conference = 7)\n}"
+          },
+          {
+            "query_index": 2,
+            "selected_database": "MySQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?abstract ?abstract_text WHERE {\n    ?abstract rdf:type conf:Abstract .\n    ?abstract conf:is_the_1th_part_of ?paper .\n    ?abstract conf:has_text ?abstract_text .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          },
+          {
+            "query_index": 3,
+            "selected_database": "PostgreSQL",
+            "original_sparql": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper (COUNT(?author) AS ?author_count)\nWHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:has_authors ?author .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+          }
+        ],
+        "sparql_queries": [
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper WHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:is_submitted_at ?conference .\n  FILTER (?conference = 7)\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?abstract ?abstract_text WHERE {\n    ?abstract rdf:type conf:Abstract .\n    ?abstract conf:is_the_1th_part_of ?paper .\n    ?abstract conf:has_text ?abstract_text .\n    FILTER (?paper IN (<<SUBQUERY_1>>))\n}",
+          "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX conf: <http://conference#>\n\nSELECT ?paper (COUNT(?author) AS ?author_count)\nWHERE {\n  ?paper rdf:type conf:Paper .\n  ?paper conf:has_authors ?author .\n  FILTER (?paper IN (<<SUBQUERY_1>>))\n}"
+        ],
+        "converted_queries": [
+          {
+            "query_index": 1,
+            "database": "Neo4j",
+            "converted_query": "MATCH (p:Paper)-[:SUBMITTED_AT]->(c:Conference)\nWHERE c.ID = 7\nRETURN p.ID AS paper_id",
+            "result_count": 54
+          },
+          {
+            "query_index": 2,
+            "database": "MySQL",
+            "converted_query": "SELECT ID as abstract_id, has_text as abstract_text FROM Abstract\n            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (1236, 329, 9, 226, 543, 1747, 302, 1216, 119, 1505, 505, 333, 483, 351, 233, 1025, 388, 716, 873, 1069, 1094, 1124, 1309, 1195, 77, 1156, 1689, 265, 1828, 835, 1973, 1119, 791, 113, 1635, 423, 826, 485, 541, 1334, 63, 75, 194, 532, 25, 50, 288, 943, 322, 0, 645, 53, 286, 362)",
+            "result_count": 54
+          },
+          {
+            "query_index": 3,
+            "database": "PostgreSQL",
+            "converted_query": "SELECT COUNT(\"Paper\".\"ID\") AS author_count, \"Paper\".\"ID\"\nFROM \"Paper\"\nWHERE \"Paper\".\"ID\" IN (1236, 329, 9, 226, 543, 1747, 302, 1216, 119, 1505, 505, 333, 483, 351, 233, 1025, 388, 716, 873, 1069, 1094, 1124, 1309, 1195, 77, 1156, 1689, 265, 1828, 835, 1973, 1119, 791, 113, 1635, 423, 826, 485, 541, 1334, 63, 75, 194, 532, 25, 50, 288, 943, 322, 0, 645, 53, 286, 362)\nGROUP BY \"Paper\".\"ID\"",
+            "result_count": 54
+          }
+        ],
+        "repair_details": [],
+        "errors": [],
+        "step_times": {
+          "query_planning": 2.6823201179504395,
+          "sparql_generation": 10.428766965866089,
+          "semantic_repair": 1.3113021850585938e-05,
+          "database_execution": 3.0692379474639893
+        },
+        "example_count": 5
+      },
+      "system_results": {
+        "1": [
+          [
+            1236
+          ],
+          [
+            329
+          ],
+          [
+            9
+          ],
+          [
+            226
+          ],
+          [
+            543
+          ],
+          [
+            1747
+          ],
+          [
+            302
+          ],
+          [
+            1216
+          ],
+          [
+            119
+          ],
+          [
+            1505
+          ],
+          [
+            505
+          ],
+          [
+            333
+          ],
+          [
+            483
+          ],
+          [
+            351
+          ],
+          [
+            233
+          ],
+          [
+            1025
+          ],
+          [
+            388
+          ],
+          [
+            716
+          ],
+          [
+            873
+          ],
+          [
+            1069
+          ],
+          [
+            1094
+          ],
+          [
+            1124
+          ],
+          [
+            1309
+          ],
+          [
+            1195
+          ],
+          [
+            77
+          ],
+          [
+            1156
+          ],
+          [
+            1689
+          ],
+          [
+            265
+          ],
+          [
+            1828
+          ],
+          [
+            835
+          ],
+          [
+            1973
+          ],
+          [
+            1119
+          ],
+          [
+            791
+          ],
+          [
+            113
+          ],
+          [
+            1635
+          ],
+          [
+            423
+          ],
+          [
+            826
+          ],
+          [
+            485
+          ],
+          [
+            541
+          ],
+          [
+            1334
+          ],
+          [
+            63
+          ],
+          [
+            75
+          ],
+          [
+            194
+          ],
+          [
+            532
+          ],
+          [
+            25
+          ],
+          [
+            50
+          ],
+          [
+            288
+          ],
+          [
+            943
+          ],
+          [
+            322
+          ],
+          [
+            0
+          ],
+          [
+            645
+          ],
+          [
+            53
+          ],
+          [
+            286
+          ],
+          [
+            362
+          ]
+        ],
+        "2": [
+          [
+            4,
+            "tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical"
+          ],
+          [
+            24,
+            "recelebrating dually plateauing reoccupations embossers recelebrating dually plateauing reoccupations embossers recelebrating dually plateauing reoccupations embossers"
+          ],
+          [
+            49,
+            "kerneling napoleons rifer splinting surmisers satisfying undamped kerneling napoleons rifer splinting surmisers satisfying undamped kerneling napoleons rifer splinting surmisers satisfying undamped"
+          ],
+          [
+            76,
+            "conditione loathly cancels debiting parrots paraguayans resonates overbites conditione loathly cancels debiting parrots paraguayans resonates overbites conditione loathly cancels debiting parrots paraguayans resonates overbites"
+          ],
+          [
+            114,
+            "nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular nonsurgical skimpiest outpoured dissociated heartier petitionee brill neologic intermuscular"
+          ],
+          [
+            196,
+            "treaties preprocessor despising loftily yabber reprovingly blungers dwarflike treaties preprocessor despising loftily yabber reprovingly blungers dwarflike treaties preprocessor despising loftily yabber reprovingly blungers dwarflike"
+          ],
+          [
+            225,
+            "apnea maxillary dumpers bering evasiveness toto apnea maxillary dumpers bering evasiveness toto apnea maxillary dumpers bering evasiveness toto"
+          ],
+          [
+            234,
+            "inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction inflecting trephines hops exec junketeers isolators reducing nethermost nonfiction"
+          ],
+          [
+            285,
+            "photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts photocatalyst lenity tautological jambing sodality outcrop slipcases phenylketonuria grunts"
+          ],
+          [
+            328,
+            "blungers dwarflike effulgences coreless blungers dwarflike effulgences coreless blungers dwarflike effulgences coreless"
+          ],
+          [
+            361,
+            "reducing nethermost nonfiction retrogressions eliminates reducing nethermost nonfiction retrogressions eliminates reducing nethermost nonfiction retrogressions eliminates"
+          ],
+          [
+            428,
+            "dissociated heartier petitionee brill dissociated heartier petitionee brill dissociated heartier petitionee brill"
+          ],
+          [
+            540,
+            "fobbed transcribed swifters redigesting ostinato recalculation fobbed transcribed swifters redigesting ostinato recalculation fobbed transcribed swifters redigesting ostinato recalculation"
+          ],
+          [
+            763,
+            "perspicuously disjoined nigglings midmonths labium peeped daydreams permuting perspicuously disjoined nigglings midmonths labium peeped daydreams permuting perspicuously disjoined nigglings midmonths labium peeped daydreams permuting"
+          ],
+          [
+            1051,
+            "undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation undamped sharpers forbearer anesthetization undermentioned outflanking funnyman commuted lachrymation"
+          ],
+          [
+            1065,
+            "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"
+          ],
+          [
+            1072,
+            "resonates overbites terminals giros resonates overbites terminals giros resonates overbites terminals giros"
+          ],
+          [
+            1093,
+            "batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching batting waspishly stilbestrol villainousness miscalling firefanged skeins equalled sandwiching"
+          ],
+          [
+            1118,
+            "funnyman commuted lachrymation floweret arcadian funnyman commuted lachrymation floweret arcadian funnyman commuted lachrymation floweret arcadian"
+          ],
+          [
+            1174,
+            "villainousness miscalling firefanged skeins villainousness miscalling firefanged skeins villainousness miscalling firefanged skeins"
+          ],
+          [
+            1199,
+            "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing"
+          ],
+          [
+            1202,
+            "slipcases phenylketonuria grunts venturers valiantly slipcases phenylketonuria grunts venturers valiantly slipcases phenylketonuria grunts venturers valiantly"
+          ],
+          [
+            1217,
+            "hulled preexamination oralogy tibetans slavishly hipless hulled preexamination oralogy tibetans slavishly hipless hulled preexamination oralogy tibetans slavishly hipless"
+          ],
+          [
+            1233,
+            "summable heliocentricity excretions recelebrating summable heliocentricity excretions recelebrating summable heliocentricity excretions recelebrating"
+          ],
+          [
+            1238,
+            "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths"
+          ],
+          [
+            1249,
+            "bewitchment cheaters riffled kerneling napoleons rifer bewitchment cheaters riffled kerneling napoleons rifer bewitchment cheaters riffled kerneling napoleons rifer"
+          ],
+          [
+            1263,
+            "extradites stollens ponderers conditione loathly cancels debiting extradites stollens ponderers conditione loathly cancels debiting extradites stollens ponderers conditione loathly cancels debiting"
+          ],
+          [
+            1279,
+            "prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier prs bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier"
+          ],
+          [
+            1313,
+            "householder overeducated objurgate treaties preprocessor despising loftily householder overeducated objurgate treaties preprocessor despising loftily householder overeducated objurgate treaties preprocessor despising loftily"
+          ],
+          [
+            1336,
+            "safest signiory latchets inflecting trephines hops exec junketeers safest signiory latchets inflecting trephines hops exec junketeers safest signiory latchets inflecting trephines hops exec junketeers"
+          ],
+          [
+            1367,
+            "preheats loggias reconciliating photocatalyst lenity tautological jambing sodality preheats loggias reconciliating photocatalyst lenity tautological jambing sodality preheats loggias reconciliating photocatalyst lenity tautological jambing sodality"
+          ],
+          [
+            1380,
+            "loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs loftily yabber reprovingly blungers dwarflike effulgences coreless tuberculoses environs"
+          ],
+          [
+            1390,
+            "exec junketeers isolators reducing exec junketeers isolators reducing exec junketeers isolators reducing"
+          ],
+          [
+            1471,
+            "brill neologic intermuscular fobbed transcribed brill neologic intermuscular fobbed transcribed brill neologic intermuscular fobbed transcribed"
+          ],
+          [
+            1684,
+            "swiveled polers oinked apnea maxillary swiveled polers oinked apnea maxillary swiveled polers oinked apnea maxillary"
+          ],
+          [
+            1690,
+            "unrealistic substituting surges preheats loggias reconciliating photocatalyst unrealistic substituting surges preheats loggias reconciliating photocatalyst unrealistic substituting surges preheats loggias reconciliating photocatalyst"
+          ],
+          [
+            1770,
+            "splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned splinting surmisers satisfying undamped sharpers forbearer anesthetization undermentioned"
+          ],
+          [
+            1784,
+            "gloves mohairs admiralties bewigged playgoers cheques batting gloves mohairs admiralties bewigged playgoers cheques batting gloves mohairs admiralties bewigged playgoers cheques batting"
+          ],
+          [
+            1789,
+            "debiting parrots paraguayans resonates overbites terminals giros podgy vagus debiting parrots paraguayans resonates overbites terminals giros podgy vagus debiting parrots paraguayans resonates overbites terminals giros podgy vagus"
+          ],
+          [
+            1812,
+            "anesthetization undermentioned outflanking funnyman anesthetization undermentioned outflanking funnyman anesthetization undermentioned outflanking funnyman"
+          ],
+          [
+            1817,
+            "giros podgy vagus kinkiest xix giros podgy vagus kinkiest xix giros podgy vagus kinkiest xix"
+          ],
+          [
+            1851,
+            "teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity teashop reaccepts gunneries exorcises pirog desexes summable heliocentricity"
+          ],
+          [
+            1853,
+            "jambing sodality outcrop slipcases jambing sodality outcrop slipcases jambing sodality outcrop slipcases"
+          ],
+          [
+            1861,
+            "coreless tuberculoses environs hulled preexamination coreless tuberculoses environs hulled preexamination coreless tuberculoses environs hulled preexamination"
+          ],
+          [
+            1876,
+            "retrogressions eliminates unknowns mongoloids danker raunchiness retrogressions eliminates unknowns mongoloids danker raunchiness retrogressions eliminates unknowns mongoloids danker raunchiness"
+          ],
+          [
+            1881,
+            "skeins equalled sandwiching bewitchment cheaters skeins equalled sandwiching bewitchment cheaters skeins equalled sandwiching bewitchment cheaters"
+          ],
+          [
+            1888,
+            "venturers valiantly unremorsefully extradites stollens ponderers venturers valiantly unremorsefully extradites stollens ponderers venturers valiantly unremorsefully extradites stollens ponderers"
+          ],
+          [
+            1910,
+            "kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate"
+          ],
+          [
+            1920,
+            "redigesting ostinato recalculation safest signiory latchets inflecting redigesting ostinato recalculation safest signiory latchets inflecting redigesting ostinato recalculation safest signiory latchets inflecting"
+          ],
+          [
+            1975,
+            "midmonths labium peeped daydreams permuting immediately canzona interrelated cooked midmonths labium peeped daydreams permuting immediately canzona interrelated cooked midmonths labium peeped daydreams permuting immediately canzona interrelated cooked"
+          ],
+          [
+            2090,
+            "islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled"
+          ],
+          [
+            2092,
+            "floweret arcadian acridities unrealistic substituting surges floweret arcadian acridities unrealistic substituting surges floweret arcadian acridities unrealistic substituting surges"
+          ],
+          [
+            2133,
+            "reoccupations embossers cerebrum gloves mohairs admiralties reoccupations embossers cerebrum gloves mohairs admiralties reoccupations embossers cerebrum gloves mohairs admiralties"
+          ],
+          [
+            2154,
+            "bering evasiveness toto teashop reaccepts gunneries exorcises bering evasiveness toto teashop reaccepts gunneries exorcises bering evasiveness toto teashop reaccepts gunneries exorcises"
+          ]
+        ],
+        "3": [
+          [
+            1,
+            75
+          ],
+          [
+            1,
+            388
+          ],
+          [
+            1,
+            791
+          ],
+          [
+            1,
+            194
+          ],
+          [
+            1,
+            329
+          ],
+          [
+            1,
+            505
+          ],
+          [
+            1,
+            485
+          ],
+          [
+            1,
+            351
+          ],
+          [
+            1,
+            1236
+          ],
+          [
+            1,
+            1309
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            113
+          ],
+          [
+            1,
+            119
+          ],
+          [
+            1,
+            1216
+          ],
+          [
+            1,
+            1828
+          ],
+          [
+            1,
+            286
+          ],
+          [
+            1,
+            1747
+          ],
+          [
+            1,
+            1156
+          ],
+          [
+            1,
+            645
+          ],
+          [
+            1,
+            1094
+          ],
+          [
+            1,
+            53
+          ],
+          [
+            1,
+            333
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            716
+          ],
+          [
+            1,
+            543
+          ],
+          [
+            1,
+            826
+          ],
+          [
+            1,
+            483
+          ],
+          [
+            1,
+            423
+          ],
+          [
+            1,
+            322
+          ],
+          [
+            1,
+            233
+          ],
+          [
+            1,
+            226
+          ],
+          [
+            1,
+            1069
+          ],
+          [
+            1,
+            532
+          ],
+          [
+            1,
+            1973
+          ],
+          [
+            1,
+            1195
+          ],
+          [
+            1,
+            943
+          ],
+          [
+            1,
+            77
+          ],
+          [
+            1,
+            541
+          ],
+          [
+            1,
+            835
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            1025
+          ],
+          [
+            1,
+            302
+          ],
+          [
+            1,
+            362
+          ],
+          [
+            1,
+            50
+          ],
+          [
+            1,
+            288
+          ],
+          [
+            1,
+            1124
+          ],
+          [
+            1,
+            1119
+          ],
+          [
+            1,
+            1689
+          ],
+          [
+            1,
+            1635
+          ],
+          [
+            1,
+            873
+          ],
+          [
+            1,
+            1505
+          ],
+          [
+            1,
+            265
+          ],
+          [
+            1,
+            1334
+          ]
+        ]
+      },
+      "expected_answer": {
+        "query_1": {
+          "description": "在Neo4j图数据库中查找所有提交到会议ID=7的论文，返回论文ID和标题，限制10条。",
+          "cypher_query": "MATCH (conf:Conference {ID: 7})<-[:SUBMITTED_AT]-(paper:Paper)\nRETURN\n  paper.ID AS paper_id,\n  paper.title AS paper_title\nLIMIT 10",
+          "results": [
+            [
+              "1828",
+              "kinkiest xix recollected householder overeducated objurgate"
+            ],
+            [
+              "1236",
+              "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths"
+            ],
+            [
+              "302",
+              "islanded burlily thanklessly swiveled"
+            ],
+            [
+              "1195",
+              "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing"
+            ],
+            [
+              "322",
+              "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"
+            ]
+          ]
+        },
+        "query_2": {
+          "description": "根据Neo4j返回的论文ID列表，在MySQL中查询会议ID=7的前5篇投稿摘要。",
+          "sql_query": "SELECT a.is_the_1th_part_of AS paper_id, a.has_text\nFROM Abstract a\nWHERE a.is_the_1th_part_of IN (1828, 1236, 302, 1195, 322)",
+          "results": [
+            [
+              "322",
+              "bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling bewigged playgoers cheques batting waspishly stilbestrol villainousness miscalling"
+            ],
+            [
+              "1195",
+              "exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing exorcises pirog desexes summable heliocentricity excretions recelebrating dually plateauing"
+            ],
+            [
+              "1236",
+              "mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths mongoloids danker raunchiness perspicuously disjoined nigglings midmonths"
+            ],
+            [
+              "1828",
+              "kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate kinkiest xix recollected householder overeducated objurgate"
+            ],
+            [
+              "302",
+              "islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled islanded burlily thanklessly swiveled"
+            ]
+          ]
+        },
+        "query_3": {
+          "description": "根据Neo4j返回的论文ID列表，在PostgreSQL中查询每篇论文的作者数量。",
+          "sql_query": "SELECT\n    p.\"ID\" AS paper_id,\n    COUNT(c.\"Person\") AS author_count\nFROM \"Paper\" p\nLEFT JOIN contributes c ON p.\"ID\" = c.\"Conference_document\"\nWHERE p.\"ID\" IN (1828, 1236, 302, 1195, 322)\nGROUP BY p.\"ID\"",
+          "results": [
+            [
+              "322",
+              "2"
+            ],
+            [
+              "302",
+              "3"
+            ],
+            [
+              "1195",
+              "2"
+            ],
+            [
+              "1236",
+              "3"
+            ],
+            [
+              "1828",
+              "2"
+            ]
+          ]
+        }
+      },
+      "timestamp": "2025-12-22T02:38:23.139260"
+    }
+  ],
+  "error_log": [],
+  "intermediate_results": {},
+  "final_metrics": {
+    "fex_accuracy": 0.3333333333333333,
+    "ex_overall": 0.5,
+    "subquery_accuracy": 0.5,
+    "time_per_query": 16.650312860806782,
+    "tokens_per_query": 701.1666666666666,
+    "total_tokens": 4207,
+    "repair_success_rate": 0.0,
+    "total_questions": 6,
+    "correct_questions_fex": 2,
+    "total_subqueries": 18,
+    "correct_subqueries": 9,
+    "total_repair_attempts": 0,
+    "total_repair_successes": 0,
+    "example_count": 5,
+    "evaluation_mode": "mixed_evaluation_third_query_count_based"
+  },
+  "test_completed_at": "2025-12-22T02:38:23.139322"
+}

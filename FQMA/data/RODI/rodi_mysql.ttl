@@ -1,0 +1,180 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix conf: <http://conference#> .
+
+# ===================================================================================
+# IMPROVED MySQL DATABASE MAPPINGS FOR CONFERENCE ONTOLOGY
+# 所有映射都包含完整的sqlQuery，确保SPARQL2MySQL转换器能正确解析
+# ===================================================================================
+
+# Abstract Entity Mapping - 基础映射
+<#AbstractMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT ID, has_text, is_submitted_at, is_the_1th_part_of
+            FROM Abstract
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#abstract_{ID}" ;
+        rr:class conf:Abstract
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_text ;
+        rr:objectMap [ 
+            rr:column "has_text" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_submitted_at ;
+        rr:objectMap [
+            rr:template "http://conference#conference_volume_{is_submitted_at}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_the_1th_part_of ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{is_the_1th_part_of}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Abstract to Paper Relationship - 专门用于查询论文的摘要
+<#AbstractByPaperMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT ID as abstract_id, 
+                   is_the_1th_part_of as paper_id,
+                   has_text as abstract_text
+            FROM Abstract
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#abstract_{abstract_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_the_1th_part_of ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{paper_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_text ;
+        rr:objectMap [ 
+            rr:column "abstract_text" ; 
+            rr:datatype xsd:string 
+        ]
+    ] .
+
+<#PersonEmailMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT Person as person_id, 
+                   VALUE as email
+            FROM has_an_email
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{person_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_an_email ;
+        rr:objectMap [ 
+            rr:column "email" ; 
+            rr:datatype xsd:string 
+        ]
+    ] .
+
+# Review Entity Mapping - 改进版
+<#ReviewMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT ID as review_id,
+                   has_detailed_comments,
+                   reviews as paper_id
+            FROM Review
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#review_{review_id}" ;
+        rr:class conf:Review
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_detailed_comments ;
+        rr:objectMap [ 
+            rr:column "has_detailed_comments" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:reviews ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{paper_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Conference Fees Mapping - 改进版
+<#ConferenceFeesMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT ID as fee_id,
+                   amount
+            FROM Conference_fees
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#conference_fees_{fee_id}" ;
+        rr:class conf:Conference_fees
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:amount ;
+        rr:objectMap [ 
+            rr:column "amount" ; 
+            rr:datatype xsd:string 
+        ]
+    ] .
+
+# 复合查询映射：用于需要多列的查询
+<#AbstractFullQueryMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            SELECT ID as abstract_id, 
+                   is_the_1th_part_of as paper_id, 
+                   has_text as abstract_text, 
+                   is_submitted_at as conference_id
+            FROM Abstract
+            WHERE has_text IS NOT NULL
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#abstract_{abstract_id}" ;
+        rr:class conf:Abstract
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_text ;
+        rr:objectMap [ 
+            rr:column "abstract_text" ; 
+            rr:datatype xsd:string 
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_the_1th_part_of ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{paper_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_submitted_at ;
+        rr:objectMap [
+            rr:template "http://conference#conference_volume_{conference_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .

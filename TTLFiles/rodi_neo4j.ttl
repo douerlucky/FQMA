@@ -1,0 +1,381 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix conf: <http://conference#> .
+
+# ===================================================================================
+# NEO4J GRAPH DATABASE MAPPINGS FOR CONFERENCE ONTOLOGY
+# ===================================================================================
+
+# Person Node Mapping
+<#PersonNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (p:Person)
+            RETURN p.ID as ID,
+                   p.first_name as first_name,
+                   p.last_name as last_name,
+                   p.is_Reviewer as is_reviewer,
+                   p.is_Committee_member as is_committee_member,
+                   p.is_Conference_contributor as is_contributor
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{ID}" ;
+        rr:class conf:Person
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_first_name ;
+        rr:objectMap [
+            rr:column "first_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_last_name ;
+        rr:objectMap [
+            rr:column "last_name" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Paper Node Mapping
+<#PaperNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (p:Paper)
+            RETURN p.ID as ID,
+                   p.title as title,
+                   p.submitted_at as conference_id
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{ID}" ;
+        rr:class conf:Paper
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_paper_title ;
+        rr:objectMap [
+            rr:column "title" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Paper SUBMITTED_AT Conference Relationship (Graph Relation)
+<#PaperSubmittedAtConferenceMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (paper:Paper)-[r:SUBMITTED_AT]->(conf:Conference)
+            RETURN paper.ID as paper_id, conf.ID as conference_id
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{paper_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:is_submitted_at ;
+        rr:objectMap [
+            rr:template "http://conference#conference_volume_{conference_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Conference Node Mapping
+<#ConferenceNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (c:Conference)
+            RETURN c.ID as ID,
+                   c.name as name,
+                   c.location as location
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#conference_volume_{ID}" ;
+        rr:class conf:Conference_volume
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_location ;
+        rr:objectMap [
+            rr:column "location" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Committee Node Mapping
+<#CommitteeNodeMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (c:Committee)
+            RETURN c.ID as ID,
+                   c.name as name,
+                   c.TYPE as type
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{ID}" ;
+        rr:class conf:Committee
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [
+            rr:column "name" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# AUTHORED Relationship Mapping (Person -> Paper)
+<#AuthoredRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (person:Person)-[r:AUTHORED]->(paper:Paper)
+            RETURN person.ID as author_id, paper.ID as paper_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{author_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:contributes ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{paper_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Reverse AUTHORED Relationship (Paper has_authors Person)
+<#PaperHasAuthorsMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (paper:Paper)<-[r:AUTHORED]-(person:Person)
+            RETURN paper.ID as paper_id, person.ID as author_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{paper_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_authors ;
+        rr:objectMap [
+            rr:template "http://conference#person_{author_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# REVIEWED Relationship Mapping
+<#ReviewedRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (review)-[r:REVIEWED]->(paper:Paper)
+            RETURN r.reviewid as review_id, r.paperid as paper_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#review_{review_id}" ;
+        rr:class conf:Review
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:reviews ;
+        rr:objectMap [
+            rr:template "http://conference#paper_{paper_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# MEMBER_OF Relationship Mapping (Person -> Committee)
+<#MemberOfRelationMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (person:Person)-[r:MEMBER_OF]->(committee:Committee)
+            RETURN person.ID as person_id, committee.ID as committee_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{person_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:was_a_member_of ;
+        rr:objectMap [
+            rr:template "http://conference#committee_{committee_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Reverse MEMBER_OF Relationship (Committee has_members Person)
+<#CommitteeHasMembersMapping>
+    rr:logicalTable [ 
+        rr:sqlQuery """
+            MATCH (committee:Committee)<-[r:MEMBER_OF]-(person:Person)
+            RETURN committee.ID as committee_id, person.ID as person_id
+        """ 
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{committee_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_members ;
+        rr:objectMap [
+            rr:template "http://conference#person_{person_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Query for Reviewers (Persons who are reviewers)
+<#ReviewerMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (p:Person)
+            WHERE p.is_Reviewer = TRUE
+            RETURN p.ID as ID,
+                   p.first_name as first_name,
+                   p.last_name as last_name
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{ID}" ;
+        rr:class conf:Reviewer
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_first_name ;
+        rr:objectMap [
+            rr:column "first_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_last_name ;
+        rr:objectMap [
+            rr:column "last_name" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Query for Committee Members
+<#CommitteeMemberMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (p:Person)
+            WHERE p.is_Committee_member = TRUE
+            RETURN p.ID as ID,
+                   p.first_name as first_name,
+                   p.last_name as last_name
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{ID}" ;
+        rr:class conf:Committee_member
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_first_name ;
+        rr:objectMap [
+            rr:column "first_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_last_name ;
+        rr:objectMap [
+            rr:column "last_name" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Query for Conference Contributors
+<#ConferenceContributorMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (p:Person)
+            WHERE p.is_Conference_contributor = TRUE
+            RETURN p.ID as ID,
+                   p.first_name as first_name,
+                   p.last_name as last_name
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#person_{ID}" ;
+        rr:class conf:Conference_contributor
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_first_name ;
+        rr:objectMap [
+            rr:column "first_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_the_last_name ;
+        rr:objectMap [
+            rr:column "last_name" ;
+            rr:datatype xsd:string
+        ]
+    ] .
+
+# Complex Query: Papers with Authors
+<#PapersWithAuthorsMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (person:Person)-[r:AUTHORED]->(paper:Paper)
+            RETURN paper.ID as paper_id,
+                   paper.title as paper_title,
+                   paper.submitted_at as conference_id,
+                   person.ID as author_id,
+                   person.first_name as author_first_name,
+                   person.last_name as author_last_name
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#paper_{paper_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_paper_title ;
+        rr:objectMap [
+            rr:column "paper_title" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_authors ;
+        rr:objectMap [
+            rr:template "http://conference#person_{author_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# Complex Query: Committees with Members
+<#CommitteesWithMembersMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            MATCH (person:Person)-[r:MEMBER_OF]->(committee:Committee)
+            RETURN committee.ID as committee_id,
+                   committee.name as committee_name,
+                   person.ID as member_id,
+                   person.first_name as member_first_name,
+                   person.last_name as member_last_name
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{committee_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_a_name ;
+        rr:objectMap [
+            rr:column "committee_name" ;
+            rr:datatype xsd:string
+        ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_members ;
+        rr:objectMap [
+            rr:template "http://conference#person_{member_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
