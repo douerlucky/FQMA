@@ -162,6 +162,10 @@ Before proceeding, make sure the following software is installed and running on 
 
 ## Installation and Setup
 
+The installation and display video are available here:
+
+https://github.com/user-attachments/assets/35296116-0364-4c31-b310-2454760cacd1
+
 The setup process has **two stages**:
 
 1. **Import the datasets** — run the import scripts inside `Datasets/`
