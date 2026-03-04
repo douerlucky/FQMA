@@ -184,7 +184,13 @@ cd FQMA
 
 #### Step 1.2 — Open the `Datasets` folder
 
+<img width="1906" height="784" alt="image" src="https://github.com/user-attachments/assets/43ae2c6d-ec63-4ea0-9128-a595c0ab092e" />
+
+
 Navigate into the `Datasets/` directory. You will find:
+
+<img width="1636" height="604" alt="image" src="https://github.com/user-attachments/assets/28b06b62-9053-4185-8579-d22e321beed2" />
+
 
 ```
 Datasets/
@@ -197,6 +203,10 @@ Datasets/
 #### Step 1.3 — Configure database credentials in both import scripts
 
 Open **`import_GMQA.py`** and **`import_RODI.py`** in any text editor and fill in your local database credentials at the top of each file. **Both files must be configured.**
+
+<img width="1302" height="892" alt="image" src="https://github.com/user-attachments/assets/4d980970-5920-4521-b074-2a3a2f935f30" />
+
+<img width="1036" height="752" alt="image" src="https://github.com/user-attachments/assets/d925607b-fceb-4c87-9b61-4e2b6601b7f3" />
 
 ```python
 # ── MySQL ──────────────────────────────────────────
@@ -221,6 +231,9 @@ NEO4J_PASSWORD = "your_password"   # ← replace with your Neo4j password
 
 #### Step 1.4 — Run the import scripts
 
+<img width="1160" height="770" alt="image" src="https://github.com/user-attachments/assets/f4fbd3c7-1d66-40bf-b946-783a0faa9684" />
+
+
 Open a terminal **inside the `Datasets/` directory** and run:
 
 ```bash
@@ -240,15 +253,27 @@ After both scripts complete, confirm the following databases exist and have data
 | PostgreSQL | `kegg`, `rodiConference` |
 | Neo4j      | nodes and relationships visible in the Neo4j Browser |
 
+<img width="514" height="784" alt="image" src="https://github.com/user-attachments/assets/073f6124-944b-4f11-8be7-ede6ed19d61f" />
+
+<img width="608" height="1058" alt="image" src="https://github.com/user-attachments/assets/1fa1acf2-e9cf-40c2-a7df-fc9064216d4a" />
+
 ---
 
 ### Stage 2 — Configure and Launch FQMA
 
 #### Step 2.1 — Open `FQMA/config.py`
 
+<img width="1840" height="872" alt="image" src="https://github.com/user-attachments/assets/f69b449d-e27e-4ab0-8775-b4cf47329ae3" />
+
+<img width="2088" height="1116" alt="image" src="https://github.com/user-attachments/assets/b2c8b847-c716-4bd9-859d-4a5d91f7ca9a" />
+
+
 Navigate into the `FQMA/` directory and open `config.py`. There are two sections you **must** configure.
 
 **2.1a — Database credentials** (same values you used in the import scripts):
+
+<img width="2800" height="1618" alt="image" src="https://github.com/user-attachments/assets/47b0cc9c-2390-4a12-9dff-8208a2565e75" />
+
 
 ```python
 # MySQL
@@ -265,6 +290,9 @@ Neo4j_pwd  = 'your_password'  # ← your Neo4j password
 ```
 
 **2.1b — LLM API key**
+
+<img width="1200" height="1190" alt="image" src="https://github.com/user-attachments/assets/aed2d20d-3ac3-4a70-a7f9-8ecbc07a8a35" />
+
 
 Find the `MODEL_TYPE` setting and set it to the LLM provider you want to use. Then fill in the corresponding API key in the matching block below:
 
@@ -296,15 +324,23 @@ CURRENT_DATASET = "RODI"  # switch to "GMQA" to query the gut microbiota benchma
 
 #### Step 2.2 — Launch the application
 
+<img width="2088" height="1116" alt="image" src="https://github.com/user-attachments/assets/463b065e-57fc-4fdb-bcd3-eca3898e0b82" />
+
+
 Open a terminal **inside the `FQMA/` directory** and follow the instructions for your operating system.
 
 ---
 
 ## Launching on macOS
 
+<img width="1446" height="1474" alt="image" src="https://github.com/user-attachments/assets/865def32-6d91-441a-888d-62a2afdba9c7" />
+
+
 > ⚠️ **macOS-only prerequisite:** The FQMA web backend runs on port **5000**. On macOS Monterey and later, the system **AirPlay Receiver** service also occupies port 5000 by default, which will prevent the backend from starting.
 >
 > Before launching, go to **System Settings → General → AirDrop & Handoff** and **turn off "AirPlay Receiver"**.
+
+<img width="798" height="398" alt="image" src="https://github.com/user-attachments/assets/9ada0c84-6a4f-40b2-badf-93063c397350" />
 
 ```bash
 # Inside the FQMA/ directory:
@@ -400,6 +436,9 @@ Adjust `TEST_MODE`, `SELECTED_QUESTION_IDS`, and `CURRENT_DATASET` in `config.py
 
 ## Example Use Case
 
+<img width="2552" height="1324" alt="image" src="https://github.com/user-attachments/assets/8635caef-750a-486c-bdc5-3e96d95dfb5b" />
+
+
 > Query the member IDs of the committee with ID 1000, and obtain the corresponding email addresses as well as the first and last names of these members.
 
 FQMA handles this by:
@@ -409,16 +448,6 @@ FQMA handles this by:
 3. Repairing any semantic issues through iterative validation
 4. Routing subqueries to Neo4j, MySQL, and PostgreSQL respectively
 5. Aggregating the results into a unified answer table
-
----
-
-## Demo
-
-You can attach a demonstration video here after recording one.
-
-```md
-[![Demo Video](assets/demo-cover.png)](YOUR_VIDEO_LINK)
-```
 
 ---
 
