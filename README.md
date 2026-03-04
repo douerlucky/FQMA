@@ -1,6 +1,8 @@
 <div align="center">
-  <h1>FQMA</h1>
+  <h1>FQMA v2.0</h1>
   <p><strong>Ontology-based Federated Query Multi-Agent Framework</strong></p>
+  <p><em>Produced by Huazhong Agricultural University</em></p>
+  <p><em>A part of Huazhong Agricultural University Agents</em></p>
 
   <p>
     <img alt="Python" src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white">
@@ -17,132 +19,113 @@
 
 ---
 
-## Overview
+# Overview
 
-FQMA is a research prototype for **dependency-aware federated query answering** across heterogeneous databases. It takes a natural language question, decomposes it into subqueries, generates ontology-aware SPARQL, performs semantic checking and repair, routes each subquery to the appropriate backend, and finally aggregates the returned results.
+In many application domains, researchers often need to retrieve valuable information from massive, heterogeneous, and distributed data sources to support complex analytical or decision-making tasks. Although existing Ontology-Based Data Access (OBDA) architecture promotes automation to a certain extent, the lack of support for natural language queries and the reliance on fixed query workflows make them inconvenient and inflexible. At the same time, current Natural Language Queries (NLQs) have low performance in joint queries within specific domains due to a lack of domain knowledge. 
 
-FQMA is designed around four cooperative agents and is evaluated on two benchmarks: **RODI-C** and **GMQA**. The reported results are **91.7% FEX on RODI-C** and **90.1% FEX on GMQA**.
+To address these shortcomings, we propose **FQMA**, an Ontology-based Federated Query Multi-Agent framework. It utilizes domain ontologies alongside a novel iterative semantic repair algorithm to boost query accuracy. To the best of our knowledge, it is the first work to employ a multi-agent approach to accomplish federated queries over heterogeneous data sources in the OBDA paradigm.
 
-### Key Features
+You can see the video below to watch the whole pipeline:
 
-- Natural language to federated query workflow
-- Ontology-guided SPARQL generation
-- Iterative semantic repair with rule-based validation
-- Dynamic routing across heterogeneous backends (MySQL, PostgreSQL, Neo4j)
-- Result aggregation in both table and text form
-- Extensible architecture for new domains and adapters
 
----
+https://github.com/user-attachments/assets/edf191d5-d9ea-4ba5-8e04-0f06367b31dd
 
-## Framework at a Glance
+<img width="10060" height="5632" alt="FQMA" src="https://github.com/user-attachments/assets/aafccfa1-560c-4140-b185-b3cbfcfc0b95" />
 
-FQMA is a four-agent framework consisting of:
 
-1. **Query Planning and Generation Agent**
-2. **Semantic Query Repair Agent**
-3. **Query Routing and Adaptation Agent**
-4. **Result Aggregation Agent**
+FQMA employs a **Plan-and-Solve (PS)** paradigm coordinated by four specialized agents. To understand how the framework bridges the gap between natural language and heterogeneous data, let’s analyze the execution of a typical complex query:
 
-### Workflow
+> **Example Query:** *"Query the member IDs of the committee with ID 1000, and obtain the corresponding email addresses as well as the first and last names of these members."*
 
-```text
-Natural Language Query
-        |
-        v
-Query Planning
-        |
-        v
-SPARQL Generation
-        |
-        v
-Semantic Validation and Repair
-        |
-        v
-Subquery Routing and Adaptation
-        |
-        +--> Neo4j
-        +--> MySQL
-        +--> PostgreSQL
-        |
-        v
-Result Aggregation
-```
+The **Query Planning and Generation Agent** serves as the orchestrator by performing task decomposition on the natural language input. It recognizes that the request involves a dependency chain where member IDs must be extracted before retrieving personal details. Consequently, it translates the user's intent into a structured plan comprising:
+
+Sub-query 1: Retrieve `memberID` from the committee with ID 1000 through the `conf:has_members` predicate.
+
+Sub-query 2: Obtain the `firstName`, `lastName`, and `email` for the corresponding member IDs.
+
+The **Semantic Query Repair Agent** ensures the validity of the generated SPARQL by applying an iterative repair algorithm. It cross-references the candidate queries with the domain ontology using predefined formal logic rules to identify and fix semantic inconsistencies. For instance, if the planner mistakenly generates an incorrect predicate not defined in the ontology, this agent automatically identifies the violation and substitutes it with the standardized term from the RODI or GMQA schema to ensure execution success.
+
+The **Query Routing and Adaptation Agent** manages the interaction with heterogeneous backends by leveraging ontology mappings and transformation tools. It identifies that the committee relationship data and individual member attributes reside in different data sources, such as Neo4j for graph relationships and MySQL or PostgreSQL for relational data. By invoking specialized adapters, it transforms the ontology-level SPARQL into native query languages like Cypher or SQL while managing the physical connection routing to each distributed database.
+
+The **Result Aggregation Agent** performs the final synthesis by collecting intermediate data streams from all involved backends. It executes a semantic join to align the results based on the shared member IDs, ensuring that the disparate information from graph and relational sources is accurately unified. Finally, the agent provides the user with a comprehensive response in two formats: a structured table for data analysis and an LLM-generated natural language summary for easier comprehension.
 
 ---
 
-## Repository Structure
+# Key Contributions
 
-```text
-.
-├── Datasets/                   # Dataset import scripts and raw data
-│   ├── GMQA/                   # GMQA raw SQL and Cypher files
-│   ├── RODI-Conf/              # RODI-C raw SQL and Cypher files
-│   ├── import_GMQA.py          # ⚙️ One-click GMQA import script (requires configuration)
-│   └── import_RODI.py          # ⚙️ One-click RODI import script (requires configuration)
-│
-├── FQMA/                       # Core implementation
-│   ├── agents/                 # Multi-agent implementations
-│   ├── data/                   # Ontology and TTL mapping files (runtime)
-│   ├── frontend/               # Web interface (Vue/Vite)
-│   ├── scripts/                # Utility scripts
-│   ├── Tools/                  # Query conversion helpers
-│   ├── QAsets/                 # Benchmark question sets
-│   ├── app.py                  # Flask web application entry
-│   ├── main.py                 # CLI entry point
-│   ├── config.py               # ⚙️ Main configuration file (requires configuration)
-│   ├── ReAct.py                # Single-agent / ReAct baseline
-│   ├── no_repair.py            # Repair ablation variant
-│   ├── exp_framework_modified.py  # Experiment evaluation script
-│   ├── requirements.txt        # Python dependencies
-│   ├── start.sh                # One-click launcher (macOS / Linux)
-│   └── start.bat               # One-click launcher (Windows)
-│
-├── OntologyFiles/
-│   ├── GMQA_ontology.owl
-│   └── rodi_ontology.owl
-│
-├── QuestionSet/
-│   ├── RODI-C-cross-2-database.json
-│   ├── RODI-C-cross-3-database.json
-│   └── GMQA.json
-│
-└── TTLFiles/
-    ├── gutmdisorder.ttl
-    ├── kegg.ttl
-    ├── newgutmgene.ttl
-    ├── pgmkg.ttl
-    ├── relationship.ttl
-    ├── rodi_mysql.ttl
-    ├── rodi_neo4j.ttl
-    └── rodi_postgre.ttl
-```
+Our framework introduces three main contributions to the field:
+
+* **Multi-Agent Architecture:** An ontology-based federated query multi-agent framework specifically designed for natural language queries over heterogeneous data sources. 
+* **Semantic Repair Algorithm:** An ontology-driven iterative semantic query repair algorithm based on formal first-order logic validation rules combined with LLM evaluation, which further improves the execution accuracy of generated SPARQL queries. 
+* **New Benchmarks:** The introduction of two ontology-based federated query benchmarks, including a reconstructed RODI-C question set (237 NLQs) and a newly constructed Gut Microbiota Question-Answer (GMQA) dataset (320 NLQs), on which FQMA achieves state-of-the-art FEX performance.
+
 
 ---
 
-## Datasets and Knowledge Resources
+# Datasets
+This repository provides two high-quality ontology-based federated query benchmarks (RODI-C, GMQA) and corresponding ontology/mapping resources for heterogeneous data source federated query research. All datasets support natural language query (NLQ) and dependency-aware multi-step federated query execution across relational (MySQL/PostgreSQL) and graph (Neo4j) databases.
 
-### RODI-C
+## RODI-C
+RODI-C is a **reconstructed heterogeneous federated benchmark** derived from the *Conference-native* scenario of the original RODI benchmark (a classic OBDA benchmark for relational-to-ontology mapping). The original RODI is a centralized PostgreSQL dataset; we re-distribute its data across **MySQL, PostgreSQL, and Neo4j** to simulate real-world heterogeneous federated data environments, and construct **237 natural language queries** for the reconstructed dataset.
 
-RODI-C is a reconstructed heterogeneous federated benchmark derived from the Conference-native scenario of the RODI benchmark. It contains **237 natural language questions** over MySQL, PostgreSQL, and Neo4j.
+### RODI-C Data Distribution Rule
+- Text/attribute-centric content (abstracts, reviews) → MySQL
+- Integrity-critical structured entities/core relations → PostgreSQL
+- Relationship-centric information (authorship, committee membership) → Neo4j
 
-### GMQA
+### RODI-C Query Statistics
+All queries are decomposed into 2–3 interdependent subqueries spanning multiple backends. Detailed statistics by query category are shown below (integrated with GMQA for comparison):
 
-GMQA is a self-constructed benchmark for gut microbiota federated querying. It comprises **320 complex natural language questions** spanning multiple biological resources and four task categories.
+| Dataset | Category | Questions | Tables | Triples | Table Rows (Mean) | Table Rows (Range) | Table Columns (Range) |
+| :------ | :------- | :-------- | :----- | :-----: | :---------------: | :----------------- | :------------------- |
+| **RODI-C** | Paper metadata retrieval | 25 | 3 | 5 | 2.32 | 2–6 | 4–4 |
+| | Paper abstract retrieval | 85 | 5 | 7 | 5.36 | 2–162 | 3–6 |
+| | Review comment retrieval | 94 | 5 | 9 | 39.74 | 3–385 | 5–11 |
+| | Author statistics retrieval | 2 | 3 | 3 | 268.50 | 252–285 | 7–7 |
+| | Committee membership retrieval | 7 | 5 | 7 | 12.86 | 9–16 | 10–10 |
+| | Committee contact retrieval | 17 | 4 | 7 | 18.47 | 8–73 | 5–10 |
+| | Person profile retrieval | 7 | 4 | 7 | 279.71 | 214–362 | 7–7 |
+| | **Total** | **237** | **27** | **147** | **30.16** | **2–385** | **3–11** |
+| **GMQA** | Swine feeding efficiency | 99 | 7 | 15 | 19.87 | 2–80 | 5–8 |
+| | Disease effects (human / murine) | 88 | 7 | 17 | 47.00 | 3–170 | 5–5 |
+| | Food effects (human / murine) | 67 | 7 | 17 | 45.06 | 3–168 | 5–5 |
+| | Drug effects (human / murine) | 66 | 7 | 17 | 42.14 | 13–144 | 5–5 |
+| | **Total** | **320** | **86** | **179** | **37.20** | **2–170** | **5–8** |
 
-### Included Ontologies and Mappings
+## GMQA
+GMQA (**Gut Microbiota Question-Answer**) is a **self-constructed domain-specific benchmark** for ontology-based federated querying in the gut microbiota field, addressing the lack of public federated query datasets for this domain. The dataset integrates multiple real-world biological resources deployed on heterogeneous backends and contains **320 complex natural language queries** decomposed into 3 interdependent subqueries.
 
-The repository includes ontology files for both RODI and GMQA, along with mapping files in TTL format for sources such as GutMDisorder, KEGG, GutMGene, PGMKG, and RODI backends. The paper reports **35 mapping rules for RODI-C** and **51 mapping rules for GMQA**.
+### GMQA Data Sources
+GMQA unifies heterogeneous biological databases with a custom gut microbiota ontology, covering the following core data sources:
+- **GutMDisorder/GutMGene** (Relational): Microbiota-phenotype & microbiota-gene associations
+- **PGMKG** (Graph): Swine gut microbiota and feeding efficiency relationships
+- **KEGG** (Pathway KB): Gene-metabolic pathway knowledge
+
+### GMQA Query Categories & Representative Examples
+GMQA queries cover four typical research directions in gut microbiota studies, each corresponding to a specific combination of data sources and multi-step information needs:
+
+| Query Category | Qty | Representative Natural Language Query | Corresponding Data Sources |
+| :------------- | :-: | :----------------------------------- | :------------------------ |
+| Disease effects (human / murine) | 88 | Which gut microbiota that show increased abundance in constipation can be reduced through host gene expression regulation, and what are the key metabolic pathways involved? | GutMDisorder, GutMGene, KEGG |
+| Food effects (human / murine) | 67 | Which host genes can enhance the proliferation of specific gut microbiota induced by soluble corn fiber, and through which metabolic pathways do these genes exert their effects? | GutMDisorder, GutMGene, KEGG |
+| Drug effects (human / murine) | 66 | Which host genes can upregulate the proliferation of specific gut microbiota induced by Metformin, and which glucose metabolism–microbiota co-regulatory pathways are activated? | GutMDisorder, GutMGene, KEGG |
+| Swine feeding efficiency | 99 | (Domain-specific) Gut microbiota species associated with improved feed conversion ratio in swine, and their regulatory host genes/pathways | PGMKG, GutMGene, KEGG |
+
+## Ontology & Mapping Resources
+We provide complete ontology files (for RODI-C/GMQA) and **R2RML/ R2RML-style mapping rules** (TTL format) for all backend data sources, which are the core of the OBDA-based federated query framework. Mapping rules are generated via AI-assisted methods and manually refined for semantic correctness.
 
 ---
 
-## Reported Results
+# Installation and Setup
 
-| Dataset | FEX   | SEX   |
-|---------|------:|------:|
-| RODI-C  | 91.7% | 95.2% |
-| GMQA    | 90.1% | 91.1% |
+The installation and display video are available here:
 
----
+https://github.com/user-attachments/assets/35296116-0364-4c31-b310-2454760cacd1
+
+The setup process has **two stages**:
+
+1. **Import the datasets** — run the import scripts inside `Datasets/`
+2. **Configure and launch the FQMA application** — configure `FQMA/config.py` and run the start script inside `FQMA/`
 
 ## Prerequisites
 
@@ -158,31 +141,19 @@ Before proceeding, make sure the following software is installed and running on 
 
 > **Java is not required** unless you plan to use Ontop for SPARQL-to-SQL rewriting outside of this codebase.
 
----
 
-## Installation and Setup
 
-The installation and display video are available here:
 
-https://github.com/user-attachments/assets/35296116-0364-4c31-b310-2454760cacd1
+## Stage 1 — Import Datasets
 
-The setup process has **two stages**:
-
-1. **Import the datasets** — run the import scripts inside `Datasets/`
-2. **Configure and launch the FQMA application** — configure `FQMA/config.py` and run the start script inside `FQMA/`
-
----
-
-### Stage 1 — Import Datasets
-
-#### Step 1.1 — Clone the repository
+### Step 1.1 — Clone the repository
 
 ```bash
 git clone https://github.com/douerlucky/FQMA.git
 cd FQMA
 ```
 
-#### Step 1.2 — Open the `Datasets` folder
+### Step 1.2 — Open the `Datasets` folder
 
 <div align="center">
 <img width="40%" alt="image1" src="https://github.com/user-attachments/assets/43ae2c6d-ec63-4ea0-9128-a595c0ab092e" />
@@ -192,17 +163,7 @@ cd FQMA
 Navigate into the `Datasets/` directory. You will find:
 
 
-
-
-```
-Datasets/
-├── GMQA/              ← raw data files for GMQA
-├── RODI-Conf/         ← raw data files for RODI-C
-├── import_GMQA.py     ← configure this
-└── import_RODI.py     ← configure this
-```
-
-#### Step 1.3 — Configure database credentials in both import scripts
+### Step 1.3 — Configure database credentials in both import scripts
 
 Open **`import_GMQA.py`** and **`import_RODI.py`** in any text editor and fill in your local database credentials at the top of each file. **Both files must be configured.**
 
@@ -232,7 +193,7 @@ NEO4J_PASSWORD = "your_password"   # ← replace with your Neo4j password
 
 > ⚠️ **Important:** Make the same changes to both `import_GMQA.py` and `import_RODI.py`. The credentials fields are identical in both files.
 
-#### Step 1.4 — Run the import scripts
+### Step 1.4 — Run the import scripts
 
 <div align="center">
   <img width="50%" alt="image" src="https://github.com/user-attachments/assets/f4fbd3c7-1d66-40bf-b946-783a0faa9684" />
@@ -249,7 +210,7 @@ python import_RODI.py
 
 Each script will automatically create the required databases and import all tables/nodes. You will see a summary at the end showing which imports succeeded (✅) or failed (❌).
 
-#### Step 1.5 — Verify the imported databases
+### Step 1.5 — Verify the imported databases
 
 After both scripts complete, confirm the following databases exist and have data:
 
@@ -264,11 +225,10 @@ After both scripts complete, confirm the following databases exist and have data
   <img width="25%" alt="image" src="https://github.com/user-attachments/assets/1fa1acf2-e9cf-40c2-a7df-fc9064216d4a" />
 </div>
 
----
 
-### Stage 2 — Configure and Launch FQMA
+## Stage 2 — Configure and Launch FQMA
 
-#### Step 2.1 — Open `FQMA/config.py`
+### Step 2.1 — Open `FQMA/config.py`
 
 <div align="center">
   <img width="40%" alt="image" src="https://github.com/user-attachments/assets/f69b449d-e27e-4ab0-8775-b4cf47329ae3" />
@@ -330,17 +290,13 @@ Replace `'sk-your-deepseek-api-key-here'` with your actual key. The same pattern
 CURRENT_DATASET = "RODI"  # switch to "GMQA" to query the gut microbiota benchmark
 ```
 
----
-
-#### Step 2.2 — Launch the application
+### Step 2.2 — Launch the application
 
 <div align="center">
 <img width="50%" alt="image" src="https://github.com/user-attachments/assets/463b065e-57fc-4fdb-bcd3-eca3898e0b82" />
 </div>
 
 Open a terminal **inside the `FQMA/` directory** and follow the instructions for your operating system.
-
----
 
 ## Launching on macOS
 
@@ -381,8 +337,6 @@ The script will:
 
 To stop all services, press **Ctrl+C** in the terminal.
 
----
-
 ## Launching on Windows
 
 Double-click `start.bat` inside the `FQMA/` folder, **or** run it from a Command Prompt:
@@ -413,7 +367,6 @@ To stop all services, close the **FQMA-Backend** and **FQMA-Frontend** terminal 
 
 > 💡 If Python 3.12 is not found, download it from [https://www.python.org/downloads/](https://www.python.org/downloads/) and make sure to check **"Add Python to PATH"** during installation.
 
----
 
 ## Command-line Usage (Both Platforms)
 
@@ -435,19 +388,6 @@ python main.py --question "Find all authors who presented papers at the Benguela
 
 **Exit interactive mode** by typing `exit` or pressing Enter on an empty line.
 
----
-
-## Reproducing Experiments
-
-```bash
-# Inside FQMA/:
-python exp_framework_modified.py
-```
-
-Adjust `TEST_MODE`, `SELECTED_QUESTION_IDS`, and `CURRENT_DATASET` in `config.py` to control which questions are evaluated.
-
----
-
 ## Example Use Case
 
 <div align="center">
@@ -464,7 +404,6 @@ FQMA handles this by:
 4. Routing subqueries to Neo4j, MySQL, and PostgreSQL respectively
 5. Aggregating the results into a unified answer table
 
----
 
 ## Configuration Reference
 
@@ -483,20 +422,16 @@ A summary of every value you need to set before running FQMA:
 | `FQMA/config.py` | API key inside model block | Your LLM API key for the chosen provider |
 | `FQMA/config.py` | `CURRENT_DATASET` | Active benchmark: `"RODI"` or `"GMQA"` |
 
----
 
 ## Acknowledgement
 
 This project is supported in part by the National Key Research and Development Program of China, the Hubei Key Research and Development Program of China, and the Major Project of Hubei Hongshan Laboratory.
-
----
 
 ## Contact
 
 - GitHub: [@douerlucky](https://github.com/douerlucky)
 - Email: douer_lucky@webmail.hzau.edu.cn
 
----
 
 <div align="center">
   Made with care for clean, ontology-aware federated querying.
