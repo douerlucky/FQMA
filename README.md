@@ -437,21 +437,6 @@ A summary of every value you need to set before running FQMA:
 
 ---
 
-## Citation
-
-If this repository is useful for your research, please cite the accompanying paper.
-
-```bibtex
-@article{xue2026fqma,
-  title   = {FQMA: An Ontology-based Federated Query Multi-Agent Framework},
-  author  = {Feiyang Xue and Chaoying Zuo and Xuan Liu and Hongyu Wang and Jiwen Wang and Ying Wang and Zaiwen Feng},
-  journal = {Under Review},
-  year    = {2026}
-}
-```
-
----
-
 ## Acknowledgement
 
 This project is supported in part by the National Key Research and Development Program of China, the Hubei Key Research and Development Program of China, and the Major Project of Hubei Hongshan Laboratory.
