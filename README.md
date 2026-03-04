@@ -66,7 +66,7 @@ Our framework introduces three main contributions to the field:
 This repository provides two high-quality ontology-based federated query benchmarks (RODI-C, GMQA) and corresponding ontology/mapping resources for heterogeneous data source federated query research. All datasets support natural language query (NLQ) and dependency-aware multi-step federated query execution across relational (MySQL/PostgreSQL) and graph (Neo4j) databases.
 
 ## RODI-C
-RODI-C is a **reconstructed heterogeneous federated benchmark** derived from the *Conference-native* scenario of the original RODI benchmark (a classic OBDA benchmark for relational-to-ontology mapping). The original RODI is a centralized PostgreSQL dataset; we re-distribute its data across **MySQL, PostgreSQL, and Neo4j** to simulate real-world heterogeneous federated data environments, and construct **237 natural language queries** for the reconstructed dataset.
+RODI-C is a **reconstructed heterogeneous federated benchmark** derived from the *Conference-native* scenario of the original RODI benchmark. The original RODI is a centralized PostgreSQL dataset; we re-distribute its data across **MySQL, PostgreSQL, and Neo4j** to simulate real-world heterogeneous federated data environments, and construct **237 natural language queries** for the reconstructed dataset.
 
 ### RODI-C Data Distribution Rule
 - Text/attribute-centric content (abstracts, reviews) → MySQL
@@ -97,9 +97,9 @@ GMQA (**Gut Microbiota Question-Answer**) is a **self-constructed domain-specifi
 
 ### GMQA Data Sources
 GMQA unifies heterogeneous biological databases with a custom gut microbiota ontology, covering the following core data sources:
-- **GutMDisorder/GutMGene** (Relational): Microbiota-phenotype & microbiota-gene associations
-- **PGMKG** (Graph): Swine gut microbiota and feeding efficiency relationships
-- **KEGG** (Pathway KB): Gene-metabolic pathway knowledge
+- **GutMDisorder/GutMGene** (MySQL): Microbiota-phenotype & microbiota-gene associations
+- **PGMKG** (Neo4j): Swine gut microbiota and feeding efficiency relationships
+- **KEGG** (Postgre): Gene-metabolic pathway knowledge
 
 ### GMQA Query Categories & Representative Examples
 GMQA queries cover four typical research directions in gut microbiota studies, each corresponding to a specific combination of data sources and multi-step information needs:
@@ -112,7 +112,7 @@ GMQA queries cover four typical research directions in gut microbiota studies, e
 | Swine feeding efficiency | 99 | (Domain-specific) Gut microbiota species associated with improved feed conversion ratio in swine, and their regulatory host genes/pathways | PGMKG, GutMGene, KEGG |
 
 ## Ontology & Mapping Resources
-We provide complete ontology files (for RODI-C/GMQA) and **R2RML/ R2RML-style mapping rules** (TTL format) for all backend data sources, which are the core of the OBDA-based federated query framework. Mapping rules are generated via AI-assisted methods and manually refined for semantic correctness.
+We provide complete ontology files (for RODI-C and GMQA) and **R2RML/ R2RML-style mapping rules** (TTL format) for all backend data sources, which are the core of the OBDA-based federated query framework. Mapping rules are generated via AI-assisted methods and manually refined for semantic correctness.
 
 ---
 
