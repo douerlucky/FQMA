@@ -4,7 +4,7 @@ import importlib
 from rdflib import RDF, OWL
 
 # 动态导入提示词模板（根据当前数据集）
-from samples_exp.prompt_grad import QueryPlanner_template, SparQLGenerator_template
+import samples_exp.prompt_grad
 
 
 # ============================================================
@@ -90,11 +90,14 @@ def clean_sparql_output(sparql_text):
 
 
 class QueryPlanner:
+
     def __init__(self, llm):
+        from samples_exp import prompt_grad as pg
+        planner_tmpl, _, _,_,_,_ = pg.get_templates()
         self.llm = llm
         self.plan_prompt = PromptTemplate(
             input_variables=["question"],
-            template=QueryPlanner_template
+            template=planner_tmpl
         )
 
     def decompose_query(self, question):
@@ -174,9 +177,12 @@ class SparQLGenerator:
         else:
             print("ℹ️ 未提供本体文件，将在无本体模式下运行")
 
+        from samples_exp import prompt_grad as pg
+        _, generator_tmpl, _ ,_,_,_= pg.get_templates()
+        template = generator_tmpl
         self.sparql_prompt = PromptTemplate(
             input_variables=["sub_question", "ontology", "dependencies"],
-            template=SparQLGenerator_template
+            template=generator_tmpl
         )
 
     def _extract_ontology_info(self):
@@ -295,14 +301,14 @@ def exp_question(question):
     print("=" * 60)
 
     try:
-        from config import model, ontology_path
+        import config
     except ImportError:
         print("❌ 无法导入配置文件，请检查config.py是否存在")
         return
 
     # 初始化组件
-    query_planner = QueryPlanner(model)
-    sparql_generator = SparQLGenerator(model, ontology_path)
+    query_planner = QueryPlanner(config.model)
+    sparql_generator = SparQLGenerator(config.model, config.ontology_path)
 
     try:
         # 步骤1: 查询分解

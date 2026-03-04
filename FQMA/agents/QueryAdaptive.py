@@ -10,32 +10,16 @@ from langchain.prompts import PromptTemplate
 from agents.DatabaseExecutor import Neo4jQueryExecutor, MySQLQueryExecutor, PostgreQueryExecutor
 from Tools.SPARQL2MySQL import SparqlToMySQLConverter
 from Tools.SPARQL2Neo4j import SparqlToCypherConverter
+from backup.SPARQL2Neo4j import SparqlToCypherConverter as GMQACypherConverter
 from Tools.SPARQL2PostgreSQL import SparqlToPostgreSQLConverter
 
 # 导入配置
-from config import (
-    Neo4j_config, MySQL_config, Postgre_config, GutMDisorder_config,
-    TTL_FILES, ENABLED_DATABASES, CURRENT_DATASET
-)
-
+import config
 import re
 import importlib
 from typing import List, Dict, Tuple, Any
 
-
-# 🔥 动态导入数据库选择提示词模板（根据当前数据集）
-try:
-    prompts_module = importlib.import_module(f"samples_exp.{CURRENT_DATASET}.prompts_rules")
-    if hasattr(prompts_module, 'SubQuerySchedulerRules'):
-        DATABASE_SELECTION_PROMPT_TEMPLATE = prompts_module.SubQuerySchedulerRules
-        print(f"✅ 已加载 {CURRENT_DATASET} 数据集的数据库选择规则")
-    else:
-        # 使用默认模板
-        DATABASE_SELECTION_PROMPT_TEMPLATE = None
-        print(f"⚠️ {CURRENT_DATASET} 数据集未提供SubQuerySchedulerRules，使用默认模板")
-except (ImportError, AttributeError) as e:
-    print(f"⚠️ 无法导入数据集特定的提示词模板: {e}，使用默认模板")
-    DATABASE_SELECTION_PROMPT_TEMPLATE = None
+import samples_exp.prompt_grad
 
 
 # ============================================================
@@ -252,55 +236,6 @@ class TTLContentExtractor:
         """获取特定数据库的TTL映射信息"""
         return self.ttl_contents.get(db_name, "")
 
-
-# ============================================================
-# 数据库选择提示词模板 - 使用数据集特定的规则或默认规则
-# ============================================================
-if DATABASE_SELECTION_PROMPT_TEMPLATE:
-    # 使用数据集特定的提示词模板
-    DATABASE_SELECTION_PROMPT = DATABASE_SELECTION_PROMPT_TEMPLATE
-else:
-    # 默认模板（后备方案）
-    DATABASE_SELECTION_PROMPT = """你是数据库路由专家。请根据SPARQL查询和TTL映射信息，选择最合适的数据库。
-
-## 输入信息
-
-### 自然语言问题
-{question}
-
-### SPARQL查询
-```sparql
-{sparql_query}
-```
-
-### 可用数据库及其映射信息
-{ttl_info}
-
-## 决策规则
-
-1. **分析SPARQL中使用的谓词（属性/关系）**
-   - 识别所有 conf:xxx 或 ont:xxx 形式的谓词
-   - 注意：同一个谓词可能在多个数据库中都有映射
-
-2. **查看TTL映射信息**
-   - 每个数据库的映射告诉你它能提供什么数据
-   - 数据属性(DatatypeProperty)：返回具体值（如名字、文本等）
-   - 关系属性(ObjectProperty)：表示实体间的关系
-
-3. **决策原则**
-   - 如果SPARQL需要特定数据库独有的属性 → 选择该数据库
-   - 如果需要详细文本内容 → 优先考虑专门存储文本的数据库
-   - 如果是简单的关系遍历 → 优先考虑图数据库
-   - 如果需要聚合操作（COUNT/GROUP BY）→ 优先考虑关系型数据库
-
-## 输出格式
-
-只输出数据库名称，不要其他内容：
-Neo4j / MySQL / PostgreSQL
-
-你的选择："""
-
-
 # ============================================================
 # SubQueryScheduler - 零硬编码版本，完全由LLM决策
 # ============================================================
@@ -319,12 +254,16 @@ class SubQueryScheduler:
         self.llm = llm
 
         # 加载TTL映射信息
-        self.ttl_extractor = TTLContentExtractor(TTL_FILES)
+        self.ttl_extractor = TTLContentExtractor(config.TTL_FILES)
+
+        import samples_exp.prompt_grad as pg
+        _, _, _, _, cur_prompt, _ = pg.get_templates()
+        self.selection_prompt_template = cur_prompt
 
         # 构造提示词模板
         self.selection_prompt = PromptTemplate(
             input_variables=["question", "sparql_query", "ttl_info"],
-            template=DATABASE_SELECTION_PROMPT
+            template=self.selection_prompt_template
         )
 
     def select_database(self, sparql_query: str, question: str) -> str:
@@ -372,7 +311,7 @@ class SubQueryScheduler:
             return 'Neo4j'
         elif 'mysql' in response:
             # 检查是否是GMQA数据集的特殊MySQL库
-            if CURRENT_DATASET == "GMQA":
+            if config.CURRENT_DATASET == "GMQA":
                 if 'gutmdisorder' in response or 'disorder' in response:
                     return 'MySQL(gutmdisorder)'
                 else:
@@ -383,7 +322,7 @@ class SubQueryScheduler:
         else:
             # 默认返回第一个可用数据库
             print(f"⚠️ 无法解析LLM响应: {llm_response}")
-            return ENABLED_DATABASES[0] if ENABLED_DATABASES else 'MySQL'
+            return config.ENABLED_DATABASES[0] if config.ENABLED_DATABASES else 'MySQL'
 
 
 # ============================================================
@@ -404,20 +343,23 @@ class SubQueryExecutor:
 
     def convert_to_target_query(self, sparql_query: str, sel_db: str) -> str:
         """将SPARQL转换为目标数据库的查询语言"""
-        print(f"\n=== 转换查询到 {sel_db} (数据集: {CURRENT_DATASET}) ===")
+        print(f"\n=== 转换查询到 {sel_db} (数据集: {config.CURRENT_DATASET}) ===")
         sel_db = sel_db.strip()
 
         try:
             if sel_db == 'Neo4j':
-                converter = SparqlToCypherConverter(TTL_FILES['neo4j'])
+                if config.CURRENT_DATASET == 'GMQA':
+                    converter = GMQACypherConverter(config.TTL_FILES['neo4j'])
+                else:
+                    converter = SparqlToCypherConverter(config.TTL_FILES['neo4j'])
                 cypher_query = converter.convert(sparql_query)
                 print(f"✅ 转换成功")
                 print(f"转换后的Cypher: {cypher_query}")
                 return cypher_query
 
-            elif sel_db == 'MySQL(newgutmgene)' or (sel_db == 'MySQL' and CURRENT_DATASET == "GMQA"):
-                ttl_files = TTL_FILES['mysql_main'] if isinstance(TTL_FILES['mysql_main'], list) else [
-                    TTL_FILES['mysql_main']]
+            elif sel_db == 'MySQL(newgutmgene)' or (sel_db == 'MySQL' and config.CURRENT_DATASET == "GMQA"):
+                ttl_files = config.TTL_FILES['mysql_main'] if isinstance(config.TTL_FILES['mysql_main'], list) else [
+                    config.TTL_FILES['mysql_main']]
                 converter = SparqlToMySQLConverter(ttl_files)
                 mysql_query = converter.convert_sparql_to_mysql(sparql_query)
                 print(f"✅ 转换成功")
@@ -425,17 +367,17 @@ class SubQueryExecutor:
                 return mysql_query
 
             elif sel_db == 'MySQL(gutmdisorder)':
-                ttl_files = TTL_FILES['mysql_disorder'] if isinstance(TTL_FILES['mysql_disorder'], list) else [
-                    TTL_FILES['mysql_disorder']]
+                ttl_files = config.TTL_FILES['mysql_disorder'] if isinstance(config.TTL_FILES['mysql_disorder'], list) else [
+                    config.TTL_FILES['mysql_disorder']]
                 converter = SparqlToMySQLConverter(ttl_files)
                 mysql_query = converter.convert_sparql_to_mysql(sparql_query)
                 print(f"✅ 转换成功")
                 print(f"转换后的MySQL(gutmdisorder): {mysql_query}")
                 return mysql_query
 
-            elif sel_db == 'MySQL' and CURRENT_DATASET != "GMQA":
-                ttl_files = TTL_FILES['mysql_main'] if isinstance(TTL_FILES['mysql_main'], list) else [
-                    TTL_FILES['mysql_main']]
+            elif sel_db == 'MySQL' and config.CURRENT_DATASET != "GMQA":
+                ttl_files = config.TTL_FILES['mysql_main'] if isinstance(config.TTL_FILES['mysql_main'], list) else [
+                    config.TTL_FILES['mysql_main']]
                 converter = SparqlToMySQLConverter(ttl_files)
                 mysql_query = converter.convert_sparql_to_mysql(sparql_query)
                 print(f"✅ 转换成功")
@@ -443,7 +385,7 @@ class SubQueryExecutor:
                 return mysql_query
 
             elif sel_db == 'PostgreSQL':
-                converter = SparqlToPostgreSQLConverter(TTL_FILES['postgresql'])
+                converter = SparqlToPostgreSQLConverter(config.TTL_FILES['postgresql'])
                 postgresql_query = converter.convert(sparql_query)
                 print(f"✅ 转换成功")
                 print(f"转换后的PostgreSQL: {postgresql_query}")
@@ -451,7 +393,7 @@ class SubQueryExecutor:
 
             else:
                 print(f"❌ 无法识别的数据库类型: '{sel_db}'")
-                print(f"当前数据集({CURRENT_DATASET})支持的数据库类型: {ENABLED_DATABASES}")
+                print(f"当前数据集({config.CURRENT_DATASET})支持的数据库类型: {config.ENABLED_DATABASES}")
                 return ""
 
         except Exception as e:
@@ -462,7 +404,7 @@ class SubQueryExecutor:
 
     def execute_in_database(self, converted_query: str, sel_db: str) -> List:
         """在指定数据库中执行查询"""
-        print(f"\n=== 执行数据库查询 (数据集: {CURRENT_DATASET}) ===")
+        print(f"\n=== 执行数据库查询 (数据集: {config.CURRENT_DATASET}) ===")
         print(f"数据库: {sel_db}")
         print(f"查询语句: {converted_query}")
 
@@ -473,45 +415,45 @@ class SubQueryExecutor:
         try:
             if sel_db == 'Neo4j':
                 executor = Neo4jQueryExecutor(
-                    Neo4j_config['uri'],
-                    Neo4j_config['user'],
-                    Neo4j_config['password']
+                    config.Neo4j_config['uri'],
+                    config.Neo4j_config['user'],
+                    config.Neo4j_config['password']
                 )
                 result = executor.execute_query(converted_query)
                 print(f"Neo4j查询结果: {result}")
                 return result
 
-            elif sel_db == 'MySQL(newgutmgene)' or (sel_db == 'MySQL' and CURRENT_DATASET == "GMQA"):
+            elif sel_db == 'MySQL(newgutmgene)' or (sel_db == 'MySQL' and config.CURRENT_DATASET == "GMQA"):
                 executor = MySQLQueryExecutor(
-                    MySQL_config['host'],
-                    MySQL_config['user'],
-                    MySQL_config['password'],
-                    MySQL_config['database']
+                    config.MySQL_config['host'],
+                    config.MySQL_config['user'],
+                    config.MySQL_config['password'],
+                    config.MySQL_config['database']
                 )
                 result = executor.execute_query(converted_query)
                 print(f"MySQL查询结果: {result}")
                 return result
 
             elif sel_db == 'MySQL(gutmdisorder)':
-                if GutMDisorder_config is None:
-                    print(f"错误: 当前数据集({CURRENT_DATASET})不支持MySQL(gutmdisorder)")
+                if config.GutMDisorder_config is None:
+                    print(f"错误: 当前数据集({config.CURRENT_DATASET})不支持MySQL(gutmdisorder)")
                     return []
                 executor = MySQLQueryExecutor(
-                    GutMDisorder_config['host'],
-                    GutMDisorder_config['user'],
-                    GutMDisorder_config['password'],
-                    GutMDisorder_config['database']
+                    config.GutMDisorder_config['host'],
+                    config.GutMDisorder_config['user'],
+                    config.GutMDisorder_config['password'],
+                    config.GutMDisorder_config['database']
                 )
                 result = executor.execute_query(converted_query)
                 print(f"MySQL(gutmdisorder)查询结果: {result}")
                 return result
 
-            elif sel_db == 'MySQL' and CURRENT_DATASET != "GMQA":
+            elif sel_db == 'MySQL' and config.CURRENT_DATASET != "GMQA":
                 executor = MySQLQueryExecutor(
-                    MySQL_config['host'],
-                    MySQL_config['user'],
-                    MySQL_config['password'],
-                    MySQL_config['database']
+                    config.MySQL_config['host'],
+                    config.MySQL_config['user'],
+                    config.MySQL_config['password'],
+                    config.MySQL_config['database']
                 )
                 result = executor.execute_query(converted_query)
                 print(f"MySQL查询结果: {result}")
@@ -519,10 +461,10 @@ class SubQueryExecutor:
 
             elif sel_db == 'PostgreSQL':
                 executor = PostgreQueryExecutor(
-                    Postgre_config['host'],
-                    Postgre_config['user'],
-                    Postgre_config['password'],
-                    Postgre_config['database']
+                    config.Postgre_config['host'],
+                    config.Postgre_config['user'],
+                    config.Postgre_config['password'],
+                    config.Postgre_config['database']
                 )
                 result = executor.execute_query(converted_query)
                 print(f"PostgreSQL查询结果: {result}")
@@ -636,7 +578,7 @@ if __name__ == "__main__":
 
     # 测试TTL内容提取
     print("\n📂 测试TTL内容提取...")
-    extractor = TTLContentExtractor(TTL_FILES)
+    extractor = TTLContentExtractor(config.TTL_FILES)
 
     print("\n📝 生成的LLM提示词信息：")
     print("-" * 60)

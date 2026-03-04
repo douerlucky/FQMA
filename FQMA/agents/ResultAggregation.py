@@ -1,47 +1,52 @@
 import re
 from langchain_core.prompts import PromptTemplate
 from typing import List, Dict, Any
-from config import model
+import config
 import importlib
-
-# 动态导入提示词模板（根据当前数据集）
-try:
-    from config import CURRENT_DATASET
-    prompts_module = importlib.import_module(f"samples_exp.{CURRENT_DATASET}.prompts_rules")
-    ResultAggregation_template = prompts_module.ResultAggregation_template
-except (ImportError, AttributeError) as e:
-    print(f"⚠️ 无法导入ResultAggregation_template: {e}")
-    ResultAggregation_template = None
-
+import samples_exp.prompt_grad
 
 class ResultAggregation:
     def __init__(self, llm):
         self.llm = llm
+        # 🔥 修复：每次__init__动态加载，不用模块级缓存变量
+        try:
+            prompts_module = importlib.import_module(f"samples_exp.{config.CURRENT_DATASET}.prompts_rules")
+            _,_,_,_,_,cur_prompt = samples_exp.prompt_grad.get_templates()
+            template = cur_prompt
+        except (ImportError, AttributeError) as e:
+            print(f"⚠️ 无法导入ResultAggregation_template: {e}")
+            template = None
         self.aggregation_prompt = PromptTemplate(
             input_variables=["sub_question", "converted_queries", "query_results"],
-            template=ResultAggregation_template
+            template=template
         )
 
-    def extract_return_fields(self, query_list: List[str]) -> Dict[int, List[str]]:
-        """
-        改进的字段提取方法，支持多种查询格式
-        """
+    def extract_return_fields(self, query_list: List[str], results: Dict[int, List[Any]] = None) -> Dict[
+        int, List[str]]:
         result = {}
         for idx, query in enumerate(query_list, 1):
             fields = []
             query = query.strip()
 
-            # 处理Neo4j查询 (RETURN语句)
             if "RETURN" in query.upper():
                 fields = self._extract_neo4j_fields(query)
-
-            # 处理SQL查询 (SELECT语句)
             elif "SELECT" in query.upper():
                 fields = self._extract_sql_fields(query)
 
-            # 如果没有提取到字段，设置默认值
+            # 用实际结果校正列数
+            if results and idx in results:
+                actual_data = results[idx]
+                if actual_data:
+                    first_row = actual_data[0]
+                    actual_col_count = len(first_row) if isinstance(first_row, (list, tuple)) else 1
+                    # 字段数不够时补充
+                    while len(fields) < actual_col_count:
+                        fields.append(f"column_{len(fields) + 1}")
+                    # 字段数过多时截断
+                    fields = fields[:actual_col_count]
+
             if not fields:
-                fields = [f"Column_{i + 1}" for i in range(2)]  # 默认两列
+                fields = ["column_1", "column_2"]
 
             result[idx] = fields
             print(f"查询 {idx} 提取的字段: {fields}")
@@ -123,48 +128,26 @@ class ResultAggregation:
         return fields
 
     def table_generate(self, queries: List[str], results: Dict[int, List[Any]]) -> str:
-        """
-        生成所有查询的表格，并将它们以 Markdown 格式组织成一个字符串
-        """
-        detected_attr = self.extract_return_fields(queries)
-
+        detected_attr = self.extract_return_fields(queries, results)  # 传入results
         tables = ""
-
         for key, field_names in detected_attr.items():
             if not field_names:
                 continue
-
-            # 生成表头
             headers = " | ".join(field_names)
             separator = " | ".join(["---"] * len(field_names))
-
-            # 获取查询结果数据
             result_data = results.get(key, [])
-
-            # 生成数据行
             rows = ""
             for row_data in result_data:
                 if isinstance(row_data, (list, tuple)):
-                    # 确保数据列数与字段数匹配
-                    row_values = row_data[:len(field_names)]  # 截取到字段数量
-                    # 如果数据不够，用空字符串填充
+                    row_values = list(row_data[:len(field_names)])
                     while len(row_values) < len(field_names):
                         row_values.append("")
                     row_str = " | ".join(map(str, row_values))
                 else:
-                    # 单个值的情况
                     row_str = str(row_data)
-
-                rows += row_str + "\n"
-
-            # 生成完整的markdown表格
-            markdown_table = f"### 查询 {key} 的结果表格\n\n| {headers} |\n| {separator} |\n{rows}\n"
+                rows += f"| {row_str} |\n"  # ← 关键修复
+            markdown_table = f"### 查询 {key} 的结果\n\n| {headers} |\n| {separator} |\n{rows}\n"
             tables += markdown_table
-
-            print(f"查询 {key} 生成的表格:")
-            print(f"字段: {field_names}")
-            print(f"数据行数: {len(result_data)}")
-
         return tables
 
     def generate_explanations(self, sub_question: str, queries: List[str], results: Dict[int, List[Any]]) -> str:
@@ -255,7 +238,7 @@ RETURN microbiota.name as microbiota_name"""
     }
 
     # 创建修复后的聚合器
-    aggregator = ResultAggregation(model)
+    aggregator = ResultAggregation(config.model)
 
     # 测试字段提取
     print("=== 测试字段提取 ===")

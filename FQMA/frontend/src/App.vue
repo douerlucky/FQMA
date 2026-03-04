@@ -5,7 +5,15 @@
       <div class="sidebar-header">
         <div class="logo">
           <span class="logo-icon">🧬</span>
-          <span>GeneTi-Maid</span>
+          <span>FQMA</span>
+        </div>
+        <!-- 数据集选择器 -->
+        <div class="dataset-selector">
+          <label class="dataset-label">数据集</label>
+          <select v-model="currentDataset" class="dataset-select" @change="handleDatasetChange">
+            <option value="GMQA">🐷 GMQA（生猪微生物）</option>
+            <option value="RODI">📄 RODI（会议论文系统）</option>
+          </select>
         </div>
       </div>
       <button class="new-query-btn" @click="startNewQuery">
@@ -52,30 +60,18 @@
           <div v-if="messages.length === 0" class="welcome-screen">
             <div class="welcome-title">
               <span>🧬</span>
-              <span>GeneTi-Maid</span>
+              <span>FQMA</span>
             </div>
-            <div class="welcome-subtitle">基因与微生物智能问答系统</div>
+            <div class="welcome-subtitle">{{ currentDatasetConfig.label }}</div>
             <div class="example-section">
               <div class="example-title">
                 <span>💡</span>
                 <span>你可以这样问我：</span>
               </div>
               <div class="example-cards">
-                <div class="example-card" @click="useExample('哪些微生物能提高生猪饲养效率？')">
-                  <div class="example-icon">🐷</div>
-                  <div class="example-text">哪些微生物能提高生猪饲养效率？</div>
-                </div>
-                <div class="example-card" @click="useExample('乳酸菌的代谢通路是什么？')">
-                  <div class="example-icon">🦠</div>
-                  <div class="example-text">乳酸菌的代谢通路是什么？</div>
-                </div>
-                <div class="example-card" @click="useExample('什么基因调控微生物产酶过程？')">
-                  <div class="example-icon">🧬</div>
-                  <div class="example-text">什么基因调控微生物产酶过程？</div>
-                </div>
-                <div class="example-card" @click="useExample('如何提高饲料转化率？')">
-                  <div class="example-icon">🌾</div>
-                  <div class="example-text">如何提高饲料转化率？</div>
+                <div v-for="(example, index) in currentDatasetConfig.examples" :key="index" class="example-card" @click="useExample(example.text)">
+                  <div class="example-icon">{{ example.icon }}</div>
+                  <div class="example-text">{{ example.text }}</div>
                 </div>
               </div>
             </div>
@@ -185,6 +181,8 @@ import axios from 'axios'
 import { marked } from 'marked'
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'vue';
+import appConfig from './config.js'
+
 export default {
   name: 'App',
   data() {
@@ -197,21 +195,55 @@ export default {
       isProcessing: false,
       messageIdMap: {},
       currentThinkingMessage: null,
-
+      currentDataset: appConfig.DEFAULT_DATASET,
+      appConfig: appConfig
     }
   },
   computed: {
     isDevelopment() {
       return process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost';
+    },
+    currentDatasetConfig() {
+      return this.appConfig.DATASETS[this.currentDataset] || this.appConfig.DATASETS[appConfig.DEFAULT_DATASET];
     }
   },
   mounted() {
     this.initSession();
     this.setupSocketConnection();
+    this.syncDatasetWithBackend();
   },
   methods: {
+async syncDatasetWithBackend() {
+  try {
+    const dataset = this.currentDataset || 'GMQA';
+    await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, {
+      dataset: dataset
+    });
+    console.log(`✨ 后端数据集已同步为: ${dataset}`);
+  } catch (error) {
+    console.error("❌ 同步数据集失败:", error);
+  }
+},
+async handleDatasetChange() {
+  localStorage.setItem('geneti-dataset', this.currentDataset);
+  console.log(`🔄 正在尝试切换数据集到: ${this.currentDataset}`);
+  
+  try {
+    await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, {
+      dataset: this.currentDataset
+    });
+    console.log(`✅ 后端数据集已成功切换为: ${this.currentDataset}`);
+  } catch (error) {
+    console.error('切换数据集失败:', error);
+    alert('切换数据集失败，请检查后端连接');
+  }
+  
+  this.startNewQuery(); // 切换完后清空当前对话
+},
     initSession() {
+      
       this.sessionId = localStorage.getItem('geneti-session-id');
+      this.currentDataset = localStorage.getItem('geneti-dataset') || appConfig.DEFAULT_DATASET;
       if (this.sessionId) {
         this.loadHistory();
       } else {
@@ -322,7 +354,7 @@ export default {
       this.adjustTextareaHeight();
 
       try {
-        const response = await axios.post('http://localhost:5000/api/query', {
+        const response = await axios.post(`${appConfig.API_BASE_URL}/query`, {
           question,
           session_id: this.sessionId,
           message_id
@@ -393,27 +425,27 @@ export default {
       this.messages.push(sysMsg);
       this.scrollToBottom();
     },
-              deleteQuery(queryId) {
-       if (!confirm('确定要删除这个对话吗？')) return;
-       this.queryHistory = this.queryHistory.filter(q => q.id !== queryId);
-       if (this.currentQueryId === queryId) {
-         this.startNewQuery();
-       }
-       // 完全在前端管理删除状态
-       const deletedItems = JSON.parse(localStorage.getItem('geneti-deleted-queries') || '[]');
-       deletedItems.push(queryId);
-       localStorage.setItem('geneti-deleted-queries', JSON.stringify(deletedItems));
-       localStorage.setItem('geneti-history-cache', JSON.stringify(this.queryHistory));
-     },
-              clearAllHistory() {
-       if (!confirm('确定要清空所有对话历史吗？此操作不可恢复。')) return;
-       this.queryHistory = [];
-       this.messages = [];
-       this.currentQueryId = null;
-       // 完全在前端管理清空状态
-       localStorage.removeItem('geneti-history-cache');
-       localStorage.setItem('geneti-deleted-queries', JSON.stringify([]));
-     },
+    deleteQuery(queryId) {
+      if (!confirm('确定要删除这个对话吗？')) return;
+      this.queryHistory = this.queryHistory.filter(q => q.id !== queryId);
+      if (this.currentQueryId === queryId) {
+        this.startNewQuery();
+      }
+      // 完全在前端管理删除状态
+      const deletedItems = JSON.parse(localStorage.getItem('geneti-deleted-queries') || '[]');
+      deletedItems.push(queryId);
+      localStorage.setItem('geneti-deleted-queries', JSON.stringify(deletedItems));
+      localStorage.setItem('geneti-history-cache', JSON.stringify(this.queryHistory));
+    },
+    clearAllHistory() {
+      if (!confirm('确定要清空所有对话历史吗？此操作不可恢复。')) return;
+      this.queryHistory = [];
+      this.messages = [];
+      this.currentQueryId = null;
+      // 完全在前端管理清空状态
+      localStorage.removeItem('geneti-history-cache');
+      localStorage.setItem('geneti-deleted-queries', JSON.stringify([]));
+    },
     useExample(text) {
       this.inputText = text;
       this.sendQuery();
@@ -507,9 +539,41 @@ html, body, #app {
   color: #202123;
   font-size: 18px;
   font-weight: 600;
+  margin-bottom: 16px;
 }
 .logo-icon {
   font-size: 24px;
+}
+/* 数据集选择器样式 */
+.dataset-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.dataset-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+.dataset-select {
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #202123;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dataset-select:hover {
+  border-color: #d0d0d0;
+  background-color: #fafafa;
+}
+.dataset-select:focus {
+  outline: none;
+  border-color: #10a37f;
+  box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.1);
 }
 .new-query-btn {
   width: 100%;

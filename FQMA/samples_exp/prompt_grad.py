@@ -1,41 +1,37 @@
 import samples_exp.GMQA.sample_list as sample_list_gmqa
 import samples_exp.RODI.sample_list as sample_list_rodi
-import samples_exp.GMQA.prompts_rules as prompts_rules
+import samples_exp.GMQA.prompts_rules as prompts_rules_gmqa
 import samples_exp.RODI.prompts_rules as prompts_rules_rodi
-from config import example_use
-from config import CURRENT_DATASET
+import config
 
-if CURRENT_DATASET == "GMQA":
-    # GMQA 数据集使用 prompts_rules 和 sample_list
-    QueryPlanner_template = prompts_rules.QueryPlannerRules
-    SparQLGenerator_template = prompts_rules.SparQLGeneratorRules
-    QueryCheckerRules_template = prompts_rules.QueryCheckerRules
-    QueryRepairer_template = prompts_rules.QueryRepairRules
-    SubQueryScheduler_template = prompts_rules.SubQuerySchedulerRules
-    ResultAggregation_template = prompts_rules.ResultAggregation_template
-    sample_list = sample_list_gmqa
 
-elif CURRENT_DATASET == "RODI":
-    # RODI 数据集使用 prompts_rules_rodi 和 sample_list_rodi
-    QueryPlanner_template = prompts_rules_rodi.QueryPlannerRules
-    SparQLGenerator_template = prompts_rules_rodi.SparQLGeneratorRules
-    SubQueryScheduler_template = prompts_rules_rodi.SubQuerySchedulerRules
-    QueryRepairer_template = prompts_rules_rodi.QueryRepairRules
-    ResultAggregation_template = prompts_rules_rodi.ResultAggregation_template
-    sample_list = sample_list_rodi
+def get_templates():
+    if config.CURRENT_DATASET == "GMQA":
+        QueryPlanner_template = prompts_rules_gmqa.QueryPlannerRules
+        SparQLGenerator_template = prompts_rules_gmqa.SparQLGeneratorRules
+        QueryCheckerRules_template = prompts_rules_gmqa.QueryCheckerRules
+        QueryRepairer_template = prompts_rules_gmqa.QueryRepairRules
+        SubQueryScheduler_template = prompts_rules_gmqa.SubQuerySchedulerRules
+        ResultAggregation_template = prompts_rules_gmqa.ResultAggregation_template
+    elif config.CURRENT_DATASET == "RODI":
+        QueryPlanner_template = prompts_rules_rodi.QueryPlannerRules
+        SparQLGenerator_template = prompts_rules_rodi.SparQLGeneratorRules
+        QueryCheckerRules_template = prompts_rules_gmqa.QueryCheckerRules
+        QueryRepairer_template = prompts_rules_rodi.QueryRepairRules
+        SubQueryScheduler_template = prompts_rules_rodi.SubQuerySchedulerRules
+        ResultAggregation_template = prompts_rules_rodi.ResultAggregation_template
 
-else:
-    # 默认使用 GMQA 的规则
-    print(f"⚠️ 警告: 未识别的数据集 '{CURRENT_DATASET}'，使用默认的 GMQA 规则")
-    QueryPlanner_template = prompts_rules.QueryPlannerRules
-    SparQLGenerator_template = prompts_rules.SparQLGeneratorRules
-    SubQueryScheduler_template = prompts_rules.SubQuerySchedulerRules
-    QueryRepairer_template = prompts_rules.QueryRepairRules
-    ResultAggregation_template = prompts_rules.ResultAggregation_template
-    sample_list = sample_list_gmqa
 
-# 根据数据集动态加载对应的示例
-for add_example in range(example_use):
-    QueryPlanner_template += sample_list.QueryPlannerSamplesList[add_example]
-    SparQLGenerator_template += sample_list.SparQLGeneratorSamplesList[add_example]
-    QueryRepairer_template += sample_list.SPARQLRepairSampleList[add_example]
+
+    if config.CURRENT_DATASET == "GMQA":
+        for add_example in range(config.example_use):
+            QueryPlanner_template += sample_list_gmqa.QueryPlannerSamplesList[add_example]
+            SparQLGenerator_template += sample_list_gmqa.SparQLGeneratorSamplesList[add_example]
+            QueryRepairer_template += sample_list_gmqa.SPARQLRepairSampleList[add_example]
+    else:
+        for add_example in range(config.example_use):
+            QueryPlanner_template += sample_list_rodi.QueryPlannerSamplesList[add_example]
+            SparQLGenerator_template += sample_list_rodi.SparQLGeneratorSamplesList[add_example]
+            QueryRepairer_template += sample_list_rodi.SPARQLRepairSampleList[add_example]
+
+    return QueryPlanner_template, SparQLGenerator_template, QueryCheckerRules_template,QueryRepairer_template,SubQueryScheduler_template,ResultAggregation_template

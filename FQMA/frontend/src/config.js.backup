@@ -1,0 +1,71 @@
+export default {
+  // API配置
+  API_BASE_URL: process.env.VUE_APP_API_URL || 'http://localhost:5000/api',
+
+  // 应用配置
+  APP_NAME: 'GeneTi-Maid',
+  APP_VERSION: '1.0.0',
+
+  // 默认数据集
+  DEFAULT_DATASET: 'GMQA',
+
+  // 数据集配置
+  DATASETS: {
+    GMQA: {
+      label: 'GMQA（生猪微生物）',
+      icon: '🐷',
+      examples: [
+        {
+          text: '哪些微生物能提高生猪饲养效率？',
+          icon: '🐷'
+        },
+        {
+          text: '乳酸菌的代谢通路是什么？',
+          icon: '🦠'
+        },
+        {
+          text: '什么基因调控微生物产酶过程？',
+          icon: '🧬'
+        },
+        {
+          text: '如何提高饲料转化率？',
+          icon: '🌾'
+        }
+      ]
+    },
+    RODI: {
+      label: 'RODI（会议论文系统）',
+      icon: '📄',
+      examples: [
+        {
+          text: '查找所有位置在Benguela会议上发表论文的作者，获取这些作者的姓名。',
+          icon: '📍'
+        },
+        {
+          text: '查询ID为3的作者所著的前10篇论文，这些论文的摘要，再查他们的标题和提交的会议ID又是什么',
+          icon: '✍️'
+        },
+        {
+          text: '在Neo4j中查找所有作者名为"Aberthol"的人员所撰写的论文，返回论文ID、作者姓名和论文标题。',
+          icon: '🔍'
+        },
+        {
+          text: '查询ID为1000的委员会的成员ID，获取对应的邮箱地址，这些成员的名字、姓氏又是什么？',
+          icon: '👥'
+        }
+      ]
+    }
+  },
+
+  // 查询配置
+  MAX_QUERY_LENGTH: 1000,
+  QUERY_TIMEOUT: 60000, // 60秒超时
+
+  // UI配置
+  THEME: {
+    primaryColor: '#6b46c1',
+    secondaryColor: '#f0f0f0',
+    errorColor: '#dc2626',
+    successColor: '#10b981'
+  }
+}

@@ -5,7 +5,10 @@ import { io } from 'socket.io-client'
 import App from './App.vue'
 import router from './router'
 
-const socket = io('http://127.0.0.1:5000'); // 端口如有变动请同步
+const socket = io('http://localhost:5000', {
+  transports: ['websocket', 'polling'],
+  withCredentials: false
+});
 
 const app = createApp(App)
 

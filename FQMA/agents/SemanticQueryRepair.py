@@ -12,7 +12,7 @@ from rdflib import Graph, Namespace, RDF, RDFS, OWL, URIRef
 from rdflib.plugins.sparql import prepareQuery
 import logging
 
-from samples_exp import prompt_grad
+import samples_exp
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -249,11 +249,9 @@ class SemanticConsistencyChecker:
 
         # 动态导入提示词模板（根据当前数据集）
         try:
-            from config import CURRENT_DATASET
-            module_path = f"samples_exp.{CURRENT_DATASET}.prompts_rules"
-            import importlib
-            prompts_module = importlib.import_module(module_path)
-            self.checker_rules = prompts_module.QueryCheckerRules
+            import samples_exp.prompt_grad
+            _,_,cur_prompt,_,_,_ = samples_exp.prompt_grad.get_templates()
+            self.checker_rules =  cur_prompt
         except ImportError as e:
             logger.warning(f"无法导入QueryCheckerRules，使用默认模板。错误: {e}")
             self.checker_rules = self._get_default_rules()
@@ -760,8 +758,9 @@ class QueryRepairer:
 
         # 导入prompt模板（动态根据数据集）
         try:
-            import samples_exp.prompt_grad
-            self.repair_prompt_template = prompt_grad.QueryRepairer_template
+            from samples_exp import prompt_grad as pg
+            _, _, _,repairer_tmpl,_,_ = pg.get_templates()
+            self.repair_prompt_template = repairer_tmpl
         except ImportError as e:
             logger.warning(f"无法导入QueryRepairer_template，使用默认模板。错误: {e}")
             self.repair_prompt_template = self._get_default_template()
