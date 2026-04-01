@@ -36,7 +36,7 @@ GMQA_DIR = os.path.join(DATA_ROOT, "GMQA")
 MYSQL_TASKS = [
     {"file": "gutmdisorder.sql", "database": "gutmdisorder"},
     {"file": "newgutmgene.sql",  "database": "newgutmgene"},
-    {"file": "relationship.sql", "database": "newgutmgene"},   # 追加到同一库
+    {"file": "relationship.sql", "database": "relationship"},   
 ]
 PG_TASKS = [
     {"file": "kegg.sql", "database": "kegg"},
