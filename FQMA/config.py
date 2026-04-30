@@ -26,13 +26,13 @@ GRAPH_RECURSION_LIMIT = int(_env_or_default("FQMA_GRAPH_RECURSION_LIMIT", defaul
 
 # MySQL通用配置
 MySQL_user = _env_or_default("FQMA_MYSQL_USER", default='root')
-MySQL_pwd = _env_or_default("FQMA_MYSQL_PASSWORD", default='xfy911922')
+MySQL_pwd = _env_or_default("FQMA_MYSQL_PASSWORD", default='your_password')
 
 Postgre_user = _env_or_default("FQMA_POSTGRE_USER", default='postgres')
-Postgre_pwd = _env_or_default("FQMA_POSTGRE_PASSWORD", default='postgres')
+Postgre_pwd = _env_or_default("FQMA_POSTGRE_PASSWORD", default='your_password')
 
 Neo4j_user = _env_or_default("FQMA_NEO4J_USER", default='neo4j')
-Neo4j_pwd = _env_or_default("FQMA_NEO4J_PASSWORD", default="akie0126")
+Neo4j_pwd = _env_or_default("FQMA_NEO4J_PASSWORD", default="your_password")
 
 # LLM配置
 MODEL_TYPE = _env_or_default("FQMA_MODEL_TYPE", default="deepseek").lower()  # 可选: "deepseek", "qwen", "gpt", "llama", "zhipu", "ollama", "doubao"
@@ -51,7 +51,7 @@ if MODEL_TYPE == "qwen":
 elif MODEL_TYPE == "deepseek":
     from langchain_openai import ChatOpenAI
 
-    os.environ['DEEPSEEK_API_KEY'] = _env_or_default("DEEPSEEK_API_KEY", default='sk-7804441b4e474f4792976ff5305173be')
+    os.environ['DEEPSEEK_API_KEY'] = _env_or_default("DEEPSEEK_API_KEY", default='sk-xxxxxxx')
     os.environ['OPENAI_API_BASE'] = _env_or_default("OPENAI_API_BASE", default='https://api.deepseek.com')
     model = ChatOpenAI(
         temperature=llm_temperature,
