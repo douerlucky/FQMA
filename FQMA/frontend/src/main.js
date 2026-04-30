@@ -5,7 +5,11 @@ import { io } from 'socket.io-client'
 import App from './App.vue'
 import router from './router'
 
-const socket = io('http://localhost:5000', {
+const runtimeHost = window.location.hostname || 'localhost'
+const runtimeProtocol = window.location.protocol === 'https:' ? 'https' : 'http'
+const socketBaseUrl = import.meta.env.VITE_SOCKET_BASE_URL || `${runtimeProtocol}://${runtimeHost}:5001`
+
+const socket = io(socketBaseUrl, {
   transports: ['websocket', 'polling'],
   withCredentials: false
 });

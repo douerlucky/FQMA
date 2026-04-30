@@ -35,6 +35,7 @@ class SparqlToCypherConverter:
         self.property_to_attribute = {}  # 数据属性 -> 节点属性
         self.property_to_relation = {}  # 对象属性 -> 关系类型
         self.relation_directions = {}  # 关系方向信息
+        self.relationship_class_mappings = {}  # RDF关联类 -> Neo4j关系及关系属性
 
         # 属性式关系：对象属性存储为节点属性（如 is_submitted_at）
         self.property_based_relations = {}
@@ -48,13 +49,15 @@ class SparqlToCypherConverter:
             with open(self.ttl_file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-            # 分割映射节
-            sections = re.split(r'\n\s*<#', content)
+            # Split both local (<#Map>) and prefixed (ex:Map) R2RML-style mappings.
+            # GMQA pgmkg.ttl uses prefixed mapping names, so splitting only on "<#"
+            # incorrectly treats the whole TTL as one mapping.
+            sections = self._split_mapping_sections(content)
 
             for section in sections:
                 if not section.strip():
                     continue
-                self._parse_mapping_section('<#' + section if not section.startswith('<#') else section)
+                self._parse_mapping_section(section)
 
             print(f"✓ 成功解析Neo4j映射:")
             print(f"  - {len(self.class_to_label)} 个节点类型: {list(self.class_to_label.keys())}")
@@ -66,6 +69,21 @@ class SparqlToCypherConverter:
             import traceback
             traceback.print_exc()
             raise
+
+    def _split_mapping_sections(self, content: str) -> List[str]:
+        """Split TTL content into mapping sections by rr:logicalTable declarations."""
+        starts = []
+        for match in re.finditer(r'(?m)^\s*(?:<#[^>]+>|\w+:\w+)\s+rr:logicalTable\b', content):
+            starts.append(match.start())
+
+        if not starts:
+            return re.split(r'\n\s*<#', content)
+
+        sections = []
+        for idx, start in enumerate(starts):
+            end = starts[idx + 1] if idx + 1 < len(starts) else len(content)
+            sections.append(content[start:end])
+        return sections
 
     def _parse_mapping_section(self, section: str):
         """解析单个映射节"""
@@ -80,6 +98,9 @@ class SparqlToCypherConverter:
 
         # 4. 解析属性式关系（对象属性存储为节点属性）
         self._parse_property_based_relations(section)
+
+        # 5. 解析RDF关联类到Neo4j关系属性的映射
+        self._parse_relationship_class_mapping(section)
 
     def _parse_node_labels(self, section: str):
         """从Cypher查询或tableName中提取节点标签"""
@@ -211,7 +232,7 @@ class SparqlToCypherConverter:
 
         # 正向关系: (source:Label)-[r:REL_TYPE]->(target:Label)
         forward_match = re.search(
-            r'MATCH\s+\((\w+):(\w+)\)-\[r?:?(\w+)\]->\((\w+):(\w+)\)',
+            r'MATCH\s+\((\w+):(\w+)\)-\[r?:?([\w|]+)\]->\((\w+):(\w+)\)',
             cypher_query, re.IGNORECASE
         )
         if forward_match:
@@ -227,7 +248,7 @@ class SparqlToCypherConverter:
 
         # 反向关系: (target:Label)<-[r:REL_TYPE]-(source:Label)
         backward_match = re.search(
-            r'MATCH\s+\((\w+):(\w+)\)<-\[r?:?(\w+)\]-\((\w+):(\w+)\)',
+            r'MATCH\s+\((\w+):(\w+)\)<-\[r?:?([\w|]+)\]-\((\w+):(\w+)\)',
             cypher_query, re.IGNORECASE
         )
         if backward_match:
@@ -300,6 +321,59 @@ class SparqlToCypherConverter:
                     'property_name': prop_name
                 }
                 break
+
+    def _parse_relationship_class_mapping(self, section: str):
+        """解析 RDF 关联类映射：RDF class 的数据属性实际落在 Neo4j 关系属性上。"""
+        class_match = re.search(r'rr:class\s+(\w+):(\w+)', section)
+        sql_match = re.search(r'rr:sqlQuery\s*"""(.*?)"""', section, re.DOTALL)
+        if not class_match or not sql_match:
+            return
+
+        rdf_class = class_match.group(2)
+        cypher_query = sql_match.group(1)
+        rel_match = re.search(
+            r'MATCH\s+\((\w+):(\w+)\)-\[(\w+):([\w|]+)\]->\((\w+):(\w+)\)',
+            cypher_query,
+            re.IGNORECASE,
+        )
+        if not rel_match:
+            return
+
+        source_var, source_label, rel_var, rel_type, target_var, target_label = rel_match.groups()
+        return_match = re.search(r'RETURN\s+(.*)', cypher_query, re.IGNORECASE | re.DOTALL)
+        return_clause = return_match.group(1) if return_match else ""
+        rel_attributes = {
+            alias: prop
+            for prop, alias in re.findall(
+                rf'\b{re.escape(rel_var)}\.(\w+)\s+as\s+(\w+)',
+                return_clause,
+                re.IGNORECASE,
+            )
+        }
+        node_attributes = {
+            alias: prop
+            for node_var in (source_var, target_var)
+            for prop, alias in re.findall(
+                rf'\b{re.escape(node_var)}\.(\w+)\s+as\s+(\w+)',
+                return_clause,
+                re.IGNORECASE,
+            )
+        }
+        for alias, prop in node_attributes.items():
+            self.property_to_attribute.setdefault(alias, prop)
+
+        self.relationship_class_mappings[rdf_class] = {
+            'source_label': source_label,
+            'target_label': target_label,
+            'relation': rel_type,
+            'relationship_var': rel_var,
+            'source_sql_var': source_var,
+            'target_sql_var': target_var,
+            'rel_attributes': rel_attributes,
+            'node_attributes': node_attributes,
+            'association_to_source_predicates': set(),
+            'association_to_target_predicates': set(),
+        }
 
     def convert(self, sparql_query: str) -> str:
         """
@@ -441,14 +515,27 @@ class SparqlToCypherConverter:
         nodes = {}  # 变量 -> 标签
         relationships = []
         properties = {}  # 属性变量 -> (所属节点变量, 属性名)
+        relationship_properties = {}  # 属性变量 -> (关系变量, 关系属性名)
         property_relations = {}
         literal_filters = []  # 存储字面值过滤条件
+        relationship_literal_filters = []
+        association_vars = {}  # RDF关联对象变量 -> 关联类名
+        association_contexts = {}
 
         # 第一遍：识别节点类型
         for triple in triples:
             if self._is_type_predicate(triple['predicate']):
                 var = triple['subject']
                 rdf_class = triple['object'].split(':')[-1]
+
+                if rdf_class in self.relationship_class_mappings:
+                    association_vars[var] = rdf_class
+                    association_contexts.setdefault(var, {
+                        'class': rdf_class,
+                        'source_var': None,
+                        'target_var': None,
+                    })
+                    continue
 
                 if rdf_class in self.class_to_label:
                     label = self.class_to_label[rdf_class]
@@ -467,6 +554,27 @@ class SparqlToCypherConverter:
             is_variable = not (target.startswith('"') or target.startswith("'") or
                                target[0].isdigit() or target.startswith('conf:'))
 
+            if source_var in association_vars:
+                class_name = association_vars[source_var]
+                rel_info = self.relationship_class_mappings[class_name]
+                if pred_name in rel_info.get('rel_attributes', {}):
+                    attr_name = rel_info['rel_attributes'][pred_name]
+                    if is_variable:
+                        relationship_properties[target] = (source_var, attr_name)
+                    else:
+                        literal_value = target.strip('"').strip("'")
+                        relationship_literal_filters.append((source_var, attr_name, literal_value))
+                    continue
+                if is_variable:
+                    association_contexts.setdefault(source_var, {
+                        'class': class_name,
+                        'source_var': None,
+                        'target_var': None,
+                    })
+                    association_contexts[source_var]['target_var'] = target
+                    nodes.setdefault(target, rel_info['target_label'])
+                    continue
+
             # 优先检查是否是数据属性
             if pred_name in self.property_to_attribute:
                 attr_name = self.property_to_attribute[pred_name]
@@ -483,6 +591,29 @@ class SparqlToCypherConverter:
             # 检查是否是对象属性（关系）
             elif pred_name in self.property_to_relation:
                 rel_type = self.property_to_relation[pred_name]
+
+                if target in association_vars:
+                    association_contexts.setdefault(target, {
+                        'class': association_vars[target],
+                        'source_var': None,
+                        'target_var': None,
+                    })
+                    association_contexts[target]['source_var'] = source_var
+                    rel_info = self.relationship_class_mappings[association_vars[target]]
+                    nodes.setdefault(source_var, rel_info['source_label'])
+                    continue
+
+                if source_var in association_vars:
+                    association_contexts.setdefault(source_var, {
+                        'class': association_vars[source_var],
+                        'source_var': None,
+                        'target_var': None,
+                    })
+                    association_contexts[source_var]['target_var'] = target
+                    rel_info = self.relationship_class_mappings[association_vars[source_var]]
+                    nodes.setdefault(target, rel_info['target_label'])
+                    continue
+
                 relationships.append((source_var, rel_type, target, pred_name))
 
                 # 如果目标节点类型未知，从关系方向推断
@@ -509,6 +640,25 @@ class SparqlToCypherConverter:
                 if source_var not in nodes:
                     nodes[source_var] = rel_info['source_label']
 
+        relationship_edges = []
+        for assoc_var, assoc_info in association_contexts.items():
+            class_name = assoc_info['class']
+            rel_info = self.relationship_class_mappings[class_name]
+            source_var = assoc_info.get('source_var')
+            target_var = assoc_info.get('target_var')
+            if not source_var:
+                continue
+            if not target_var:
+                target_var = f"{assoc_var}_target"
+            nodes.setdefault(source_var, rel_info['source_label'])
+            nodes.setdefault(target_var, rel_info['target_label'])
+            relationship_edges.append({
+                'assoc_var': assoc_var,
+                'source_var': source_var,
+                'target_var': target_var,
+                'relation': rel_info['relation'],
+            })
+
         # 生成简短的Cypher变量名
         var_mapping = {}
         used_names = set()
@@ -522,31 +672,62 @@ class SparqlToCypherConverter:
             var_mapping[var] = short_name
             used_names.add(short_name)
 
+        relationship_var_mapping = {}
+        for edge in relationship_edges:
+            assoc_var = edge['assoc_var']
+            short_name = 'r'
+            counter = 1
+            while short_name in used_names:
+                short_name = f"r{counter}"
+                counter += 1
+            relationship_var_mapping[assoc_var] = short_name
+            used_names.add(short_name)
+
         return {
             'nodes': nodes,
             'relationships': relationships,
+            'relationship_edges': relationship_edges,
             'var_mapping': var_mapping,
+            'relationship_var_mapping': relationship_var_mapping,
             'properties': properties,
+            'relationship_properties': relationship_properties,
             'property_relations': property_relations,
-            'literal_filters': literal_filters
+            'literal_filters': literal_filters,
+            'relationship_literal_filters': relationship_literal_filters
         }
 
     def _is_type_predicate(self, predicate: str) -> bool:
         """判断是否是类型谓词"""
-        return (predicate == 'a' or
-                predicate == 'rdf:type' or
-                'type' in predicate.lower())
+        return predicate in {'a', 'rdf:type'}
 
     def _build_match(self, pattern: Dict) -> List[str]:
         """构建MATCH子句"""
         matches = []
         nodes = pattern['nodes']
         relationships = pattern['relationships']
+        relationship_edges = pattern.get('relationship_edges', [])
         var_mapping = pattern['var_mapping']
+        relationship_var_mapping = pattern.get('relationship_var_mapping', {})
 
-        if relationships:
+        if relationships or relationship_edges:
             # 有关系的情况
             matched_nodes = set()
+
+            for edge in relationship_edges:
+                source_var = edge['source_var']
+                target_var = edge['target_var']
+                source_label = nodes.get(source_var, '')
+                target_label = nodes.get(target_var, '')
+                source_cypher = var_mapping.get(source_var, source_var[0])
+                target_cypher = var_mapping.get(target_var, target_var[0])
+                rel_cypher = relationship_var_mapping.get(edge['assoc_var'], 'r')
+                rel_type = edge['relation']
+                matches.append(
+                    f"({source_cypher}:{source_label})-[{rel_cypher}:{rel_type}]->"
+                    f"({target_cypher}:{target_label})"
+                )
+                matched_nodes.add(source_var)
+                matched_nodes.add(target_var)
 
             for source_var, rel_type, target_var, pred_name in relationships:
                 source_label = nodes.get(source_var, '')
@@ -590,9 +771,12 @@ class SparqlToCypherConverter:
         """
         conditions = []
         var_mapping = pattern['var_mapping']
+        relationship_var_mapping = pattern.get('relationship_var_mapping', {})
         properties = pattern.get('properties', {})  # 属性变量映射
+        relationship_properties = pattern.get('relationship_properties', {})
         property_relations = pattern.get('property_relations', {})
         literal_filters = pattern.get('literal_filters', [])
+        relationship_literal_filters = pattern.get('relationship_literal_filters', [])
 
         # 1. 首先处理字面值过滤条件（三元组中直接指定的字面值）
         for node_var, attr_name, literal_value in literal_filters:
@@ -600,16 +784,32 @@ class SparqlToCypherConverter:
                 cypher_var = var_mapping[node_var]
                 conditions.append(f'{cypher_var}.{attr_name} = "{literal_value}"')
 
+        for assoc_var, attr_name, literal_value in relationship_literal_filters:
+            if assoc_var in relationship_var_mapping:
+                rel_var = relationship_var_mapping[assoc_var]
+                conditions.append(f'{rel_var}.{attr_name} = "{literal_value}"')
+
         # 2. 处理FILTER表达式
         for filter_expr in filters:
-            condition = self._convert_filter_expression(filter_expr, var_mapping, properties, property_relations)
-            if condition:
-                conditions.append(condition)
+            filter_parts = re.split(r'\s*&&\s*', filter_expr)
+            for filter_part in filter_parts:
+                condition = self._convert_filter_expression(
+                    filter_part.strip(),
+                    var_mapping,
+                    properties,
+                    property_relations,
+                    relationship_properties,
+                    relationship_var_mapping,
+                )
+                if condition:
+                    conditions.append(condition)
 
         return conditions
 
     def _convert_filter_expression(self, filter_expr: str, var_mapping: Dict,
-                                   properties: Dict, property_relations: Dict) -> Optional[str]:
+                                   properties: Dict, property_relations: Dict,
+                                   relationship_properties: Dict | None = None,
+                                   relationship_var_mapping: Dict | None = None) -> Optional[str]:
         """
         🔥🔥🔥 核心修复：转换单个FILTER表达式
 
@@ -648,6 +848,15 @@ class SparqlToCypherConverter:
             else:
                 cypher_op = '='
 
+            relationship_properties = relationship_properties or {}
+            relationship_var_mapping = relationship_var_mapping or {}
+
+            if var in relationship_properties:
+                assoc_var, attr_name = relationship_properties[var]
+                if assoc_var in relationship_var_mapping:
+                    rel_var = relationship_var_mapping[assoc_var]
+                    return f'{rel_var}.{attr_name} {cypher_op} "{value}"'
+
             # 🔥 关键：检查是否是属性变量
             if var in properties:
                 # 属性变量：获取所属节点和属性名
@@ -677,6 +886,15 @@ class SparqlToCypherConverter:
             else:
                 cypher_op = operator
 
+            relationship_properties = relationship_properties or {}
+            relationship_var_mapping = relationship_var_mapping or {}
+
+            if var in relationship_properties:
+                assoc_var, attr_name = relationship_properties[var]
+                if assoc_var in relationship_var_mapping:
+                    rel_var = relationship_var_mapping[assoc_var]
+                    return f"{rel_var}.{attr_name} {cypher_op} {value}"
+
             # 检查是否是属性变量
             if var in properties:
                 node_var, attr_name = properties[var]
@@ -705,6 +923,21 @@ class SparqlToCypherConverter:
         if in_match:
             var = in_match.group(1)
             values_str = in_match.group(2)
+
+            relationship_properties = relationship_properties or {}
+            relationship_var_mapping = relationship_var_mapping or {}
+
+            if var in relationship_properties:
+                assoc_var, attr_name = relationship_properties[var]
+                if assoc_var in relationship_var_mapping:
+                    rel_var = relationship_var_mapping[assoc_var]
+                    if re.match(r'^[\d,\s]+$', values_str):
+                        values_list = '[' + values_str + ']'
+                        return f'{rel_var}.{attr_name} IN {values_list}'
+                    values = re.findall(r'["\']([^"\']+)["\']', values_str)
+                    if values:
+                        values_list = '[' + ', '.join(f'"{v}"' for v in values) + ']'
+                        return f'{rel_var}.{attr_name} IN {values_list}'
 
             # 检查是否是属性变量
             if var in properties:
@@ -747,10 +980,20 @@ class SparqlToCypherConverter:
         var_mapping = pattern['var_mapping']
         nodes = pattern['nodes']
         properties = pattern['properties']
+        relationship_properties = pattern.get('relationship_properties', {})
+        relationship_var_mapping = pattern.get('relationship_var_mapping', {})
 
         for var in select_vars:
             # 首先检查是否是数据属性变量
-            if var in properties:
+            if var in relationship_properties:
+                assoc_var, attr_name = relationship_properties[var]
+                if assoc_var in relationship_var_mapping:
+                    rel_var = relationship_var_mapping[assoc_var]
+                    return_items.append(f'{rel_var}.{attr_name} AS {var}')
+                else:
+                    return_items.append(var)
+
+            elif var in properties:
                 node_var, attr_name = properties[var]
                 if node_var in var_mapping:
                     cypher_var = var_mapping[node_var]

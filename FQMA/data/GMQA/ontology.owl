@@ -203,6 +203,16 @@
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
 
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#host_type">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Host type used in TTL mappings, e.g., human/mouse.</rdfs:comment>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#alteration_type">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Alteration direction used in TTL mappings, e.g., increase/decrease.</rdfs:comment>
+    </owl:DatatypeProperty>
+
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#pubchem_id">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#Metabolite"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>

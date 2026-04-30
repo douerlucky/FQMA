@@ -1,0 +1,577 @@
+WARNING:werkzeug:Werkzeug appears to be used in a production deployment. Consider switching to a production web server instead.
+ * Serving Flask app 'app'
+ * Debug mode: off
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.3.178:5001
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:root:健康检查接口被调用
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:41:54] "GET /api/health HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:41:58] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:41:58] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:00] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:01] "[35m[1mOPTIONS /api/query HTTP/1.1[0m" 204 -
+Dataset switched to: GMQA
+QueryProcessor reset. Current ontology path: data/GMQA/ontology.owl
+Dataset switched to: RODI
+QueryProcessor reset. Current ontology path: data/RODI/ontology.owl
+✅ 成功加载本体文件: data/RODI/ontology.owl
+
+============================================================
+📂 加载TTL映射文件（供LLM决策使用）
+============================================================
+  ✅ neo4j: 加载了 15 个映射
+  ✅ mysql_main: 加载了 6 个映射
+  ✅ postgresql: 加载了 15 个映射
+============================================================
+
+✅ 成功加载本体: data/RODI/ontology.owl
+  提取到 15 个类
+  提取到 14 个对象属性
+  提取到 9 个数据属性
+
+📊 本体解析摘要:
+  类 (Classes): 15
+  对象属性 (Object Properties): 14
+  数据属性 (Datatype Properties): 9
+  个体 (Individuals): 0
+  类示例: ['Review', 'Chair', 'Reviewer', 'Person', 'Conference_contributor']
+  对象属性示例: ['is_the_1th_part_of', 'contributes', 'has_contributions', 'was_a_member_of', 'has_a_review']
+  数据属性示例: ['has_a_location', 'has_the_last_name', 'has_detailed_comments', 'has_the_first_name', 'has_a_paper_title']
+✅ LLM检查模式: advisory
+当前数据集: RODI
+当前数据集: RODIINFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+查询ID为3的作者所著的前10篇论文，这些论文的摘要，之后在另一数据库他们的标题和提交的会议ID又是什么子查询列表：
+1. [依赖: 无] 查询ID为3的作者所著的前10篇论文
+2. [依赖: 1] 查询这些论文的摘要
+3. [依赖: 1] 查询这些论文的标题和提交的会议IDINFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper
+WHERE {
+  ?person rdf:type conf:Person .
+  ?person conf:contributes ?paper .
+  ?paper rdf:type conf:Paper .
+  FILTER (?person = 3)
+}
+LIMIT 10🔧 RODI 查询规范化：将作者查论文重写为 has_authors 方向PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_authors ?person .
+  ?person rdf:type conf:Person .
+  FILTER (?person = 3)
+}
+LIMIT 10
+📝 子问题: 查询ID为3的作者所著的前10篇论文✅ SPARQL长度: 248 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_authors ?person .
+  ?person rdf:type conf:Person .
+  FILTER (?person = 3)
+}
+LIMIT 10============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: 查询ID为3的作者所著的前10篇论文📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_authors ?person .
+  ?person rdf:type...------------------------------------------------------------
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: 查询ID为3的作者所著的前10篇论文...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ...根据SPARQL谓词过滤后的候选数据库: ['Neo4j', 'PostgreSQL'] (predicates: has_authors)RODI兜底选择数据库: PostgreSQL=== 数据库选择完成 ===
+
+=== 转换查询到 PostgreSQL (数据集: RODI) ===Parsed R2RML mapping:  - 6 class mappings  - 10 property mappings  - 3 object properties  - 7 complex relation mappings✅ 转换成功转换后的PostgreSQL: SELECT "Paper"."ID"
+FROM "Paper"
+JOIN "contributes" ON "Paper"."ID" = "contributes"."Conference_document"
+JOIN "Person" ON "contributes"."Person" = "Person"."ID"
+WHERE "Person"."ID" = 3
+=== 占位符检查 ===查询语句: SELECT "Paper"."ID"
+FROM "Paper"
+JOIN "contributes" ON "Paper"."ID" = "contributes"."Conference_document"
+JOIN "Person" ON "contributes"."Person" = "Person"."ID"
+WHERE "Person"."ID" = 3包含占位符: False=== 检查完成 ===
+
+=== 执行数据库查询 (数据集: RODI) ===数据库: PostgreSQL查询语句: SELECT "Paper"."ID"
+FROM "Paper"
+JOIN "contributes" ON "Paper"."ID" = "contributes"."Conference_document"
+JOIN "Person" ON "contributes"."Person" = "Person"."ID"
+WHERE "Person"."ID" = 3PostgreSQL查询结果: [[600], [0]]INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?abstract ?abstract_text
+WHERE {
+  ?abstract rdf:type conf:Abstract .
+  ?abstract conf:is_the_1th_part_of ?paper .
+  ?abstract conf:has_text ?abstract_text .
+  FILTER (?paper IN (<<SUBQUERY_1>>))
+}
+📝 子问题: 查询这些论文的摘要✅ SPARQL长度: 297 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?abstract ?abstract_text
+WHERE {
+  ?abstract rdf:type conf:Abstract .
+  ?abstract conf:is_the_1th_part_of ?paper .
+  ?abstract conf:has_text ?abstract_text .
+  FILTER (?paper IN (<<SUBQUERY_1>>))
+}============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: 查询这些论文的摘要📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?abstract ?abstract_text
+WHERE {
+  ?abstract rdf:type conf:Abstract .
+  ?abstract conf:is_the_1th_pa...------------------------------------------------------------✓ 检测到占位符: ['<<SUBQUERY_1>>']
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: 查询这些论文的摘要...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ...根据SPARQL谓词过滤后的候选数据库: ['MySQL'] (predicates: has_text, is_the_1th_part_of)✅ 根据谓词约束直接选择数据库: MySQL=== 数据库选择完成 ===
+
+=== 转换查询到 MySQL (数据集: RODI) ===成功加载TTL文件: data/RODI/rodi_mysql.ttl提取到 6 个SQL映射1. AbstractFullQueryMapping   复杂度: 3   列映射: ['abstract_id', 'paper_id', 'abstract_text', 'conference_id']   覆盖谓词: 32. AbstractMapping   复杂度: 0   列映射: ['ID', 'has_text', 'is_submitted_at', 'is_the_1th_part_of']   覆盖谓词: 33. AbstractByPaperMapping   复杂度: 0   列映射: ['abstract_id', 'paper_id', 'abstract_text']   覆盖谓词: 24. ReviewMapping   复杂度: 0   列映射: ['review_id', 'has_detailed_comments', 'paper_id']   覆盖谓词: 25. PersonEmailMapping   复杂度: 0   列映射: ['person_id', 'has_an_email']   覆盖谓词: 1
+============================================================开始真正数据驱动的SPARQL转换============================================================
+🔍 接收到的原始SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?abstract ?abstract_text
+WHERE {
+  ?abstract rdf:type conf:Abstract .
+  ?abstract conf:is_the_1th_part_of ?paper .
+  ?abstract conf:has_text ?abstract_text .
+  FILTER (?paper IN (<<SUBQUERY_1>>))
+}
+解析后的SELECT变量: ['abstract', 'abstract_text']解析后的变量到谓词映射: {'paper': ['http://conference#is_the_1th_part_of'], 'abstract_text': ['http://conference#has_text']}查询需要的变量: {'abstract', 'abstract_text', 'paper'}查询需要的谓词: {'http://conference#has_text', 'http://conference#is_the_1th_part_of'}映射 AbstractFullQueryMapping: 总分=83.63, 变量覆盖=0.33, 谓词匹配=1.00映射 AbstractMapping: 总分=50.00, 变量覆盖=0.00, 谓词匹配=1.00映射 AbstractByPaperMapping: 总分=83.33, 变量覆盖=0.33, 谓词匹配=1.00映射 ReviewMapping: 总分=0.00, 变量覆盖=0.00, 谓词匹配=0.00映射 PersonEmailMapping: 总分=0.00, 变量覆盖=0.00, 谓词匹配=0.00映射 ConferenceFeesMapping: 总分=0.00, 变量覆盖=0.00, 谓词匹配=0.00选择最佳映射: AbstractFullQueryMapping选择的SQL映射: AbstractFullQueryMapping复杂度评分: 3覆盖变量: ['abstract_id', 'paper_id', 'abstract_text', 'conference_id']
+🔍 开始变量到列映射SELECT变量: ['abstract', 'abstract_text']所有变量: {'abstract', 'abstract_text', 'paper'}
+--- 第一步：处理对象属性（关系） ---✓ 对象属性: abstract --[is_the_1th_part_of]--> paper  映射: paper -> 列名 is_the_1th_part_of
+--- 第二步：处理数据属性 ---
+--- 第三步：处理SELECT变量 ---✓ 直接映射: 变量 abstract -> 列 abstract_id✓ 直接映射: 变量 abstract_text -> 列 abstract_text
+📊 最终映射结果: {'paper': 'is_the_1th_part_of', 'abstract': 'abstract_id', 'abstract_text': 'abstract_text'}
+变量到列映射: {'paper': 'is_the_1th_part_of', 'abstract': 'abstract_id', 'abstract_text': 'abstract_text'}FILTER映射: paper -> is_the_1th_part_of -> is_the_1th_part_of✓ 添加IN条件: is_the_1th_part_of IN (<<SUBQUERY_1>>)
+✓ 最终SQL: SELECT ID as abstract_id, 
+                   is_the_1th_part_of as paper_id, 
+                   has_text as abstract_text, 
+                   is_submitted_at as conference_id
+            FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)SELECT映射: abstract -> abstract_id -> ID as abstract_idSELECT映射: abstract_text -> abstract_text -> has_text as abstract_text
+生成的SQL查询:SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)✅ 转换成功转换后的MySQL: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)
+=== 占位符检查 ===查询语句: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+
+=== 开始替换占位符 ===原始查询: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)子查询结果字典: {1: [[600], [0]]}
+=== 占位符检查 ===查询语句: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+提取到的占位符: [('<<SUBQUERY_1>>', 1)]
+处理占位符: <<SUBQUERY_1>> (子查询编号: 1)找到子查询 1 的结果: [[600], [0]]
+=== 格式化子查询结果 ===原始结果: [[600], [0]]提取的值: [600, 0]格式化后的结果: 600, 0=== 格式化完成 ===
+格式化后的结果: 600, 0替换前: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (<<SUBQUERY_1>>)替换后: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)=== 占位符替换完成 ===最终查询: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)=== 替换结束 ===
+
+=== 执行数据库查询 (数据集: RODI) ===数据库: MySQL查询语句: SELECT ID as abstract_id, has_text as abstract_text FROM Abstract
+            WHERE has_text IS NOT NULL AND is_the_1th_part_of IN (600, 0)MySQL查询结果: [[4, 'tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical'], [1652, 'bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill']]INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper ?title ?conference_id
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_a_paper_title ?title .
+  ?paper conf:is_submitted_at ?conference_id .
+  FILTER (?paper IN (<<SUBQUERY_1>>))
+}
+📝 子问题: 查询这些论文的标题和提交的会议ID✅ SPARQL长度: 295 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper ?title ?conference_id
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_a_paper_title ?title .
+  ?paper conf:is_submitted_at ?conference_id .
+  FILTER (?paper IN (<<SUBQUERY_1>>))
+}============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: 查询这些论文的标题和提交的会议ID📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ?paper ?title ?conference_id
+WHERE {
+  ?paper rdf:type conf:Paper .
+  ?paper conf:has_a_paper_title ...------------------------------------------------------------✓ 检测到占位符: ['<<SUBQUERY_1>>']
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: 查询这些论文的标题和提交的会议ID...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX conf: <http://conference#>
+
+SELECT ...根据SPARQL谓词过滤后的候选数据库: ['Neo4j', 'PostgreSQL'] (predicates: has_a_paper_title, is_submitted_at)RODI兜底选择数据库: PostgreSQL=== 数据库选择完成 ===
+
+=== 转换查询到 PostgreSQL (数据集: RODI) ===Parsed R2RML mapping:  - 6 class mappings  - 10 property mappings  - 3 object properties  - 7 complex relation mappings✅ 转换成功转换后的PostgreSQL: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (<<SUBQUERY_1>>)
+=== 占位符检查 ===查询语句: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+
+=== 开始替换占位符 ===原始查询: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (<<SUBQUERY_1>>)子查询结果字典: {1: [[600], [0]], 2: [[4, 'tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical tibetans slavishly hipless prs bluejays cuppier nonsurgical'], [1652, 'bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill']]}
+=== 占位符检查 ===查询语句: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+提取到的占位符: [('<<SUBQUERY_1>>', 1)]
+处理占位符: <<SUBQUERY_1>> (子查询编号: 1)找到子查询 1 的结果: [[600], [0]]
+=== 格式化子查询结果 ===原始结果: [[600], [0]]提取的值: [600, 0]格式化后的结果: 600, 0=== 格式化完成 ===
+格式化后的结果: 600, 0替换前: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (<<SUBQUERY_1>>)替换后: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (600, 0)=== 占位符替换完成 ===最终查询: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (600, 0)=== 替换结束 ===
+
+=== 执行数据库查询 (数据集: RODI) ===数据库: PostgreSQL查询语句: SELECT "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"
+FROM "Paper"
+JOIN "Conference_volume" ON "Paper"."is_submitted_at" = "Conference_volume"."ID"
+WHERE "Paper"."ID" IN (600, 0)PostgreSQL查询结果: [[256, 'bluejays cuppier nonsurgical skimpiest outpoured dissociated heartier petitionee brill'], [7, 'tibetans slavishly hipless prs bluejays cuppier nonsurgical']]=== 开始处理结果聚合 ===子问题: 查询ID为3的作者所著的前10篇论文，这些论文的摘要，之后在另一数据库他们的标题和提交的会议ID又是什么查询数量: 3结果数量: 3提取的SELECT内容: "Paper"."ID"查询 1 提取的字段: ['"ID"']提取的SELECT内容: ID as abstract_id, has_text as abstract_text查询 2 提取的字段: ['abstract_id', 'abstract_text']提取的SELECT内容: "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"查询 3 提取的字段: ['"ID"', '"has_a_paper_title"']INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+联合汇总表上下文字段: {}提取的SELECT内容: "Paper"."ID"查询 1 提取的字段: ['"ID"']提取的SELECT内容: ID as abstract_id, has_text as abstract_text查询 2 提取的字段: ['abstract_id', 'abstract_text']提取的SELECT内容: "Paper"."ID", "Paper"."has_a_paper_title", "Conference_volume"."ID"查询 3 提取的字段: ['"ID"', '"has_a_paper_title"']INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+=== 结果聚合完成 ===INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:11] "POST /api/query HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:23] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:23] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:24] "[35m[1mOPTIONS /api/query HTTP/1.1[0m" 204 -
+Dataset switched to: GMQA
+QueryProcessor reset. Current ontology path: data/GMQA/ontology.owl
+✅ 成功加载本体文件: data/GMQA/ontology.owl
+
+============================================================
+📂 加载TTL映射文件（供LLM决策使用）
+============================================================
+  ✅ neo4j: 加载了 13 个映射
+  ✅ mysql_main: 加载了 5 个映射
+  ✅ mysql_main: 加载了 9 个映射
+  ✅ mysql_disorder: 加载了 14 个映射
+  ✅ mysql_disorder: 加载了 9 个映射
+  ✅ postgresql: 加载了 3 个映射
+============================================================
+
+✅ 成功加载本体: data/GMQA/ontology.owl
+  提取到 11 个类
+  提取到 17 个对象属性
+  提取到 20 个数据属性
+
+📊 本体解析摘要:
+  类 (Classes): 11
+  对象属性 (Object Properties): 17
+  数据属性 (Datatype Properties): 20
+  个体 (Individuals): 0
+  类示例: ['FeedEfficiency', 'Phenotype', 'Association', 'Metabolite', 'PhenotypeAssociation']
+  对象属性示例: ['changes_gene_expression_by_microbiota', 'participates_in_pathway', 'decreases_microbiota_abundance_by_food', 'correlatedwith_feed_efficiency', 'regulates_microbiota_abundance']
+  数据属性示例: ['network_name', 'gene_host_type', 'alteration_type', 'pathway_name', 'drug_name']
+✅ LLM检查模式: advisory
+当前数据集: GMQA
+当前数据集: GMQAINFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+Dorea（多雷菌）、Eubacterium（真杆菌属） 和 Bacteroides（拟杆菌属） 中与生猪饲养效率显著相关的微生物的调控基因及其代谢通路是什么？子查询列表：
+1. [依赖: 无] Dorea、Eubacterium和Bacteroides中与生猪饲养效率显著相关的微生物
+2. [依赖: 1] 调控这些微生物的基因
+3. [依赖: 2] 这些基因的代谢通路INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  ?microbiota ont:correlatedwith_feed_efficiency ?efficiency .
+  ?efficiency rdf:type ont:FeedEfficiency .
+  FILTER (?microbiota_name IN ("Dorea", "Eubacterium", "Bacteroides"))
+}
+📝 子问题: Dorea、Eubacterium和Bacteroides中与生猪饲养效率显著相关的微生物✅ SPARQL长度: 464 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  ?microbiota ont:correlatedwith_feed_efficiency ?efficiency .
+  ?efficiency rdf:type ont:FeedEfficiency .
+  FILTER (?microbiota_name IN ("Dorea", "Eubacterium", "Bacteroides"))
+}============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: Dorea、Eubacterium和Bacteroides中与生猪饲养效率显著相关的微生物📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {
+  ?microbiot...------------------------------------------------------------
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: Dorea、Eubacterium和Bacteroides中与生猪饲养效率显著相关的微生物...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/on...根据SPARQL谓词过滤后的候选数据库: ['Neo4j'] (predicates: correlatedwith_feed_efficiency, microbiota_name)✅ 根据谓词约束直接选择数据库: Neo4j=== 数据库选择完成 ===
+
+=== 转换查询到 Neo4j (数据集: GMQA) ===✓ 成功解析Neo4j映射:  - 6 个节点类型: ['MicrobiotaName', 'Gene', 'FeedEfficiency', 'KEGGPathway', 'Metabolite', 'PhenotypeAssociation']  - 6 个属性映射: {'microbiota_name': 'name', 'gene_symbol': 'name', 'efficiency_name': 'name', 'pathway_name': 'pathway_name', 'metabolite_name': 'name', 'phenotype_name': 'name'}  - 8 个关系映射: {'has_association': 'ASSOCIATED_WITH', 'has_phenotype_association': 'ASSOCIATED_WITH', 'correlatedwith_feed_efficiency': 'significantlyassociated', 'increases_feed_efficiency': 'increase', 'changes_gene_expression_by_microbiota': 'upregulate|downregulate', 'generates_metabolite': 'produce', 'association_source': 'ASSOCIATED_WITH', 'changes_microbiota_abundance_by_disorder': 'changes_abundance'}✅ 转换成功转换后的Cypher: MATCH (m:MicrobiotaName)-[:significantlyassociated]->(e:FE)
+WHERE m.name IN ["Dorea", "Eubacterium", "Bacteroides"]
+RETURN DISTINCT m.name AS microbiota_name
+=== 占位符检查 ===查询语句: MATCH (m:MicrobiotaName)-[:significantlyassociated]->(e:FE)
+WHERE m.name IN ["Dorea", "Eubacterium", "Bacteroides"]
+RETURN DISTINCT m.name AS microbiota_name包含占位符: False=== 检查完成 ===
+
+=== 执行数据库查询 (数据集: GMQA) ===数据库: Neo4j查询语句: MATCH (m:MicrobiotaName)-[:significantlyassociated]->(e:FE)
+WHERE m.name IN ["Dorea", "Eubacterium", "Bacteroides"]
+RETURN DISTINCT m.name AS microbiota_nameNeo4j查询结果: [['Bacteroides'], ['Dorea'], ['Eubacterium']]INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:regulates_microbiota_abundance ?microbiota .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+}
+📝 子问题: 调控这些微生物的基因✅ SPARQL长度: 462 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:regulates_microbiota_abundance ?microbiota .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+}============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: 调控这些微生物的基因📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {
+  ?gene ...------------------------------------------------------------✓ 检测到占位符: ['<<SUBQUERY_1>>']
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: 调控这些微生物的基因...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/on...根据SPARQL谓词过滤后的候选数据库: ['MySQL(newgutmgene)', 'MySQL(gutmdisorder)'] (predicates: gene_symbol, microbiota_name, regulates_microbiota_abundance)INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+✅ LLM选择数据库: MySQL(newgutmgene)=== 数据库选择完成 ===
+
+=== 转换查询到 MySQL(newgutmgene) (数据集: GMQA) ===成功加载TTL文件: data/GMQA/newgutmgene.ttl成功加载TTL文件: data/GMQA/relationship.ttl提取到 9 个SQL映射1. GeneIncreasesMicrobiotaMapping   复杂度: 22   列映射: ['gene_symbol', 'microbiota_name', 'host_type']   覆盖谓词: 22. GeneDecreasesMicrobiotaMapping   复杂度: 22   列映射: ['gene_symbol', 'microbiota_name', 'host_type']   覆盖谓词: 23. MicrobiotaMetaboliteGeneMapping   复杂度: 19   列映射: ['gene_symbol', 'metabolite_name', 'microbiota_name']   覆盖谓词: 24. MetaboliteChangesGeneExpressionMapping   复杂度: 19   列映射: ['gene_symbol', 'metabolite_name']   覆盖谓词: 15. GeneRegulatesMicrobiotaAbundanceMapping   复杂度: 19   列映射: ['gene_symbol', 'microbiota_name']   覆盖谓词: 1
+============================================================开始真正数据驱动的SPARQL转换============================================================
+🔍 接收到的原始SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:regulates_microbiota_abundance ?microbiota .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+}
+解析后的SELECT变量: ['gene_symbol', 'microbiota_name']解析后的变量到谓词映射: {'gene_symbol': ['http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_symbol'], 'microbiota': ['http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#regulates_microbiota_abundance'], 'microbiota_name': ['http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_name']}查询需要的变量: {'microbiota_name', 'microbiota', 'gene_symbol'}查询需要的谓词: {'http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_symbol', 'http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_name', 'http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#regulates_microbiota_abundance'}映射 GeneIncreasesMicrobiotaMapping: 总分=77.20, 变量覆盖=0.67, 谓词匹配=0.17映射 GeneDecreasesMicrobiotaMapping: 总分=77.20, 变量覆盖=0.67, 谓词匹配=0.17映射 MicrobiotaMetaboliteGeneMapping: 总分=68.57, 变量覆盖=0.67, 谓词匹配=0.00映射 MetaboliteChangesGeneExpressionMapping: 总分=35.23, 变量覆盖=0.33, 谓词匹配=0.00映射 GeneRegulatesMicrobiotaAbundanceMapping: 总分=85.23, 变量覆盖=0.67, 谓词匹配=0.33映射 MicrobiotaChangesGeneExpressionMapping: 总分=68.57, 变量覆盖=0.67, 谓词匹配=0.00映射 GeneFromExpressionMapping: 总分=50.90, 变量覆盖=0.33, 谓词匹配=0.33映射 MetaboliteFromExpressionMapping: 总分=0.70, 变量覆盖=0.00, 谓词匹配=0.00映射 MicrobiotaFromExpressionMapping: 总分=50.70, 变量覆盖=0.33, 谓词匹配=0.33选择最佳映射: GeneRegulatesMicrobiotaAbundanceMapping选择的SQL映射: GeneRegulatesMicrobiotaAbundanceMapping复杂度评分: 19覆盖变量: ['gene_symbol', 'microbiota_name']
+🔍 开始变量到列映射SELECT变量: ['gene_symbol', 'microbiota_name']所有变量: {'microbiota_name', 'microbiota', 'gene_symbol'}
+--- 第一步：处理对象属性（关系） ---跳过当前MySQL映射不支持的谓词: http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#gene_symbol✓ 对象属性: gene --[regulates_microbiota_abundance]--> microbiota  映射: microbiota -> 列名 regulates_microbiota_abundance跳过当前MySQL映射不支持的谓词: http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#microbiota_name
+--- 第二步：处理数据属性 ---✓ 数据属性: 变量 gene_symbol -> 列 gene_symbol✓ 数据属性: 变量 microbiota_name -> 列 microbiota_name
+--- 第三步：处理SELECT变量 ---
+📊 最终映射结果: {'microbiota': 'regulates_microbiota_abundance', 'gene_symbol': 'gene_symbol', 'microbiota_name': 'microbiota_name'}
+变量到列映射: {'microbiota': 'regulates_microbiota_abundance', 'gene_symbol': 'gene_symbol', 'microbiota_name': 'microbiota_name'}FILTER映射: microbiota_name -> microbiota_name -> hecrbm.relationship✓ 添加IN条件: hecrbm.relationship IN (<<SUBQUERY_1>>)
+✓ 最终SQL: SELECT DISTINCT
+                hecrbm.gene_symbol,
+                hecrbm.relationship AS microbiota_name
+            FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)SELECT映射: gene_symbol -> gene_symbol -> hecrbm.gene_symbolSELECT映射: microbiota_name -> microbiota_name -> hecrbm.relationship AS microbiota_name
+生成的SQL查询:SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM relationship.has_expression_change_results_by_microbiota hecrbm
+            JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)✅ 转换成功转换后的MySQL: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)
+=== 占位符检查 ===查询语句: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+
+=== 开始替换占位符 ===原始查询: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)子查询结果字典: {1: [['Bacteroides'], ['Dorea'], ['Eubacterium']]}
+=== 占位符检查 ===查询语句: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)包含占位符: True找到的占位符: ['1']=== 检查完成 ===
+提取到的占位符: [('<<SUBQUERY_1>>', 1)]
+处理占位符: <<SUBQUERY_1>> (子查询编号: 1)找到子查询 1 的结果: [['Bacteroides'], ['Dorea'], ['Eubacterium']]
+=== 格式化子查询结果 ===原始结果: [['Bacteroides'], ['Dorea'], ['Eubacterium']]提取的值: ['Bacteroides', 'Dorea', 'Eubacterium']格式化后的结果: 'Bacteroides', 'Dorea', 'Eubacterium'=== 格式化完成 ===
+格式化后的结果: 'Bacteroides', 'Dorea', 'Eubacterium'替换前: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN (<<SUBQUERY_1>>)替换后: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN ('Bacteroides', 'Dorea', 'Eubacterium')=== 占位符替换完成 ===最终查询: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN ('Bacteroides', 'Dorea', 'Eubacterium')=== 替换结束 ===
+
+=== 执行数据库查询 (数据集: GMQA) ===数据库: MySQL(newgutmgene)查询语句: SELECT hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name FROM has_expression_change_results_by_microbiota hecrbm
+            JOIN gut_microbiota_gene_change_results gmgcr
+                ON hecrbm.index = gmgcr.index WHERE hecrbm.relationship IN ('Bacteroides', 'Dorea', 'Eubacterium')MySQL查询结果: [['BCL2', 'Eubacterium'], ['BAX', 'Eubacterium'], ['CASP3', 'Eubacterium'], ['BCL2', 'Bacteroides'], ['BAX', 'Bacteroides'], ['CASP3', 'Bacteroides'], ['Prkaa2', 'Eubacterium'], ['Prkaa1', 'Eubacterium'], ['Gcg', 'Bacteroides'], ['Nr1h4', 'Bacteroides'], ['Fgf15', 'Bacteroides'], ['Fgfr4', 'Bacteroides'], ['Cyp7a1', 'Bacteroides'], ['Sirpa', 'Bacteroides'], ['Cpt1b', 'Bacteroides'], ['Fas', 'Bacteroides']]INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+
+🔍 LLM原始输出:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?pathway_name ?gene_symbol
+WHERE {
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:participates_in_pathway ?pathway .
+  ?pathway rdf:type ont:KEGGPathway .
+  ?pathway ont:pathway_name ?pathway_name .
+  FILTER (?gene_symbol IN (<<SUBQUERY_2>>))
+}
+📝 子问题: 这些基因的代谢通路✅ SPARQL长度: 430 字符📄 完整SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?pathway_name ?gene_symbol
+WHERE {
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:participates_in_pathway ?pathway .
+  ?pathway rdf:type ont:KEGGPathway .
+  ?pathway ont:pathway_name ?pathway_name .
+  FILTER (?gene_symbol IN (<<SUBQUERY_2>>))
+}============================================================
+============================================================🔍 开始检查SPARQL查询============================================================📝 自然语言问题: 这些基因的代谢通路📄 SPARQL查询:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?pathway_name ?gene_symbol
+WHERE {
+  ?gene rdf...------------------------------------------------------------✓ 检测到占位符: ['<<SUBQUERY_2>>']
+【步骤1】语法合规性检查✅ 语法检查通过
+【步骤2】语义合规性检查（基于本体）✅ 本体语义检查通过
+【步骤3】禁止函数检查✅ 禁止函数检查通过
+【步骤4】LLM语义一致性检查（模式: advisory）ERROR:agents.SemanticQueryRepair:语义一致性检查失败: 'select_variables'
+
+--- LLM检查详情 ---⚠️ 检查失败: 'select_variables'，默认判定为合规--- LLM检查结束 ---
+✅ LLM语义一致性检查通过
+============================================================✅ 查询完全合规============================================================
+
+=== 数据库选择（LLM决策）===子问题: 这些基因的代谢通路...SPARQL: PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/on...根据SPARQL谓词过滤后的候选数据库: ['PostgreSQL'] (predicates: gene_symbol, participates_in_pathway, pathway_name)GMQA兜底选择数据库: PostgreSQL=== 数据库选择完成 ===
+
+=== 转换查询到 PostgreSQL (数据集: GMQA) ===Parsed R2RML mapping:  - 2 class mappings  - 2 property mappings  - 0 object properties  - 1 complex relation mappings✅ 转换成功转换后的PostgreSQL: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN (<<SUBQUERY_2>>)
+=== 占位符检查 ===查询语句: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN (<<SUBQUERY_2>>)包含占位符: True找到的占位符: ['2']=== 检查完成 ===
+
+=== 开始替换占位符 ===原始查询: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN (<<SUBQUERY_2>>)子查询结果字典: {1: [['Bacteroides'], ['Dorea'], ['Eubacterium']], 2: [['BCL2', 'Eubacterium'], ['BAX', 'Eubacterium'], ['CASP3', 'Eubacterium'], ['BCL2', 'Bacteroides'], ['BAX', 'Bacteroides'], ['CASP3', 'Bacteroides'], ['Prkaa2', 'Eubacterium'], ['Prkaa1', 'Eubacterium'], ['Gcg', 'Bacteroides'], ['Nr1h4', 'Bacteroides'], ['Fgf15', 'Bacteroides'], ['Fgfr4', 'Bacteroides'], ['Cyp7a1', 'Bacteroides'], ['Sirpa', 'Bacteroides'], ['Cpt1b', 'Bacteroides'], ['Fas', 'Bacteroides']]}
+=== 占位符检查 ===查询语句: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN (<<SUBQUERY_2>>)包含占位符: True找到的占位符: ['2']=== 检查完成 ===
+提取到的占位符: [('<<SUBQUERY_2>>', 2)]
+处理占位符: <<SUBQUERY_2>> (子查询编号: 2)找到子查询 2 的结果: [['BCL2', 'Eubacterium'], ['BAX', 'Eubacterium'], ['CASP3', 'Eubacterium'], ['BCL2', 'Bacteroides'], ['BAX', 'Bacteroides'], ['CASP3', 'Bacteroides'], ['Prkaa2', 'Eubacterium'], ['Prkaa1', 'Eubacterium'], ['Gcg', 'Bacteroides'], ['Nr1h4', 'Bacteroides'], ['Fgf15', 'Bacteroides'], ['Fgfr4', 'Bacteroides'], ['Cyp7a1', 'Bacteroides'], ['Sirpa', 'Bacteroides'], ['Cpt1b', 'Bacteroides'], ['Fas', 'Bacteroides']]
+=== 格式化子查询结果 ===原始结果: [['BCL2', 'Eubacterium'], ['BAX', 'Eubacterium'], ['CASP3', 'Eubacterium'], ['BCL2', 'Bacteroides'], ['BAX', 'Bacteroides'], ['CASP3', 'Bacteroides'], ['Prkaa2', 'Eubacterium'], ['Prkaa1', 'Eubacterium'], ['Gcg', 'Bacteroides'], ['Nr1h4', 'Bacteroides'], ['Fgf15', 'Bacteroides'], ['Fgfr4', 'Bacteroides'], ['Cyp7a1', 'Bacteroides'], ['Sirpa', 'Bacteroides'], ['Cpt1b', 'Bacteroides'], ['Fas', 'Bacteroides']]提取的值: ['BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas']格式化后的结果: 'BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas'=== 格式化完成 ===
+格式化后的结果: 'BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas'替换前: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN (<<SUBQUERY_2>>)替换后: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN ('BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas')=== 占位符替换完成 ===最终查询: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN ('BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas')=== 替换结束 ===
+
+=== 执行数据库查询 (数据集: GMQA) ===数据库: PostgreSQL查询语句: SELECT "kegg"."pathway", "kegg"."gene_symbol"
+FROM "kegg"
+WHERE "kegg"."gene_symbol" IN ('BCL2', 'BAX', 'CASP3', 'BCL2', 'BAX', 'CASP3', 'Prkaa2', 'Prkaa1', 'Gcg', 'Nr1h4', 'Fgf15', 'Fgfr4', 'Cyp7a1', 'Sirpa', 'Cpt1b', 'Fas')PostgreSQL查询结果: [['hsa01521  EGFR tyrosine kinase inhibitor resistance, hsa01522  Endocrine resistance, hsa01524  Platinum drug resistance, hsa04071  Sphingolipid signaling pathway, hsa04115  p53 signaling pathway, hsa04141  Protein processing in endoplasmic reticulum, hsa04210  Apoptosis, hsa04211  Longevity regulating pathway, hsa04215  Apoptosis - multiple species, hsa04217  Necroptosis, hsa04722  Neurotrophin signaling pathway, hsa04932  Non-alcoholic fatty liver disease, hsa04933  AGE-RAGE signaling pathway in diabetic complications, hsa05012  Parkinson disease, hsa05014  Amyotrophic lateral sclerosis, hsa05016  Huntington disease, hsa05020  Prion disease, hsa05022  Pathways of neurodegeneration - multiple diseases, hsa05130  Pathogenic Escherichia coli infection, hsa05131  Shigellosis, hsa05132  Salmonella infection, hsa05152  Tuberculosis, hsa05160  Hepatitis C, hsa05161  Hepatitis B, hsa05162  Measles, hsa05163  Human cytomegalovirus infection, hsa05164  Influenza A, hsa05165  Human papillomavirus infection, hsa05166  Human T-cell leukemia virus 1 infection, hsa05167  Kaposi sarcoma-associated herpesvirus infection, hsa05168  Herpes simplex virus 1 infection, hsa05169  Epstein-Barr virus infection, hsa05170  Human immunodeficiency virus 1 infection, hsa05200  Pathways in cancer, hsa05202  Transcriptional misregulation in cancer, hsa05203  Viral carcinogenesis, hsa05210  Colorectal cancer, hsa05212  Pancreatic cancer, hsa05213  Endometrial cancer, hsa05214  Glioma, hsa05216  Thyroid cancer, hsa05217  Basal cell carcinoma, hsa05218  Melanoma, hsa05220  Chronic myeloid leukemia, hsa05222  Small cell lung cancer, hsa05223  Non-small cell lung cancer, hsa05224  Breast cancer, hsa05225  Hepatocellular carcinoma, hsa05226  Gastric cancer, hsa05417  Lipid and atherosclerosis', 'BAX'], ['hsa01521  EGFR tyrosine kinase inhibitor resistance, hsa01522  Endocrine resistance, hsa01524  Platinum drug resistance, hsa04064  NF-kappa B signaling pathway, hsa04066  HIF-1 signaling pathway, hsa04071  Sphingolipid signaling pathway, hsa04115  p53 signaling pathway, hsa04140  Autophagy - animal, hsa04141  Protein processing in endoplasmic reticulum, hsa04151  PI3K-Akt signaling pathway, hsa04210  Apoptosis, hsa04215  Apoptosis - multiple species, hsa04217  Necroptosis, hsa04261  Adrenergic signaling in cardiomyocytes, hsa04340  Hedgehog signaling pathway, hsa04510  Focal adhesion, hsa04621  NOD-like receptor signaling pathway, hsa04630  JAK-STAT signaling pathway, hsa04722  Neurotrophin signaling pathway, hsa04725  Cholinergic synapse, hsa04915  Estrogen signaling pathway, hsa04928  Parathyroid hormone synthesis, secretion and action, hsa04933  AGE-RAGE signaling pathway in diabetic complications, hsa05014  Amyotrophic lateral sclerosis, hsa05022  Pathways of neurodegeneration - multiple diseases, hsa05131  Shigellosis, hsa05132  Salmonella infection, hsa05145  Toxoplasmosis, hsa05152  Tuberculosis, hsa05161  Hepatitis B, hsa05162  Measles, hsa05168  Herpes simplex virus 1 infection, hsa05169  Epstein-Barr virus infection, hsa05170  Human immunodeficiency virus 1 infection, hsa05200  Pathways in cancer, hsa05206  MicroRNAs in cancer, hsa05207  Chemical carcinogenesis - receptor activation, hsa05210  Colorectal cancer, hsa05215  Prostate cancer, hsa05222  Small cell lung cancer, hsa05226  Gastric cancer, hsa05417  Lipid and atherosclerosis, hsa05418  Fluid shear stress and atherosclerosis', 'BCL2'], ['hsa01524  Platinum drug resistance, hsa04010  MAPK signaling pathway, hsa04115  p53 signaling pathway, hsa04210  Apoptosis, hsa04215  Apoptosis - multiple species, hsa04650  Natural killer cell mediated cytotoxicity, hsa04657  IL-17 signaling pathway, hsa04668  TNF signaling pathway, hsa04726  Serotonergic synapse, hsa04932  Non-alcoholic fatty liver disease, hsa04933  AGE-RAGE signaling pathway in diabetic complications, hsa04936  Alcoholic liver disease, hsa05010  Alzheimer disease, hsa05012  Parkinson disease, hsa05014  Amyotrophic lateral sclerosis, hsa05016  Huntington disease, hsa05020  Prion disease, hsa05022  Pathways of neurodegeneration - multiple diseases, hsa05120  Epithelial cell signaling in Helicobacter pylori infection, hsa05130  Pathogenic Escherichia coli infection, hsa05132  Salmonella infection, hsa05133  Pertussis, hsa05134  Legionellosis, hsa05145  Toxoplasmosis, hsa05146  Amoebiasis, hsa05152  Tuberculosis, hsa05160  Hepatitis C, hsa05161  Hepatitis B, hsa05162  Measles, hsa05163  Human cytomegalovirus infection, hsa05164  Influenza A, hsa05165  Human papillomavirus infection, hsa05167  Kaposi sarcoma-associated herpesvirus infection, hsa05168  Herpes simplex virus 1 infection, hsa05169  Epstein-Barr virus infection, hsa05170  Human immunodeficiency virus 1 infection, hsa05200  Pathways in cancer, hsa05203  Viral carcinogenesis, hsa05205  Proteoglycans in cancer, hsa05206  MicroRNAs in cancer, hsa05210  Colorectal cancer, hsa05222  Small cell lung cancer, hsa05416  Viral myocarditis, hsa05417  Lipid and atherosclerosis', 'CASP3'], ['mmu04068  FoxO signaling pathway, mmu04140  Autophagy - animal, mmu04150  mTOR signaling pathway, mmu04151  PI3K-Akt signaling pathway, mmu04152  AMPK signaling pathway, mmu04211  Longevity regulating pathway, mmu04213  Longevity regulating pathway - multiple species, mmu04371  Apelin signaling pathway, mmu04530  Tight junction, mmu04710  Circadian rhythm, mmu04714  Thermogenesis, mmu04910  Insulin signaling pathway, mmu04920  Adipocytokine signaling pathway, mmu04921  Oxytocin signaling pathway, mmu04922  Glucagon signaling pathway, mmu04931  Insulin resistance, mmu04932  Non-alcoholic fatty liver disease, mmu04936  Alcoholic liver disease, mmu05410  Hypertrophic cardiomyopathy, mmu05418  Fluid shear stress and atherosclerosis', 'Prkaa1'], ['mmu04068  FoxO signaling pathway, mmu04140  Autophagy - animal, mmu04150  mTOR signaling pathway, mmu04151  PI3K-Akt signaling pathway, mmu04152  AMPK signaling pathway, mmu04211  Longevity regulating pathway, mmu04213  Longevity regulating pathway - multiple species, mmu04371  Apelin signaling pathway, mmu04530  Tight junction, mmu04710  Circadian rhythm, mmu04714  Thermogenesis, mmu04910  Insulin signaling pathway, mmu04920  Adipocytokine signaling pathway, mmu04921  Oxytocin signaling pathway, mmu04922  Glucagon signaling pathway, mmu04931  Insulin resistance, mmu04932  Non-alcoholic fatty liver disease, mmu04936  Alcoholic liver disease, mmu05410  Hypertrophic cardiomyopathy, mmu05418  Fluid shear stress and atherosclerosis', 'Prkaa2'], ['mmu04024  cAMP signaling pathway, mmu04080  Neuroactive ligand-receptor interaction, mmu04714  Thermogenesis, mmu04911  Insulin secretion, mmu04922  Glucagon signaling pathway', 'Gcg'], ['mmu00071  Fatty acid degradation, mmu01212  Fatty acid metabolism, mmu03320  PPAR signaling pathway, mmu04152  AMPK signaling pathway, mmu04714  Thermogenesis, mmu04920  Adipocytokine signaling pathway, mmu04922  Glucagon signaling pathway, mmu04931  Insulin resistance, mmu04936  Alcoholic liver disease, mmu05415  Diabetic cardiomyopathy', 'Cpt1b'], ['mmu00120  Primary bile acid biosynthesis, mmu00140  Steroid hormone biosynthesis, mmu01100  Metabolic pathways, mmu03320  PPAR signaling pathway, mmu04976  Bile secretion, mmu04979  Cholesterol metabolism', 'Cyp7a1'], ['mmu01524  Platinum drug resistance, mmu04010  MAPK signaling pathway, mmu04060  Cytokine-cytokine receptor interaction, mmu04115  p53 signaling pathway, mmu04210  Apoptosis, mmu04217  Necroptosis, mmu04650  Natural killer cell mediated cytotoxicity, mmu04668  TNF signaling pathway, mmu04932  Non-alcoholic fatty liver disease, mmu04936  Alcoholic liver disease, mmu04940  Type I diabetes mellitus, mmu05010  Alzheimer disease, mmu05022  Pathways of neurodegeneration - multiple diseases, mmu05142  Chagas disease, mmu05143  African trypanosomiasis, mmu05160  Hepatitis C, mmu05161  Hepatitis B, mmu05162  Measles, mmu05163  Human cytomegalovirus infection, mmu05164  Influenza A, mmu05165  Human papillomavirus infection, mmu05167  Kaposi sarcoma-associated herpesvirus infection, mmu05168  Herpes simplex virus 1 infection, mmu05169  Epstein-Barr virus infection, mmu05170  Human immunodeficiency virus 1 infection, mmu05200  Pathways in cancer, mmu05205  Proteoglycans in cancer, mmu05320  Autoimmune thyroid disease, mmu05330  Allograft rejection, mmu05332  Graft-versus-host disease, mmu05417  Lipid and atherosclerosis', 'Fas'], ['mmu04010  MAPK signaling pathway, mmu04014  Ras signaling pathway, mmu04015  Rap1 signaling pathway, mmu04020  Calcium signaling pathway, mmu04151  PI3K-Akt signaling pathway, mmu04810  Regulation of actin cytoskeleton, mmu05200  Pathways in cancer, mmu05218  Melanoma, mmu05224  Breast cancer, mmu05226  Gastric cancer', 'Fgf15'], ['mmu04010  MAPK signaling pathway, mmu04014  Ras signaling pathway, mmu04015  Rap1 signaling pathway, mmu04020  Calcium signaling pathway, mmu04144  Endocytosis, mmu04151  PI3K-Akt signaling pathway, mmu04550  Signaling pathways regulating pluripotency of stem cells, mmu04810  Regulation of actin cytoskeleton, mmu05200  Pathways in cancer', 'Fgfr4'], ['mmu04380  Osteoclast differentiation', 'Sirpa'], ['mmu04976  Bile secretion', 'Nr1h4']]=== 开始处理结果聚合 ===子问题: Dorea（多雷菌）、Eubacterium（真杆菌属） 和 Bacteroides（拟杆菌属） 中与生猪饲养效率显著相关的微生物的调控基因及其代谢通路是什么？查询数量: 3结果数量: 3查询 1 提取的字段: ['microbiota_name']提取的SELECT内容: hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name查询 2 提取的字段: ['gene_symbol', 'microbiota_name']提取的SELECT内容: "kegg"."pathway", "kegg"."gene_symbol"查询 3 提取的字段: ['"pathway"', '"gene_symbol"']INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+联合汇总表上下文字段: {'实验条件': '生猪饲养效率', '宿主': '生猪'}查询 1 提取的字段: ['microbiota_name']提取的SELECT内容: hecrbm.gene_symbol, hecrbm.relationship AS microbiota_name查询 2 提取的字段: ['gene_symbol', 'microbiota_name']提取的SELECT内容: "kegg"."pathway", "kegg"."gene_symbol"查询 3 提取的字段: ['"pathway"', '"gene_symbol"']INFO:httpx:HTTP Request: POST https://api.deepseek.com/v1/chat/completions "HTTP/1.1 200 OK"
+=== 结果聚合完成 ===INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:42:49] "POST /api/query HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:45:41] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:45:41] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:45:44] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:47:27] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:47:27] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:47:52] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:47:52] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:48:57] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:48:57] "POST /api/switch-dataset HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:49:22] "[35m[1mOPTIONS /api/switch-dataset HTTP/1.1[0m" 204 -
+INFO:werkzeug:127.0.0.1 - - [30/Apr/2026 18:49:22] "POST /api/switch-dataset HTTP/1.1" 200 -

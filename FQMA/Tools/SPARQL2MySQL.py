@@ -13,9 +13,16 @@
 import rdflib
 from rdflib import Graph, Namespace, RDF, RDFS, URIRef, Literal
 import re
+import sys
 from typing import Dict, List, Tuple, Optional, Set, Union
 from dataclasses import dataclass
 from collections import defaultdict
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
 
 
 @dataclass
@@ -246,7 +253,7 @@ class SparqlToMySQLConverter:
             # 智能选择最佳的SQL映射 - 改进版
             best_mapping = self._select_best_mapping_improved(query_info)
             if not best_mapping:
-                return "-- ERROR: 未找到匹配的SQL映射"
+                raise RuntimeError("未找到匹配的SQL映射")
 
             print(f"选择的SQL映射: {best_mapping.mapping_id}")
             print(f"复杂度评分: {best_mapping.complexity_score}")
@@ -264,7 +271,7 @@ class SparqlToMySQLConverter:
             print(f"转换过程中出现错误: {e}")
             import traceback
             traceback.print_exc()
-            return f"-- ERROR: 转换失败 - {str(e)}"
+            raise RuntimeError(f"转换失败: {e}") from e
 
     def _parse_sparql_query(self, sparql_query: str) -> Dict:
         print(f"\n🔍 接收到的原始SPARQL查询:\n{sparql_query}\n")
@@ -302,6 +309,9 @@ class SparqlToMySQLConverter:
 
             # 提取FILTER条件
             where_content = self._extract_filters(where_content, query_info)
+
+            # 移除BIND子句，避免污染三元组解析
+            where_content = re.sub(r'BIND\s*\([^)]*\)', '', where_content, flags=re.IGNORECASE)
 
             # 解析三元组模式
             self._parse_triple_patterns(where_content, query_info)
@@ -460,6 +470,14 @@ class SparqlToMySQLConverter:
     def _build_sql_from_mapping(self, query_info: Dict, mapping: SQLMapping) -> str:
         """基于映射构建SQL查询，零硬编码"""
         base_sql = mapping.sql_query
+        unsupported_predicates = sorted(
+            pred for pred in query_info['required_predicates']
+            if not self._predicate_supported_by_mapping(pred, mapping)
+        )
+        if unsupported_predicates:
+            raise RuntimeError(
+                f"MySQL mapping '{mapping.mapping_id}' does not support predicates: {unsupported_predicates}"
+            )
 
         # 建立SPARQL变量到SQL列的映射
         var_to_column = self._map_sparql_vars_to_columns(query_info, mapping)
@@ -473,6 +491,26 @@ class SparqlToMySQLConverter:
         final_sql = self._build_select_data_driven(sql_with_filters, query_info, mapping, var_to_column)
 
         return final_sql
+
+    def _predicate_supported_by_mapping(self, predicate: str, mapping: SQLMapping) -> bool:
+        supported_predicates = set(mapping.covered_predicates)
+        supported_predicates.add(mapping.predicate_uri)
+        if predicate in supported_predicates:
+            return True
+
+        predicate_local = predicate.split('#')[-1] if '#' in predicate else predicate.split('/')[-1]
+        if predicate_local in mapping.column_mappings:
+            return True
+
+        predicate_local_lower = predicate_local.lower()
+        for column_name in mapping.column_mappings:
+            column_name_lower = column_name.lower()
+            if predicate_local_lower == column_name_lower:
+                return True
+            if predicate_local_lower in column_name_lower or column_name_lower in predicate_local_lower:
+                return True
+
+        return False
 
     def _map_sparql_vars_to_columns(self, query_info: Dict, mapping: SQLMapping) -> Dict[str, str]:
         """
@@ -488,6 +526,8 @@ class SparqlToMySQLConverter:
         print(f"\n🔍 开始变量到列映射")
         print(f"SELECT变量: {query_info['select_vars']}")
         print(f"所有变量: {query_info['required_variables']}")
+        supported_predicates = set(mapping.covered_predicates)
+        supported_predicates.add(mapping.predicate_uri)
 
         # 第一步：处理对象属性（关系三元组）
         print(f"\n--- 第一步：处理对象属性（关系） ---")
@@ -498,11 +538,22 @@ class SparqlToMySQLConverter:
             if 'type' in pred.lower():
                 continue
 
+            if pred not in supported_predicates:
+                print(f"跳过当前MySQL映射不支持的谓词: {pred}")
+                continue
+
             subj = triple['subject'].strip('?')
             obj = triple['object'].strip('?')
 
             # 判断：如果宾语是变量，这是对象属性
             if obj in query_info['required_variables']:
+                # 若变量名本身已是可用列名（如 microbiota_name），优先保留直接映射
+                # 避免被错误覆盖成谓词名（如 decreases_microbiota_abundance）
+                if obj in mapping.column_mappings:
+                    var_to_column[obj] = obj
+                    print(f"✓ 对象属性保留直接列映射: {obj} -> {obj}")
+                    continue
+
                 # 获取谓词的本地名称
                 pred_local = pred.split('#')[-1] if '#' in pred else pred.split('/')[-1]
 

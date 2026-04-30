@@ -73,7 +73,7 @@
 <#FoodIncreasesMicrobiotaAbundanceMapping>
     rr:logicalTable [
         rr:sqlQuery """
-            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name
+            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name, fgmcr.host_type as host_type
             FROM gutmdisorder.food_gut_microbiota_change_results fgmcr
             JOIN relationship.has_abundance_change_results_by_food hacrbf
             ON fgmcr.index = hacrbf.index
@@ -96,13 +96,17 @@
     rr:predicateObjectMap [
         rr:predicate onto:microbiota_name ;
         rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # Food decreases microbiota abundance relationship mapping - 改进版本
 <#FoodDecreasesMicrobiotaAbundanceMapping>
     rr:logicalTable [
         rr:sqlQuery """
-            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name
+            SELECT DISTINCT hacrbf.microbiota_name, hacrbf.relationship as food_name, fgmcr.host_type as host_type
             FROM gutmdisorder.food_gut_microbiota_change_results fgmcr
             JOIN relationship.has_abundance_change_results_by_food hacrbf
             ON fgmcr.index = hacrbf.index
@@ -125,13 +129,17 @@
     rr:predicateObjectMap [
         rr:predicate onto:microbiota_name ;
         rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # 关键修改：Drug increases microbiota abundance relationship mapping - 支持药物名称过滤
 <#DrugIncreasesMicrobiotaAbundanceMapping>
     rr:logicalTable [
         rr:sqlQuery """
-            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name
+            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name, dgmcr.host_type as host_type
             FROM gutmdisorder.drug_gut_microbiota_change_results dgmcr
             JOIN relationship.has_abundance_change_results_by_drug hacrbd
             ON dgmcr.index = hacrbd.index
@@ -154,13 +162,17 @@
     rr:predicateObjectMap [
         rr:predicate onto:microbiota_name ;
         rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # 关键修改：Drug decreases microbiota abundance relationship mapping - 支持药物名称过滤
 <#DrugDecreasesMicrobiotaAbundanceMapping>
     rr:logicalTable [
         rr:sqlQuery """
-            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name
+            SELECT DISTINCT hacrbd.microbiota_name, hacrbd.relationship as drug_name, dgmcr.host_type as host_type
             FROM gutmdisorder.drug_gut_microbiota_change_results dgmcr
             JOIN relationship.has_abundance_change_results_by_drug hacrbd
             ON dgmcr.index = hacrbd.index
@@ -183,6 +195,10 @@
     rr:predicateObjectMap [
         rr:predicate onto:microbiota_name ;
         rr:objectMap [ rr:column "microbiota_name" ; rr:datatype xsd:string ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # Food entity mapping from abundance change results - 增加列映射信息

@@ -6,6 +6,7 @@ langchain==0.3.26
 langchain-community==0.3.27
 langchain-core==0.3.69
 langchain-experimental==0.3.4
+langgraph==0.5.3
 langchain-neo4j==0.5.0
 langchain-openai==0.3.28
 

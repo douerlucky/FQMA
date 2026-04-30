@@ -152,6 +152,33 @@
     ] .
 
 # -----------------------------------------------------------------------------
+# has_members: Committee -> Person (complex join mapping for Committee-centered queries)
+# SQL: SELECT * FROM "Committee" JOIN "has_members" ON "Committee"."ID" = "has_members"."Committee" JOIN "Person" ON "has_members"."Committee_member" = "Person"."ID"
+# -----------------------------------------------------------------------------
+<#HasMembersComplexMapping>
+    rr:logicalTable [
+        rr:sqlQuery """
+            SELECT "Committee"."ID" AS committee_id,
+                   "has_members"."Committee_member" AS member_id,
+                   "Person"."has_the_first_name" AS member_first_name,
+                   "Person"."has_the_last_name" AS member_last_name
+            FROM "Committee"
+            JOIN "has_members" ON "Committee"."ID" = "has_members"."Committee"
+            JOIN "Person" ON "has_members"."Committee_member" = "Person"."ID"
+        """
+    ] ;
+    rr:subjectMap [
+        rr:template "http://conference#committee_{committee_id}"
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate conf:has_members ;
+        rr:objectMap [
+            rr:template "http://conference#person_{member_id}" ;
+            rr:termType rr:IRI
+        ]
+    ] .
+
+# -----------------------------------------------------------------------------
 # was_a_member_of: Person -> Committee (inverse of has_members)
 # Uses junction table: has_members
 # SQL: SELECT * FROM "Person" JOIN "has_members" ON "Person"."ID" = "has_members"."Committee_member" JOIN "Committee" ON "has_members"."Committee" = "Committee"."ID"

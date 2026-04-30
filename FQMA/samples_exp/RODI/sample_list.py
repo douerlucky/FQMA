@@ -328,10 +328,10 @@ WHERE {{
 - 使用 conf:has_members 关系（Committee -> Person）
 """,
 
-    # 示例9：查询人员的姓名和邮箱
+    # 示例9：查询人员的邮箱
     """
-## 示例9：查询人员的姓名和邮箱
-**子问题**：查询这些人员的姓名和邮箱
+## 示例9：查询人员的邮箱
+**子问题**：查询这些人员的邮箱
 **依赖**：<<SUBQUERY_1>> 是人员实体列表
 
 **SPARQL**：
@@ -339,20 +339,18 @@ WHERE {{
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX conf: <http://conference#>
 
-SELECT ?person ?first_name ?last_name ?email
+SELECT ?person ?email
 WHERE {{
   ?person rdf:type conf:Person .
-  ?person conf:has_the_first_name ?first_name .
-  ?person conf:has_the_last_name ?last_name .
   ?person conf:has_an_email ?email .
   FILTER (?person IN (<<SUBQUERY_1>>))
 }}
 ```
 
 **说明**：
-- ⚠️ 使用 conf:has_the_first_name 和 conf:has_the_last_name 获取姓名
 - ⚠️ 使用 conf:has_an_email 获取邮箱（在MySQL中）
 - ⚠️ SELECT必须包含主体变量 ?person
+- ⚠️ 不要在这个子查询里同时查询姓名；姓名应拆分到单独的 PostgreSQL 子查询
 """,
 
     # 示例10：【🔥极其重要】查询摘要文本 - 必须使用 is_the_1th_part_of

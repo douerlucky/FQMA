@@ -1,7 +1,16 @@
 from langchain.prompts import PromptTemplate
 from rdflib import Graph
 import importlib
+import re
+import sys
 from rdflib import RDF, OWL
+import config
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
 
 # 动态导入提示词模板（根据当前数据集）
 import samples_exp.prompt_grad
@@ -179,10 +188,21 @@ class SparQLGenerator:
 
         from samples_exp import prompt_grad as pg
         _, generator_tmpl, _ ,_,_,_= pg.get_templates()
-        template = generator_tmpl
+        template = (
+            generator_tmpl
+            .replace("{ontology[classes]}", "{ontology_classes}")
+            .replace("{ontology[properties]}", "{ontology_properties}")
+            .replace("{ontology[example_triples]}", "{ontology_example_triples}")
+        )
         self.sparql_prompt = PromptTemplate(
-            input_variables=["sub_question", "ontology", "dependencies"],
-            template=generator_tmpl
+            input_variables=[
+                "sub_question",
+                "ontology_classes",
+                "ontology_properties",
+                "ontology_example_triples",
+                "dependencies",
+            ],
+            template=template
         )
 
     def _extract_ontology_info(self):
@@ -249,6 +269,126 @@ class SparQLGenerator:
             return uri.split('/')[-1]
         return uri
 
+    def _build_rodi_person_email_query(self, placeholder: str) -> str:
+        return (
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+            "PREFIX conf: <http://conference#>\n\n"
+            "SELECT ?person ?email\n"
+            "WHERE {\n"
+            "  ?person rdf:type conf:Person .\n"
+            "  ?person conf:has_an_email ?email .\n"
+            f"  FILTER (?person IN ({placeholder}))\n"
+            "}"
+        )
+
+    def _build_rodi_person_name_query(self, placeholder: str) -> str:
+        return (
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+            "PREFIX conf: <http://conference#>\n\n"
+            "SELECT ?person ?first_name ?last_name\n"
+            "WHERE {\n"
+            "  ?person rdf:type conf:Person .\n"
+            "  ?person conf:has_the_first_name ?first_name .\n"
+            "  ?person conf:has_the_last_name ?last_name .\n"
+            f"  FILTER (?person IN ({placeholder}))\n"
+            "}"
+        )
+
+    def _extract_rodi_person_filter_expression(self, sparql_query: str) -> str | None:
+        eq_match = re.search(
+            r"FILTER\s*\(\s*\?person\s*=\s*([^)]+?)\s*\)",
+            sparql_query,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if eq_match:
+            return f"?person = {eq_match.group(1).strip()}"
+
+        in_match = re.search(
+            r"FILTER\s*\(\s*\?person\s+IN\s*\(([^)]*)\)\s*\)",
+            sparql_query,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if in_match:
+            return f"?person IN ({in_match.group(1).strip()})"
+
+        return None
+
+    def _extract_limit_clause(self, sparql_query: str) -> str:
+        limit_match = re.search(r"\bLIMIT\s+(\d+)\b", sparql_query, flags=re.IGNORECASE)
+        if not limit_match:
+            return ""
+        return f"\nLIMIT {limit_match.group(1)}"
+
+    def _build_rodi_author_paper_query(self, person_filter_expression: str, limit_clause: str = "") -> str:
+        return (
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+            "PREFIX conf: <http://conference#>\n\n"
+            "SELECT ?paper\n"
+            "WHERE {\n"
+            "  ?paper rdf:type conf:Paper .\n"
+            "  ?paper conf:has_authors ?person .\n"
+            "  ?person rdf:type conf:Person .\n"
+            f"  FILTER ({person_filter_expression})\n"
+            "}"
+            f"{limit_clause}"
+        )
+
+    def _normalize_rodi_author_paper_query(self, sparql_query: str) -> str:
+        if config.CURRENT_DATASET != "RODI":
+            return sparql_query
+
+        if not re.search(r"SELECT\s+(DISTINCT\s+)?\?paper\b", sparql_query, flags=re.IGNORECASE):
+            return sparql_query
+
+        if not re.search(r"\?person\s+rdf:type\s+conf:Person\b", sparql_query, flags=re.IGNORECASE):
+            return sparql_query
+
+        if not re.search(r"\?paper\s+rdf:type\s+conf:Paper\b", sparql_query, flags=re.IGNORECASE):
+            return sparql_query
+
+        has_author_link = re.search(
+            r"\?person\s+conf:contributes\s+\?paper\b|\?paper\s+conf:has_authors\s+\?person\b",
+            sparql_query,
+            flags=re.IGNORECASE,
+        )
+        if not has_author_link:
+            return sparql_query
+
+        person_filter_expression = self._extract_rodi_person_filter_expression(sparql_query)
+        if not person_filter_expression:
+            return sparql_query
+
+        normalized_query = self._build_rodi_author_paper_query(
+            person_filter_expression,
+            self._extract_limit_clause(sparql_query),
+        )
+        print("🔧 RODI 查询规范化：将作者查论文重写为 has_authors 方向")
+        print(normalized_query)
+        return normalized_query
+
+    def _normalize_dependent_rodi_query(self, sparql_query: str, sub_question: str, dependencies=None) -> str:
+        if config.CURRENT_DATASET != "RODI" or not dependencies or len(dependencies) != 1:
+            return sparql_query
+
+        sub_question_lower = sub_question.lower()
+        placeholder = f"<<SUBQUERY_{dependencies[0]['id']}>>"
+        wants_email = any(keyword in sub_question_lower for keyword in ("邮箱", "email", "mail"))
+        wants_name = any(keyword in sub_question_lower for keyword in ("姓名", "名字", "姓氏", "first name", "last name", "full name"))
+
+        if wants_email:
+            normalized_query = self._build_rodi_person_email_query(placeholder)
+            print("🔧 依赖子查询规范化：重写为标准人员邮箱查询")
+            print(normalized_query)
+            return normalized_query
+
+        if wants_name:
+            normalized_query = self._build_rodi_person_name_query(placeholder)
+            print("🔧 依赖子查询规范化：重写为标准人员姓名查询")
+            print(normalized_query)
+            return normalized_query
+
+        return sparql_query
+
     def generate_sparql(self, sub_question, dependencies=None):
         """生成SPARQL查询，支持依赖关系"""
         ontology_info = self._extract_ontology_info()
@@ -258,7 +398,9 @@ class SparQLGenerator:
 
         sparql_query = self.sparql_prompt.format(
             sub_question=sub_question,
-            ontology=ontology_info,
+            ontology_classes=ontology_info["classes"],
+            ontology_properties=ontology_info["properties"],
+            ontology_example_triples=ontology_info["example_triples"],
             dependencies=dependencies_str
         )
 
@@ -270,6 +412,12 @@ class SparQLGenerator:
 
         # 🔧 清理LLM输出
         cleaned_sparql = clean_sparql_output(result.content)
+        cleaned_sparql = self._normalize_rodi_author_paper_query(cleaned_sparql)
+        cleaned_sparql = self._normalize_dependent_rodi_query(
+            cleaned_sparql,
+            sub_question,
+            dependencies,
+        )
 
         # 🔧 添加调试输出 - 打印完整SPARQL
         print(f"\n📝 子问题: {sub_question}")
@@ -290,7 +438,20 @@ class SparQLGenerator:
         formatted = []
         for dep in dependencies:
             placeholder = f"<<SUBQUERY_{dep['id']}>>"  # 使用实际的子查询ID
-            formatted.append(f"依赖子查询 {dep['id']}: {dep['question']} (占位符: {placeholder})")
+            sparql_hint = dep.get("generated_sparql", "").strip()
+            if sparql_hint:
+                sparql_hint = " ".join(sparql_hint.split())
+                if len(sparql_hint) > 260:
+                    sparql_hint = sparql_hint[:260] + "..."
+            else:
+                sparql_hint = "无"
+            formatted.append(
+                f"依赖子查询 {dep['id']}: {dep['question']} (占位符: {placeholder})\n"
+                f"  - 上游自然语言问题（原文）: {dep.get('question', '').strip() or '无'}\n"
+                f"  - 上游SPARQL摘要: {sparql_hint}\n"
+                f"  - 规则: 你必须根据上游自然语言问题与上游SPARQL自行抽取并继承可传递条件；"
+                f"禁止依赖固定关键词表猜测条件。若当前子问题未明确放宽，默认保持与上游一致。"
+            )
 
         return "\n".join(formatted)
 

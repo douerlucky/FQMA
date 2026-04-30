@@ -59,7 +59,7 @@ class MySQLQueryExecutor:
 
         except Exception as e:
             print(f"执行MySQL查询时出错: {e}")
-            return []
+            raise
 
     def execute_query_with_columns(self, sql_query):
         """
@@ -92,7 +92,7 @@ class MySQLQueryExecutor:
 
         except Exception as e:
             print(f"执行MySQL查询时出错: {e}")
-            return {'columns': [], 'data': []}
+            raise
 
 
 class PostgreQueryExecutor:
@@ -127,7 +127,7 @@ class PostgreQueryExecutor:
 
         except Exception as e:
             print(f"执行PostgreSQL查询时出错: {e}")
-            return []
+            raise
 
     def execute_query_with_columns(self, sql_query):
         """
@@ -154,7 +154,7 @@ class PostgreQueryExecutor:
 
         except Exception as e:
             print(f"执行PostgreSQL查询时出错: {e}")
-            return {'columns': [], 'data': []}
+            raise
 
 
 # 使用示例

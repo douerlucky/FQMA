@@ -344,10 +344,13 @@ class SparqlToPostgreSQLConverter:
 
         # Find variables used as subjects
         subject_vars = set()
+        typed_vars = set()
         for triple in triples:
             if triple['subject'].startswith('?'):
                 subj_var = triple['subject'].strip('?')
-                if not self._is_type_predicate(triple['predicate']):
+                if self._is_type_predicate(triple['predicate']):
+                    typed_vars.add(subj_var)
+                else:
                     subject_vars.add(subj_var)
 
         # Find main table from type declaration
@@ -388,7 +391,11 @@ class SparqlToPostgreSQLConverter:
             if pred_name in self.complex_relation_mappings:
                 complex_mapping = self.complex_relation_mappings[pred_name]
 
-                need_join = object_var and object_var in subject_vars
+                need_join = object_var and (
+                    object_var in subject_vars
+                    or object_var in typed_vars
+                    or object_var in parsed.get('select_vars', [])
+                )
 
                 if need_join:
                     complex_joins.append({
@@ -435,7 +442,11 @@ class SparqlToPostgreSQLConverter:
                                 break
 
                         if target_table and target_table != main_table:
-                            need_join = object_var and object_var in subject_vars
+                            need_join = object_var and (
+                                object_var in subject_vars
+                                or object_var in typed_vars
+                                or object_var in parsed.get('select_vars', [])
+                            )
 
                             if need_join:
                                 joins.append({
@@ -602,14 +613,20 @@ class SparqlToPostgreSQLConverter:
 
                 if var in plan['var_to_column']:
                     table, column = plan['var_to_column'][var]
-                    conditions.append(f'"{table}"."{column}" IN ({values})')
+                    if self._should_use_pathway_contains(column, values):
+                        conditions.append(
+                            self._format_pathway_contains_condition(table, column, values)
+                        )
+                    else:
+                        values = self._format_sql_in_values(values)
+                        conditions.append(f'"{table}"."{column}" IN ({values})')
                 continue
 
             # Simple comparison
-            compare_match = re.match(r'\?(\w+)\s*=\s*(\d+)', filter_expr)
+            compare_match = re.match(r'\?(\w+)\s*=\s*(.+)', filter_expr)
             if compare_match:
                 var = compare_match.group(1)
-                value = compare_match.group(2)
+                value = self._format_sql_literal(compare_match.group(2).strip())
                 if var in plan['var_to_column']:
                     table, column = plan['var_to_column'][var]
                     conditions.append(f'"{table}"."{column}" = {value}')
@@ -629,6 +646,52 @@ class SparqlToPostgreSQLConverter:
                     conditions.append(f'"{table}"."{column}" = \'{value}\'')
 
         return conditions
+
+    def _format_sql_in_values(self, raw_values: str) -> str:
+        """Convert SPARQL IN literals to SQL literals while preserving placeholders."""
+        if "<<" in raw_values and ">>" in raw_values:
+            return raw_values
+
+        values = []
+        for value in re.split(r'\s*,\s*', raw_values):
+            value = value.strip()
+            if not value:
+                continue
+            values.append(self._format_sql_literal(value))
+        return ", ".join(values)
+
+    def _format_sql_literal(self, raw_value: str) -> str:
+        """Format a SPARQL literal for PostgreSQL."""
+        value = raw_value.strip()
+        if re.fullmatch(r'[-+]?\d+(?:\.\d+)?', value):
+            return value
+        if (value.startswith('"') and value.endswith('"')) or (
+            value.startswith("'") and value.endswith("'")
+        ):
+            value = value[1:-1]
+        value = value.replace("'", "''")
+        return f"'{value}'"
+
+    def _should_use_pathway_contains(self, column: str, raw_values: str) -> bool:
+        """KEGG pathway values are stored as a concatenated text field."""
+        if "<<" in raw_values and ">>" in raw_values:
+            return False
+        return column.lower() in {"pathway", "pathway_name"}
+
+    def _format_pathway_contains_condition(self, table: str, column: str, raw_values: str) -> str:
+        """Build a LIKE condition for pathway code filters."""
+        clauses = []
+        for value in re.split(r'\s*,\s*', raw_values):
+            value = value.strip().strip('"\'')
+            if not value:
+                continue
+            code_match = re.search(r'\b(?:hsa|mmu)\d{5}\b', value, re.IGNORECASE)
+            token = code_match.group(0) if code_match else value
+            token = token.replace("'", "''")
+            clauses.append(f'"{table}"."{column}" LIKE \'%{token}%\'')
+        if not clauses:
+            return "1 = 0"
+        return "(" + " OR ".join(clauses) + ")"
 
 
 def main():

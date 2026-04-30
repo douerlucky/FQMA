@@ -55,6 +55,14 @@ QueryPlannerSamplesList = [
 1. [依赖: 无] 哪些药物能够增加Bifidobacterium的丰度？
 2. [依赖: 1] Bifidobacterium产生哪些代谢物？
 3. [依赖: 2] 哪些基因的表达能够调节这些代谢物的产生？
+""",
+"""示例7：方向语义不能被上游方向带偏
+问题：在药物Metformin干预下丰度显著上升的小鼠肠道微生物群，分析能够抑制这些微生物群生长的关键基因，并进一步阐明这些基因参与的主要代谢通路。
+子查询列表：
+1. [依赖: 无] 药物Metformin导致丰度显著上升的小鼠肠道微生物群
+2. [依赖: 1] 能够抑制这些微生物群生长的关键基因
+3. [依赖: 2] 这些基因参与的主要代谢通路
+注意：第1步是“微生物丰度上升”，第2步是“基因抑制这些微生物”，两者方向不同，不能把第2步写成“增加/促进”。
 """
 ]
 
@@ -78,6 +86,24 @@ WHERE {{
   FILTER (?microbiota_name IN ("Dorea", "Eubacterium", "Bacteroides"))
 }}
 注意：不查询pvalue，不使用has_phenotype_association！
+""",
+
+"""示例1B：饲养效率提高导致微生物增加（不是显著相关）
+问题：生猪饲养效率的提高会导致哪些微生物群数量增加
+关键：这里问的是“效率提高导致数量增加”，不是“哪些微生物显著相关”。
+      必须使用 increases_feed_efficiency，不能使用 correlatedwith_feed_efficiency。
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {{
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  ?microbiota ont:increases_feed_efficiency ?efficiency .
+  ?efficiency rdf:type ont:FeedEfficiency .
+}}
+注意：只要语义是“提高效率导致/对应微生物增加”，就用 increases_feed_efficiency。
 """,
 
 # 样例2：带p值查询 - 关键区分点
@@ -105,9 +131,10 @@ WHERE {{
 """,
 
 # 样例3：食物增加微生物 - gutmdisorder数据库 ⚠️ 只返回微生物名！
-"""示例3：食物增加微生物（关键：只返回微生物名！）
-问题：给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些
+"""示例3：食物增加微生物（关键：只返回微生物名，并按自然语言保留宿主！）
+问题：在人类宿主中，给ketogenic diet食物导致肠道微生物丰度上升的微生物有哪些
 ⚠️ 最重要：问题问的是"哪些微生物"，所以只返回微生物名，不返回食物名！
+⚠️ 如果问题限定宿主，第一步源头查询也必须写host_type，不能只在后续基因查询中写。
 对应SQL：Select microbiota_name from gutmdisorder.food_gut_microbiota_change_results
 SPARQL：
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -118,14 +145,17 @@ WHERE {{
   ?food rdf:type ont:Food .
   ?food ont:food_name ?food_name .
   ?food ont:increases_microbiota_abundance_by_food ?microbiota .
+  ?food ont:host_type ?host_type .
   ?microbiota rdf:type ont:MicrobiotaName .
   ?microbiota ont:microbiota_name ?microbiota_name .
   FILTER (?food_name = "ketogenic diet")
+  FILTER (?host_type = "human")
 }}
 注意：
 1. 只SELECT ?microbiota_name，不SELECT ?food_name
 2. 问题是"哪些微生物"，所以主体是微生物
 3. 食物只是查询条件，不是返回结果
+4. 原问题有人类宿主，所以第一步也必须保留host_type
 """,
 
 # 样例4：基因减少微生物 - 方向性
@@ -160,6 +190,7 @@ WHERE {{
 2. 看到"hsa01521 EGFR tyrosine kinase inhibitor resistance" → 提取"hsa01521"
 3. 看到"mmu04010 MAPK signaling pathway" → 提取"mmu04010"
 4. 在FILTER中只使用标号
+5. 指定通路只是额外筛选，不能丢掉上游基因约束；必须保留 FILTER (?gene_symbol IN (<<SUBQUERY_2>>))
 
 SPARQL：
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -177,9 +208,161 @@ WHERE {{
 }}
 注意：FILTER中只用标号，不用完整名称！
 数据库中pathway_name字段只存储"hsa04062"这样的标号，不存储完整名称。
+如果漏掉 FILTER (?gene_symbol IN (<<SUBQUERY_2>>))，会查出全库所有属于这些通路的基因，而不是“这些基因”的通路。
+""",
+"""示例6：依赖子查询必须继承宿主约束（减少/抑制方向）
+问题：在人类宿主中，能够减少这些微生物数量的基因表达
+依赖：<<SUBQUERY_1>> 返回了“在人类宿主 + soluble corn fiber + 丰度上升”得到的微生物
+关键：
+1. 不可以只写 FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+2. 必须保留宿主约束（human）
+3. 方向是“减少”，所以关系必须是 decreases_microbiota_abundance
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {{
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:decreases_microbiota_abundance ?microbiota .
+  ?gene ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+  FILTER (?host_type = "human")
+}}
+注意：依赖占位符不会自动携带host，必须显式写FILTER约束。
+""",
+"""示例7：依赖子查询必须继承宿主约束（增加/促进方向）
+问题：在人类宿主中，能够促进这些微生物群生长的关键基因
+依赖：<<SUBQUERY_1>> 返回了“在人类宿主 + 某个干预条件 + 丰度上升”得到的微生物
+关键：
+1. "这些微生物"只通过占位符传递实体集合，不会自动传递host
+2. 原问题限定了人类宿主，所以当前基因查询必须继续写host_type约束
+3. "促进/增加"微生物，所以关系必须是 increases_microbiota_abundance
+4. 不要退化成 regulates_microbiota_abundance，否则会丢失方向条件
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {{
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:increases_microbiota_abundance ?microbiota .
+  ?gene ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+  FILTER (?host_type = "human")
+}}
+注意：只要原问题或上游子查询限定了宿主，依赖基因查询就必须显式保留host_type。
+""",
+"""示例8：小鼠宿主也必须继承host_type（不要照抄human）
+问题：在小鼠肠道微生物群中，能够促进这些微生物群生长的关键基因
+依赖：<<SUBQUERY_1>> 返回了“小鼠宿主 + 某个干预条件 + 丰度上升”得到的微生物
+关键：
+1. 宿主值必须根据自然语言判断；这里是小鼠，所以不是human
+2. 下游基因查询必须继续写host_type约束
+3. "促进/增加"微生物，所以关系必须是 increases_microbiota_abundance
+4. 不可以只写 FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {{
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:increases_microbiota_abundance ?microbiota .
+  ?gene ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+  FILTER (?host_type = "mouse")
+}}
+注意：如果原问题是人类则使用人类对应host_type；如果原问题是小鼠则使用小鼠对应host_type。值来自自然语言语义，不是固定模板。
+""",
+"""示例9：上游丰度上升，但当前问抑制/减少时必须用decreases
+问题：能够抑制这些微生物群生长的关键基因
+依赖：<<SUBQUERY_1>> 返回了“某干预导致丰度上升的小鼠微生物”
+关键：
+1. 上游“丰度上升”只说明这些微生物如何被筛出来
+2. 当前子问题问“抑制这些微生物”，所以基因关系必须是 decreases_microbiota_abundance
+3. 原问题限定小鼠，所以继续保留host_type = mouse
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT ?gene_symbol ?microbiota_name
+WHERE {{
+  ?gene rdf:type ont:Gene .
+  ?gene ont:gene_symbol ?gene_symbol .
+  ?gene ont:decreases_microbiota_abundance ?microbiota .
+  ?gene ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?microbiota_name IN (<<SUBQUERY_1>>))
+  FILTER (?host_type = "mouse")
+}}
+注意：不要因为上游是“丰度上升”就把这里写成increases_microbiota_abundance。
+""",
+"""示例10：小鼠食物/药物干预的第一步也必须带host_type
+问题：在resistant starch饮食干预下丰度显著上升的小鼠肠道微生物群
+关键：
+1. 这是第一步源头微生物集合查询，不是下游基因查询
+2. 只返回microbiota_name
+3. 原问题限定了小鼠，所以这里也必须写host_type = mouse
+4. 如果这里漏host，<<SUBQUERY_1>>会包含其他宿主的微生物，后续Q2/Q3都会过宽
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {{
+  ?food rdf:type ont:Food .
+  ?food ont:food_name ?food_name .
+  ?food ont:increases_microbiota_abundance_by_food ?microbiota .
+  ?food ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?food_name = "resistant starch")
+  FILTER (?host_type = "mouse")
+}}
+注意：宿主值来自自然语言“小鼠”，不是固定模板。
+""",
+"""示例11：完整干预名不能随便拆分
+问题：在人类宿主中，在phenolic compounds from red wine and coffee干预下丰度显著上升的肠道微生物群
+关键：
+1. `phenolic compounds from red wine and coffee` 是完整干预名
+2. 不要拆成 `red wine` 和 `coffee`
+3. 原问题限定人类宿主，所以第一步也要保留host_type
+
+SPARQL：
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ont: <http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology#>
+
+SELECT DISTINCT ?microbiota_name
+WHERE {{
+  ?food rdf:type ont:Food .
+  ?food ont:food_name ?food_name .
+  ?food ont:increases_microbiota_abundance_by_food ?microbiota .
+  ?food ont:host_type ?host_type .
+  ?microbiota rdf:type ont:MicrobiotaName .
+  ?microbiota ont:microbiota_name ?microbiota_name .
+  FILTER (?food_name = "phenolic compounds from red wine and coffee")
+  FILTER (?host_type = "human")
+}}
+注意：只有用户明确给出多个独立干预项时，才使用IN列表。
 """,
 """
-    示例6：药物减少微生物丰度查询
+    示例12：药物减少微生物丰度查询
 问题：哪些药物能够减少Clostridium、Bacteroides的丰度？
 SPARQL：
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

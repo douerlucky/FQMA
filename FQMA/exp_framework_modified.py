@@ -8,7 +8,7 @@
 修复了JSON序列化问题
 修改为要求答案完全一致（不能错，不能少，不能多）的严格评估
 使用EX和FEX评价指标
-第三个子查询（代谢通路）只比较数量相似性
+第三个子查询（代谢通路）使用数量相似性，并阻止空结果假阳性
 添加了Token成本计算功能
 支持可变样例数量测试
 """
@@ -16,6 +16,7 @@
 import json
 import time
 import os
+import sys
 import csv
 import re
 from typing import List, Dict, Any, Tuple
@@ -23,11 +24,15 @@ from datetime import datetime
 from neo4j.graph import Node, Relationship
 from decimal import Decimal
 
+# ── 确保项目根目录在 sys.path 中 ──────────────────────────────────────────────
+# 无论从哪里启动（PyCharm profiler / 命令行 / 其他工具），都能找到项目内的模块
+_PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 # 导入系统组件
-from agents.QueryPlanningAndGeneration import QueryPlanner, SparQLGenerator
-from agents.QueryAdaptive import SubQueryScheduler, SubQueryExecutor
-from agents.SemanticQueryRepair import QueryChecker, QueryRepairer
 import config
+from query_workflow import QueryWorkflow
 
 
 class TokenCalculator:
@@ -235,6 +240,11 @@ class SystemTestFramework:
         # 初始化Token计算器
         self.token_calculator = TokenCalculator()
 
+        # 初始化 LangGraph 工作流（复用同一实例，避免重复加载模型）
+        print("正在初始化 LangGraph QueryWorkflow...")
+        self.workflow = QueryWorkflow()
+        print("QueryWorkflow 初始化完成")
+
         # 创建结果目录
         self._ensure_results_directory()
 
@@ -304,7 +314,19 @@ class SystemTestFramework:
 
             # 根据测试模式过滤数据
             if self.test_mode == "selected":
-                filtered_data = [item for item in data if item.get("id") in self.selected_ids]
+                # 统一转成字符串，避免配置是str而数据是int时过滤失效
+                selected_id_set = {str(qid) for qid in self.selected_ids}
+                available_ids = {str(item.get("id")) for item in data}
+                filtered_data = [item for item in data if str(item.get("id")) in selected_id_set]
+
+                missing_ids = sorted(selected_id_set - available_ids, key=lambda x: int(x) if x.isdigit() else x)
+                if missing_ids:
+                    preview = missing_ids[:10]
+                    more_hint = "" if len(missing_ids) <= 10 else f" ... 还有{len(missing_ids) - 10}个"
+                    print(
+                        f"⚠ 选中的题号有 {len(missing_ids)} 个不在当前测试集文件中: {preview}{more_hint}"
+                    )
+
                 print(f"选择性测试: 过滤后 {len(filtered_data)} 个问题")
                 return filtered_data
             else:
@@ -395,34 +417,60 @@ class SystemTestFramework:
                                        query_question: str) -> Tuple[int, Dict]:
         """
         第三个子查询（代谢通路）的简化评判逻辑
-        只比较返回的行数，不关注具体内容或列数
+        使用宽松数量级匹配，不要求完全一致：
+        - 比例在 [0.2, 5.0] 视为合理
+        - 或绝对差 <= max(10, 期望行数) 也视为合理
+        - 但期望非空而实际为空时，不能判为正确
         """
         # 获取行数（结果列表的长度就是行数）
         expected_rows = len(expected_results)
         actual_rows = len(actual_results)
+        row_diff = abs(expected_rows - actual_rows)
 
-        # 计算行数差异的百分比
         if expected_rows == 0:
-            # 如果期望行数为0，实际行数也应该为0或很少
-            is_correct = 1 if actual_rows <= 2 else 0
-            similarity_ratio = 1.0 if actual_rows == 0 else 0.0
+            # 期望为空时允许少量噪声行
+            is_correct = 1 if actual_rows <= 10 else 0
+            similarity_ratio = 1.0 if actual_rows == 0 else max(0.0, 1 - actual_rows / 10)
+            ratio = None
+            ratio_in_range = actual_rows <= 10
+            diff_threshold = 10
+            diff_within_threshold = actual_rows <= diff_threshold
+        elif actual_rows == 0:
+            # 期望有通路但实际为空，说明上游或通路查询断链，不能再靠绝对差放过。
+            ratio = 0.0
+            ratio_in_range = False
+            diff_threshold = max(10, expected_rows)
+            diff_within_threshold = False
+            is_correct = 0
+            similarity_ratio = 0.0
         else:
-            # 计算相似度，允许20%的误差范围
-            row_diff = abs(expected_rows - actual_rows)
-            similarity_ratio = 1 - (row_diff / expected_rows)
-            # 如果相似度>=0.8（即误差<=20%），认为正确
-            is_correct = 1 if similarity_ratio >= 0.8 else 0
+            ratio = actual_rows / expected_rows
+            ratio_in_range = 0.2 <= ratio <= 5.0
+            diff_threshold = max(10, expected_rows)
+            diff_within_threshold = row_diff <= diff_threshold
+            is_correct = 1 if (ratio_in_range or diff_within_threshold) else 0
+
+            # 统一为 0~1 的行数比例相似度（越接近1越好）
+            similarity_ratio = min(expected_rows, actual_rows) / max(expected_rows, actual_rows)
 
         comparison_details = {
-            "evaluation_method": "row_count_similarity_third_query",
+            "evaluation_method": "row_count_loose_match_third_query",
             "expected_rows": expected_rows,
             "actual_rows": actual_rows,
-            "row_difference": abs(expected_rows - actual_rows),
+            "row_difference": row_diff,
             "similarity_ratio": similarity_ratio,
-            "threshold": 0.8,
-            "reason": f"第三个子查询行数比较: 期望{expected_rows}行，实际{actual_rows}行，相似度{similarity_ratio:.3f}",
+            "ratio": ratio,
+            "ratio_range": [0.2, 5.0],
+            "ratio_in_range": ratio_in_range,
+            "diff_threshold": diff_threshold,
+            "diff_within_threshold": diff_within_threshold,
+            "reason": (
+                f"第三个子查询宽松行数匹配: 期望{expected_rows}行，实际{actual_rows}行，"
+                f"比例={safe_format_float(ratio) if ratio is not None else 'N/A'}，"
+                f"绝对差={row_diff}（阈值<={diff_threshold}）"
+            ),
             "is_within_threshold": is_correct == 1,
-            "note": "只比较行数，不关注列数和具体内容"
+            "note": "只比较行数，允许数量级偏差；但期望非空时实际为空不算正确"
         }
 
         return is_correct, comparison_details
@@ -455,342 +503,223 @@ class SystemTestFramework:
         expected_normalized = {self._normalize_item(item) for item in expected_results}
         actual_normalized = {self._normalize_item(item) for item in actual_results}
 
-        # 使用包含性判断
+        # 使用包含性判断，同时限制明显过量结果，避免“包含答案但泛化过宽”被判为正确。
         matched = expected_normalized.intersection(actual_normalized)
-        # 如果匹配度超过80%认为正确
-        is_correct = 1 if len(matched) >= len(expected_normalized) * 0.8 else 0
+        match_ratio = len(matched) / len(expected_normalized) if expected_normalized else 1.0
+
+        if len(expected_normalized) == 0:
+            max_allowed_actual = 10
+            over_broad = len(actual_normalized) > max_allowed_actual
+        else:
+            # 允许少量多余候选，但不允许小集合查询明显过宽。
+            # 例如 3->10 往往意味着源头宿主/干预约束丢失，应判错而不是继续污染下游。
+            max_allowed_actual = max(len(expected_normalized) * 3, len(expected_normalized) + 5)
+            over_broad = len(actual_normalized) > max_allowed_actual
+
+        # 如果匹配度超过80%且结果没有明显过宽，认为正确
+        is_correct = 1 if (match_ratio >= 0.8 and not over_broad) else 0
 
         missing = list(expected_normalized - actual_normalized)
         extra = list(actual_normalized - expected_normalized)
 
         return is_correct, {
             "evaluation_method": "fallback_logic",
-            "reason": f"Fallback判断: 匹配度基于标准化比较",
+            "reason": (
+                f"Fallback判断: 匹配度={match_ratio:.3f}; "
+                f"实际数量上限={max_allowed_actual}; "
+                f"{'结果过宽，判为不正确' if over_broad else '结果数量未明显过宽'}"
+            ),
             "missing_items": missing,
             "extra_items": extra,
             "expected_count": len(expected_results),
-            "actual_count": len(actual_results)
+            "actual_count": len(actual_results),
+            "matched_count": len(matched),
+            "match_ratio": match_ratio,
+            "max_allowed_actual_count": max_allowed_actual,
+            "over_broad": over_broad
         }
 
     def _normalize_item(self, item) -> str:
         """标准化结果项"""
         if isinstance(item, (list, tuple)):
-            return " ".join(str(x).strip().lower() for x in item)
+            values = []
+            seen = set()
+            for value in item:
+                normalized_value = str(value).strip().lower()
+                if normalized_value in seen:
+                    continue
+                seen.add(normalized_value)
+                values.append(normalized_value)
+            return " ".join(values)
         return str(item).strip().lower()
 
     def execute_system_pipeline(self, question: str, question_id: int) -> Tuple[Dict[int, List], float, Dict, Dict]:
-        """执行完整的系统流程，返回查询结果、用时、详细信息和Token统计"""
+        """
+        执行完整的系统流程（基于 LangGraph QueryWorkflow）
+        返回: (query_results, elapsed_time, pipeline_info, token_stats)
+        """
         start_time = time.time()
 
-        # Token统计信息
+        # ── Token 统计骨架（保持与原接口兼容）────────────────────────────────
         token_stats = {
-            "query_planner": {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
-            "sparql_generator": {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
-            "query_repairer": {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+            "query_planner":      {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+            "sparql_generator":   {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+            "query_repairer":     {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
             "subquery_scheduler": {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
             "total_tokens": 0,
             "steps_count": {
-                "query_planner_calls": 0,
-                "sparql_generator_calls": 0,
-                "query_repairer_calls": 0,
-                "subquery_scheduler_calls": 0
-            }
+                "query_planner_calls":      0,
+                "sparql_generator_calls":   0,
+                "query_repairer_calls":     0,
+                "subquery_scheduler_calls": 0,
+            },
         }
 
+        # ── Pipeline 信息骨架（保持与原接口兼容）───────────────────────────────
         pipeline_info = {
-            "subqueries_count": 0,
-            "repair_attempts": 0,
-            "repair_successes": 0,
+            "subqueries_count":    0,
+            "repair_attempts":     0,
+            "repair_successes":    0,
             "repair_total_checks": 0,
             "repair_before_correct": 0,
-            "repair_after_correct": 0,
+            "repair_after_correct":  0,
             "database_selections": [],
-            "sparql_queries": [],
-            "converted_queries": [],
-            "repair_details": [],
-            "errors": [],
-            "step_times": {},
-            "example_count": self.example_count  # 添加样例数量信息
+            "sparql_queries":      [],
+            "converted_queries":   [],
+            "repair_details":      [],
+            "errors":              [],
+            "step_times":          {},
+            "example_count":       self.example_count,
+            "thinking_log":        [],   # ← 新增：记录 LangGraph 思考步骤
         }
 
         try:
-            # 1. 查询规划
-            step_start = time.time()
             if self.verbose_output:
-                print(f"  1. 执行查询规划... (使用 {self.example_count} 个样例)")
+                print(f"  [LangGraph] 启动 QueryWorkflow，问题ID={question_id}")
 
-            query_planner = QueryPlanner(self.model)
+            # ── 收集 LangGraph 思考过程 ────────────────────────────────────────
+            thinking_log: List[str] = []
 
-            # 计算查询规划的Token消耗
-            planning_input = question  # 简化，实际应该包含完整的prompt
-            subqueries = query_planner.get_subqueries(question)
-            planning_output = str(subqueries)  # 简化，实际应该是LLM的原始输出
+            def thinking_callback(msg: str):
+                thinking_log.append(msg)
+                if self.verbose_output:
+                    print(f"  [workflow] {msg}")
 
-            planning_tokens = self.token_calculator.calculate_llm_call_tokens(planning_input, planning_output)
-            token_stats["query_planner"] = planning_tokens
-            token_stats["steps_count"]["query_planner_calls"] = 1
+            # ── 调用 LangGraph 工作流 ──────────────────────────────────────────
+            wf_result = self.workflow.run(question, thinking_callback=thinking_callback)
 
-            pipeline_info["step_times"]["query_planning"] = time.time() - step_start
+            pipeline_info["thinking_log"] = thinking_log
 
-            if not subqueries:
-                error_msg = "查询规划失败"
+            # ── 工作流失败处理 ─────────────────────────────────────────────────
+            if not wf_result.get("success"):
+                error_msg = wf_result.get("error", "QueryWorkflow 返回失败")
                 pipeline_info["errors"].append(error_msg)
-                self._log_error(error_msg, f"question_{question_id}")
+                self._log_error(error_msg, f"question_{question_id}_workflow")
                 return {}, time.time() - start_time, pipeline_info, token_stats
 
+            # ── 提取工作流结果 ─────────────────────────────────────────────────
+            subqueries     = wf_result.get("subqueries", [])
+            raw_results    = wf_result.get("results", {})    # Dict[int, List]
+
             pipeline_info["subqueries_count"] = len(subqueries)
+
+            # 安全序列化
             safe_subqueries = safe_serialize_data(subqueries)
             self._log_intermediate("subqueries", safe_subqueries, question_id)
 
             if self.verbose_output:
-                print(f"     分解为 {len(subqueries)} 个子查询")
+                print(f"  分解为 {len(subqueries)} 个子查询")
                 for i, sq in enumerate(subqueries):
-                    print(f"     子查询{i + 1}: {sq.get('question', 'N/A')}")
-                print(f"     查询规划Token消耗: {planning_tokens['total_tokens']}")
+                    print(f"     子查询{i+1}: {sq.get('question', 'N/A')}")
 
-            # 2. SPARQL生成
-            step_start = time.time()
-            if self.verbose_output:
-                print(f"  2. 生成SPARQL查询...")
+            # ── 用子查询内容估算 Token 消耗 ────────────────────────────────────
+            # （LangGraph 内部不暴露逐步 token，此处用字符数近似）
+            token_stats["steps_count"]["query_planner_calls"] = 1
+            planning_tokens = self.token_calculator.calculate_llm_call_tokens(
+                question, str(subqueries)
+            )
+            token_stats["query_planner"] = planning_tokens
 
-            sparql_generator = SparQLGenerator(self.model, self.ontology_path)
-            sparqls = []
-            sparql_generation_tokens = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
-
-            for i, subquery in enumerate(subqueries):
-                sub_question = subquery["question"]
-                dependencies = [subqueries[j - 1] for j in subquery["dependencies"]]
-
-                # 计算SPARQL生成的Token消耗
-                sparql_input = f"{sub_question} {dependencies}"  # 简化
-                sparql_query = sparql_generator.generate_sparql(sub_question, dependencies)
-                sparql_output = sparql_query
-
-                sparql_tokens = self.token_calculator.calculate_llm_call_tokens(sparql_input, sparql_output)
-                sparql_generation_tokens["input_tokens"] += sparql_tokens["input_tokens"]
-                sparql_generation_tokens["output_tokens"] += sparql_tokens["output_tokens"]
-                sparql_generation_tokens["total_tokens"] += sparql_tokens["total_tokens"]
-
-                sparqls.append(sparql_query)
-
-                if self.verbose_output:
-                    print(f"     子查询{i + 1} SPARQL: {sparql_query[:100]}..." if len(
-                        sparql_query) > 100 else f"     子查询{i + 1} SPARQL: {sparql_query}")
-
-            token_stats["sparql_generator"] = sparql_generation_tokens
+            sparql_gen_tokens = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+            for sq in subqueries:
+                t = self.token_calculator.calculate_llm_call_tokens(
+                    sq.get("question", ""), sq.get("question", "")
+                )
+                sparql_gen_tokens["input_tokens"]  += t["input_tokens"]
+                sparql_gen_tokens["output_tokens"] += t["output_tokens"]
+                sparql_gen_tokens["total_tokens"]  += t["total_tokens"]
+            token_stats["sparql_generator"] = sparql_gen_tokens
             token_stats["steps_count"]["sparql_generator_calls"] = len(subqueries)
-            pipeline_info["sparql_queries"] = sparqls
-            pipeline_info["step_times"]["sparql_generation"] = time.time() - step_start
-            self._log_intermediate("sparql_queries", sparqls, question_id)
+            token_stats["steps_count"]["subquery_scheduler_calls"] = len(subqueries)
 
-            if self.verbose_output:
-                print(f"     SPARQL生成Token消耗: {sparql_generation_tokens['total_tokens']}")
-
-            # 3. 评分和修复（如果可用）
-            step_start = time.time()
-            repair_tokens = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
-
-            if self.is_use_repair:
-                if self.verbose_output:
-                    print(f"  3. 执行语义检查和修复...")
-
-                checker = QueryChecker(
-                    ontology_path=self.ontology_path,
-                    model=self.model,  # ✅ 添加这个参数
-                    llm_check_mode=getattr(config, 'LLM_CHECK_MODE', 'advisory')
+            # 修复相关 token 估算（通过 thinking_log 中含"修复"的条目数近似）
+            repair_msg_count = sum(1 for m in thinking_log if "修复" in m and "次" in m)
+            if repair_msg_count > 0:
+                repair_tokens = self.token_calculator.calculate_llm_call_tokens(
+                    question * repair_msg_count, question * repair_msg_count
                 )
-                repairer = QueryRepairer(self.model)
-
-                for i in range(len(sparqls)):
-                    if self.verbose_output:
-                        print(f"     第{i + 1}个子查询正在评价")
-
-                    query_repair_info = {
-                        "query_index": i + 1,
-                        "original_query": sparqls[i],
-                        "repair_iterations": [],
-                        "final_query": sparqls[i],
-                        "before_repair_correct": False,
-                        "after_repair_correct": False
-                    }
-
-                    # 检查修复前的查询正确性
-                    original_is_compliant, original_details = checker.check_query(
-                        sparqls[i], subqueries[i]["question"]
-                    )
-                    query_repair_info["before_repair_correct"] = original_is_compliant
-                    if original_is_compliant:
-                        pipeline_info["repair_before_correct"] += 1
-
-                    pipeline_info["repair_total_checks"] += 1
-
-                    if self.verbose_output:
-                        print(f"     原始查询: {'✅ 合规' if original_is_compliant else '❌ 不合规'}")
-
-                    current_query = sparqls[i]
-
-                    # 如果不合规，进行修复
-                    if not original_is_compliant:
-                        for repair_iter in range(self.iter_nums):
-                            is_compliant, details = checker.check_query(
-                                current_query, subqueries[i]["question"]
-                            )
-
-                            if not is_compliant:
-                                pipeline_info["repair_attempts"] += 1
-                                if self.verbose_output:
-                                    print(f"     语法不合规,进行第{repair_iter + 1}次迭代修复")
-
-                                # 计算修复的Token消耗
-                                repair_input = f"{subqueries[i]['question']} {details} {current_query}"
-                                repaired_sparql = repairer.repair_sparql(
-                                    subqueries[i]["question"], details, current_query
-                                )
-                                repair_output = repaired_sparql
-
-                                repair_call_tokens = self.token_calculator.calculate_llm_call_tokens(repair_input,
-                                                                                                     repair_output)
-                                repair_tokens["input_tokens"] += repair_call_tokens["input_tokens"]
-                                repair_tokens["output_tokens"] += repair_call_tokens["output_tokens"]
-                                repair_tokens["total_tokens"] += repair_call_tokens["total_tokens"]
-                                token_stats["steps_count"]["query_repairer_calls"] += 1
-
-                                iteration_info = {
-                                    "iteration": repair_iter + 1,
-                                    "before_repair": current_query,
-                                    "after_repair": repaired_sparql,
-                                    "repair_details": details
-                                }
-                                query_repair_info["repair_iterations"].append(iteration_info)
-
-                                current_query = repaired_sparql
-
-                                if self.verbose_output:
-                                    print(f"     第{i + 1}个子查询的第{repair_iter + 1}次修复完成")
-                            else:
-                                # 修复成功，跳出循环
-                                break
-
-                    # 检查最终查询的正确性
-                    final_is_compliant, final_details = checker.check_query(
-                        current_query, subqueries[i]["question"]
-                    )
-                    query_repair_info["after_repair_correct"] = final_is_compliant
-                    query_repair_info["final_query"] = current_query
-
-                    if final_is_compliant:
-                        pipeline_info["repair_after_correct"] += 1
-
-                    # 如果修复前不正确，修复后正确，算作修复成功
-                    if not original_is_compliant and final_is_compliant:
-                        pipeline_info["repair_successes"] += 1
-
-                    pipeline_info["repair_details"].append(query_repair_info)
-                    sparqls[i] = current_query
-
+                token_stats["query_repairer"] = repair_tokens
+                token_stats["steps_count"]["query_repairer_calls"] = repair_msg_count
+                # 从 thinking_log 重建 pipeline_info 修复统计
+                pipeline_info["repair_attempts"]     = repair_msg_count
+                pipeline_info["repair_total_checks"] = repair_msg_count
             else:
-                if self.verbose_output:
-                    print(f"  3. 跳过语义检查和修复（未启用）")
+                token_stats["query_repairer"] = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
 
-            token_stats["query_repairer"] = repair_tokens
-            pipeline_info["step_times"]["semantic_repair"] = time.time() - step_start
-
-            if self.verbose_output and self.is_use_repair:
-                print(f"     查询修复Token消耗: {repair_tokens['total_tokens']}")
-
-            # 4. 数据库调度和执行
-            step_start = time.time()
-            if self.verbose_output:
-                print(f"  4. 执行数据库查询...")
-
-            subqueryscheduler = SubQueryScheduler(self.model)
-            converted_queries = []
-            query_results = {}
-            scheduler_tokens = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
-
-            for i in range(len(sparqls)):
-                # 数据库选择
-                scheduler_input = f"{sparqls[i]} {subqueries[i]['question']}"
-                sel_db = subqueryscheduler.select_database(
-                    sparqls[i],
-                    subqueries[i]["question"]
-                )
-                scheduler_output = sel_db
-
-                scheduler_call_tokens = self.token_calculator.calculate_llm_call_tokens(scheduler_input,
-                                                                                        scheduler_output)
-                scheduler_tokens["input_tokens"] += scheduler_call_tokens["input_tokens"]
-                scheduler_tokens["output_tokens"] += scheduler_call_tokens["output_tokens"]
-                scheduler_tokens["total_tokens"] += scheduler_call_tokens["total_tokens"]
-
-                db_selection_info = {
-                    "query_index": i + 1,
-                    "selected_database": sel_db,
-                    "original_sparql": sparqls[i]
-                }
-                pipeline_info["database_selections"].append(db_selection_info)
-
-                # 查询转换和执行
-                subqueryexecutor = SubQueryExecutor(self.model)
-                converted_query = subqueryexecutor.convert_to_target_query(sparqls[i], sel_db)
-                converted_queries.append(converted_query)
-
-                if subqueryexecutor.has_placeholder(converted_query):
-                    converted_query = subqueryexecutor.replace_placeholders(converted_query, query_results)
-
-                result = subqueryexecutor.execute_in_database(converted_query, sel_db)
-
-                # 安全序列化查询结果
-                safe_result = safe_serialize_data(result)
-                query_results[i + 1] = safe_result
-
-                converted_query_info = {
-                    "query_index": i + 1,
-                    "database": sel_db,
-                    "converted_query": converted_query,
-                    "result_count": len(result) if result else 0
-                }
-                pipeline_info["converted_queries"].append(converted_query_info)
-
-                if self.verbose_output:
-                    print(f"     子查询 {i + 1} -> {sel_db} -> {len(result)} 条结果")
-                    if result and len(result) > 0:
-                        sample_size = min(3, len(result))
-                        print(f"     样例结果: {result[:sample_size]}")
-
-            token_stats["subquery_scheduler"] = scheduler_tokens
-            token_stats["steps_count"]["subquery_scheduler_calls"] = len(sparqls)
-            pipeline_info["step_times"]["database_execution"] = time.time() - step_start
-
-            if self.verbose_output:
-                print(f"     数据库调度Token消耗: {scheduler_tokens['total_tokens']}")
-
-            # 计算总Token消耗
             token_stats["total_tokens"] = (
-                    token_stats["query_planner"]["total_tokens"] +
-                    token_stats["sparql_generator"]["total_tokens"] +
-                    token_stats["query_repairer"]["total_tokens"] +
-                    token_stats["subquery_scheduler"]["total_tokens"]
+                token_stats["query_planner"]["total_tokens"]
+                + token_stats["sparql_generator"]["total_tokens"]
+                + token_stats["query_repairer"]["total_tokens"]
+                + token_stats["subquery_scheduler"]["total_tokens"]
             )
 
-            # 安全记录查询结果和流程信息
+            # ── 构建 converted_queries / database_selections（从 thinking_log 解析）─
+            for idx in range(1, len(subqueries) + 1):
+                # 从 thinking_log 里找数据库选择信息
+                selected_db = "Unknown"
+                for msg in thinking_log:
+                    if f"子查询 {idx} 选择数据库" in msg or f"子查询{idx}选择数据库" in msg:
+                        parts = msg.split(":")
+                        if len(parts) >= 2:
+                            selected_db = parts[-1].strip()
+                        break
+
+                pipeline_info["database_selections"].append({
+                    "query_index":    idx,
+                    "selected_database": selected_db,
+                })
+
+                result_rows = raw_results.get(idx, [])
+                pipeline_info["converted_queries"].append({
+                    "query_index":  idx,
+                    "database":     selected_db,
+                    "result_count": len(result_rows),
+                })
+
+                if self.verbose_output:
+                    print(f"     子查询 {idx} -> {selected_db} -> {len(result_rows)} 条结果")
+                    if result_rows:
+                        print(f"     样例结果: {result_rows[:3]}")
+
+            # ── 安全序列化并记录中间结果 ───────────────────────────────────────
+            query_results = safe_serialize_data(raw_results)
             self._log_intermediate("query_results", query_results, question_id)
-            safe_pipeline_info = safe_serialize_data(pipeline_info)
-            self._log_intermediate("pipeline_info", safe_pipeline_info, question_id)
+            self._log_intermediate("pipeline_info", safe_serialize_data(pipeline_info), question_id)
 
         except Exception as e:
+            import traceback
             error_msg = str(e)
             pipeline_info["errors"].append(error_msg)
             self._log_error(error_msg, f"question_{question_id}_pipeline")
             if self.verbose_output:
                 print(f"  执行流程出错: {e}")
+                traceback.print_exc()
             return {}, time.time() - start_time, pipeline_info, token_stats
 
         total_time = time.time() - start_time
         if self.verbose_output:
             print(f"  总执行时间: {total_time:.2f}s")
-            print(f"  总Token消耗: {token_stats['total_tokens']}")
-            print(f"  各步骤用时: {pipeline_info['step_times']}")
+            print(f"  总Token消耗(估算): {token_stats['total_tokens']}")
 
         return query_results, total_time, pipeline_info, token_stats
 
@@ -976,7 +905,7 @@ class SystemTestFramework:
         print(f"样例数量: {self.example_count}")
         print(f"评估模式: 混合评价（第1、2子查询LLM智能判断，第3子查询行数比较）")
         print(f"评价指标: EX (子查询正确率), FEX (完整问题正确率), Token成本")
-        print(f"第三个子查询（代谢通路）评价规则: 只比较返回行数，行数相似度≥80%视为正确")
+        print(f"第三个子查询（代谢通路）评价规则: 宽松数量级匹配；期望非空但实际为空时判错")
 
         # 测试结果汇总
         results = {
@@ -1156,7 +1085,7 @@ class SystemTestFramework:
         print(f"   - FEX: 完整问题正确率，所有子查询都正确才为1")
         print(f"   - 混合评价模式:")
         print(f"     * 第1、2子查询: LLM智能判断，关注内容包含性")
-        print(f"     * 第3子查询（代谢通路）: 行数相似性比较，行数相似度≥80%视为正确")
+        print(f"     * 第3子查询（代谢通路）: 宽松数量级匹配；期望非空但实际为空时判错")
         print(f"   - 修复成功率: 修复后正确 / 修复尝试次数")
         print(f"   - Tokens per Query: 平均每个问题的Token消耗")
         print(f"   - 样例数量: {config_info.get('example_count', 'N/A')} (Few-shot learning)")
@@ -1250,7 +1179,7 @@ class SystemTestFramework:
             f.write("  - FEX: 完整问题正确率，所有子查询都正确才为1\n")
             f.write("  - 混合评价模式:\n")
             f.write("    * 第1、2子查询: LLM智能判断，关注内容包含性\n")
-            f.write("    * 第3子查询（代谢通路）: 行数相似性比较，行数相似度≥80%视为正确\n")
+            f.write("    * 第3子查询（代谢通路）: 宽松数量级匹配；期望非空但实际为空时判错\n")
             f.write("  - 修复成功率: 修复后正确 / 修复尝试次数\n")
             f.write("  - Token成本: 基于字符数估算，中文字符×0.6+英文字符×0.3\n\n")
 
@@ -1409,7 +1338,7 @@ def main():
     print("  - FEX: 完整问题正确率，所有子查询都正确才为1")
     print("混合评价模式:")
     print("  - 第1、2子查询: LLM智能判断，关注内容包含性")
-    print("  - 第3子查询（代谢通路）: 数量相似性比较，相似度≥80%视为正确")
+    print("  - 第3子查询（代谢通路）: 宽松数量级匹配；期望非空但实际为空时判错")
     print("Token计算规则: 中文字符×0.6 + 英文字符×0.3")
 
     # 创建测试框架

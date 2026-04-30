@@ -166,11 +166,11 @@ fi
 
 echo -e "${YELLOW}[5/5] 启动服务...${NC}"
 
-lsof -ti:5000 | xargs kill -9 2>/dev/null
+lsof -ti:5001 | xargs kill -9 2>/dev/null
 lsof -ti:5173 | xargs kill -9 2>/dev/null
 sleep 1
 
-echo "  🔧 启动后端 (端口 5000)..."
+echo "  🔧 启动后端 (端口 5001)..."
 cd "$SCRIPT_DIR"
 "$VENV_DIR/bin/python" app.py > "$BACKEND_LOG" 2>&1 &
 BACKEND_PID=$!
@@ -179,7 +179,7 @@ echo -n "  等待后端启动"
 for i in $(seq 1 20); do
     sleep 1
     echo -n "."
-    if curl -s http://localhost:5000/api/health > /dev/null 2>&1; then
+    if curl -s http://localhost:5001/api/health > /dev/null 2>&1; then
         echo ""
         echo -e "  ${GREEN}✅ 后端已就绪${NC}"
         break
@@ -208,7 +208,7 @@ echo -e "${GREEN}  ✨ 启动完成！                         ${NC}"
 echo -e "${BLUE}════════════════════════════════════════${NC}"
 echo ""
 echo -e "  🌐 前端地址: ${GREEN}http://localhost:5173${NC}"
-echo -e "  🔧 后端地址: ${GREEN}http://localhost:5000${NC}"
+echo -e "  🔧 后端地址: ${GREEN}http://localhost:5001${NC}"
 echo -e "  📄 后端日志: ${BACKEND_LOG}"
 echo ""
 echo -e "${YELLOW}  按 Ctrl+C 停止所有服务${NC}"
@@ -219,7 +219,7 @@ cleanup() {
     echo -e "${YELLOW}正在停止所有服务...${NC}"
     kill $BACKEND_PID 2>/dev/null
     kill $FRONTEND_PID 2>/dev/null
-    lsof -ti:5000 | xargs kill -9 2>/dev/null
+    lsof -ti:5001 | xargs kill -9 2>/dev/null
     lsof -ti:5173 | xargs kill -9 2>/dev/null
     echo -e "${GREEN}✅ 已停止${NC}"
     exit 0

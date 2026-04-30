@@ -4,16 +4,39 @@
     <div class="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <span class="logo-icon">🧬</span>
-          <span>FQMA</span>
+          <div class="logo-texts">
+            <span class="logo-name">{{ $config.APP_NAME }}</span>
+            <div class="sidebar-link-row">
+              <button class="about-link" @click="openAboutModal">About</button>
+              <button class="about-link" @click="openDatasetJson">View Dataset</button>
+            </div>
+            <ul class="sidebar-features">
+              <li v-for="(item, idx) in currentDatasetConfig.features" :key="idx">
+                {{ item }}
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- 数据集选择器 -->
-        <div class="dataset-selector">
-          <label class="dataset-label">数据集</label>
-          <select v-model="currentDataset" class="dataset-select" @change="handleDatasetChange">
-            <option value="GMQA">🐷 GMQA（生猪微生物）</option>
-            <option value="RODI">📄 RODI（会议论文系统）</option>
-          </select>
+      </div>
+      <div class="dataset-selector">
+        <label class="dataset-label" for="dataset-select">Current Database</label>
+        <select
+          id="dataset-select"
+          v-model="currentDataset"
+          class="dataset-select"
+          :disabled="datasetSwitching || isProcessing"
+          @change="switchDataset($event.target.value)"
+        >
+          <option
+            v-for="dataset in datasetOptions"
+            :key="dataset.name"
+            :value="dataset.name"
+          >
+            {{ dataset.displayName || dataset.name }}
+          </option>
+        </select>
+        <div class="dataset-hint">
+          {{ datasetSwitching ? 'Switching database...' : currentDatasetConfig.label }}
         </div>
       </div>
       <button class="new-query-btn" @click="startNewQuery">
@@ -23,7 +46,7 @@
       <div class="sidebar-section">
         <div class="section-title-wrapper">
           <div class="section-title">Queries</div>
-          <button class="clear-history-btn" @click="clearAllHistory" title="清空历史记录">
+          <button class="clear-history-btn" @click="clearAllHistory" title="Clear history">
             🗑️
           </button>
         </div>
@@ -32,8 +55,8 @@
         <!-- 空状态 -->
         <div v-if="queryHistory.length === 0" class="empty-history">
           <div class="empty-icon">💬</div>
-          <div class="empty-text">暂无对话历史</div>
-          <div class="empty-subtitle">开始新的对话吧！</div>
+          <div class="empty-text">No query history</div>
+          <div class="empty-subtitle">Start a new query.</div>
         </div>
         <!-- 历史记录列表 -->
         <div
@@ -60,13 +83,19 @@
           <div v-if="messages.length === 0" class="welcome-screen">
             <div class="welcome-title">
               <span>🧬</span>
-              <span>FQMA</span>
+              <span>{{ $config.APP_NAME }}</span>
+              <span></span>
             </div>
             <div class="welcome-subtitle">{{ currentDatasetConfig.label }}</div>
+            <img
+              class="welcome-ontology-image"
+              src="/sys_ontology.png"
+              alt="FQMA ontology and federated query workflow"
+            />
             <div class="example-section">
               <div class="example-title">
                 <span>💡</span>
-                <span>你可以这样问我：</span>
+                <span>Example queries</span>
               </div>
               <div class="example-cards">
                 <div v-for="(example, index) in currentDatasetConfig.examples" :key="index" class="example-card" @click="useExample(example.text)">
@@ -94,19 +123,22 @@
                   <div class="thinking-header" @click="toggleThinking(message)">
                     <div class="thinking-status">
                       <span class="thinking-icon">🧠</span>
-                      {{ message.loading ? '正在思考...' : '思考完成' }}
+                      {{ message.loading ? 'Thinking...' : 'Thinking complete' }}
                     </div>
                     <div class="thinking-controls">
-                      <span class="thinking-toggle">{{ message.thinkingCollapsed ? '展开' : '收起' }}</span>
+                      <span class="thinking-toggle">{{ message.thinkingCollapsed ? 'Expand' : 'Collapse' }}</span>
                     </div>
                   </div>
-                  <div v-if="!message.thinkingCollapsed" class="thinking-content">
+                  <div
+                    v-if="!message.thinkingCollapsed"
+                    :ref="`thinkingContent-${message.message_id}`"
+                    class="thinking-content"
+                  >
                     <div class="thinking-list">
                       <div
                         v-for="(step, i) in message.thinking"
                         :key="i"
                         class="thinking-item"
-                        :style="{ animationDelay: `${i * 0.05}s` }"
                       >
                         <div v-if="step.type === 'print'" class="print-message">
                           <span class="print-icon">📄</span>
@@ -120,7 +152,7 @@
                       <div v-if="message.loading" class="thinking-item">
                         <div class="thinking-loading">
                           <div class="dot-pulse"></div>
-                          正在处理...
+                          Processing...
                         </div>
                       </div>
                     </div>
@@ -128,7 +160,16 @@
                 </div>
                 <!-- AI回复内容 -->
                 <div v-if="!message.loading && (message.tables || message.explanation)" class="message-content ai-bubble">
-                  <div v-if="message.tables" v-html="renderMarkdown(message.tables)" class="result-table"></div>
+                  <div v-if="message.mergedTable" class="merged-table-section">
+                    <div class="merged-table-header">
+                      <h3>Merged Summary Table</h3>
+                      <button v-if="message.mergedCsv" class="download-btn" @click="downloadMergedCsv(message)">
+                        Download
+                      </button>
+                    </div>
+                    <div v-html="renderMarkdown(stripMergedTableTitle(message.mergedTable))" class="result-table merged-table-scroll"></div>
+                  </div>
+                  <div v-if="message.tables" v-html="renderMarkdown(message.tables)" class="result-table detail-table-section"></div>
                   <div v-if="message.explanation" v-html="renderMarkdown(message.explanation)" class="result-explanation"></div>
                 </div>
                 <!-- 加载动画 - 初始状态 -->
@@ -136,7 +177,7 @@
                   <div class="loading-dots">
                     <span></span><span></span><span></span>
                   </div>
-                  正在处理您的问题...
+                  Processing your query...
                 </div>
                 <!-- 错误信息 -->
                 <div v-if="message.error" class="message-content error-bubble">
@@ -154,7 +195,7 @@
             <textarea
               v-model="inputText"
               @keydown.enter.prevent="handleEnter"
-              placeholder="输入问题..."
+              placeholder="Enter your question..."
               class="input-textarea"
               rows="1"
               ref="textareaRef"
@@ -166,13 +207,98 @@
               @click="sendQuery"
               :disabled="!inputText.trim() || isProcessing"
             >
-              <span v-if="!isProcessing">发送</span>
-              <span v-else>处理中</span>
+              <span v-if="!isProcessing">Send</span>
+              <span v-else>Processing</span>
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <div v-if="showAboutModal" class="about-modal-mask" @click.self="closeAboutModal">
+      <div class="about-modal">
+        <div class="about-modal-header">
+          <h2>{{ aboutProject.title }}</h2>
+          <button class="about-close" @click="closeAboutModal">Close</button>
+        </div>
+        <div class="about-modal-body">
+          <section class="about-block">
+            <h3>Project Overview</h3>
+            <p>{{ aboutProject.intro }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Developers</h3>
+            <p>{{ aboutProject.developers }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Objectives</h3>
+            <p>{{ aboutProject.problems }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Core Ideas and Contributions</h3>
+            <p>{{ aboutProject.innovations }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Databases</h3>
+            <p>{{ aboutProject.databases }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Dataset Construction and Sources</h3>
+            <p>{{ aboutProject.datasetSources }}</p>
+          </section>
+          <section class="about-block">
+            <h3>Question-Answer Categories</h3>
+            <p>{{ aboutProject.qaCategories }}</p>
+            <h4>GMQA Dataset Statistics</h4>
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  <th>Query Category</th>
+                  <th>Questions</th>
+                  <th>Tables</th>
+                  <th>Triples</th>
+                  <th>Mean Rows</th>
+                  <th>Row Range</th>
+                  <th>Column Range</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="stat in aboutProject.qaStats" :key="stat.category">
+                  <td>{{ stat.category }}</td>
+                  <td>{{ stat.questions }}</td>
+                  <td>{{ stat.tables }}</td>
+                  <td>{{ stat.triples }}</td>
+                  <td>{{ stat.meanRows }}</td>
+                  <td>{{ stat.rowRange }}</td>
+                  <td>{{ stat.colRange }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4>Query Category Details</h4>
+            <table class="details-table">
+              <thead>
+                <tr>
+                  <th>Query Category</th>
+                  <th>Questions</th>
+                  <th>Representative Natural-Language Question</th>
+                  <th>Data Sources</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="detail in aboutProject.qaDetails" :key="detail.category">
+                  <td>{{ detail.category }}</td>
+                  <td>{{ detail.qty }}</td>
+                  <td>{{ detail.query }}</td>
+                  <td>{{ detail.sources }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -185,6 +311,9 @@ import appConfig from './config.js'
 
 export default {
   name: 'App',
+  beforeCreate() {
+    this.$config = appConfig;
+  },
   data() {
     return {
       sessionId: null,
@@ -195,8 +324,11 @@ export default {
       isProcessing: false,
       messageIdMap: {},
       currentThinkingMessage: null,
-      currentDataset: appConfig.DEFAULT_DATASET,
-      appConfig: appConfig
+      showAboutModal: false,
+      logoLoadFailed: false,
+      currentDataset: appConfig.DEFAULT_DATASET || 'GMQA',
+      lastSyncedDataset: appConfig.DEFAULT_DATASET || 'GMQA',
+      datasetSwitching: false,
     }
   },
   computed: {
@@ -204,46 +336,32 @@ export default {
       return process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost';
     },
     currentDatasetConfig() {
-      return this.appConfig.DATASETS[this.currentDataset] || this.appConfig.DATASETS[appConfig.DEFAULT_DATASET];
+      return this.$config.DATASETS?.[this.currentDataset] || this.$config.DATASETS?.GMQA || {};
+    },
+    datasetOptions() {
+      return Object.values(this.$config.DATASETS || {});
+    },
+    aboutProject() {
+      return this.$config.ABOUT_PROJECT || {};
     }
   },
   mounted() {
     this.initSession();
     this.setupSocketConnection();
-    this.syncDatasetWithBackend();
+    this.syncDefaultDataset();
   },
   methods: {
-async syncDatasetWithBackend() {
-  try {
-    const dataset = this.currentDataset || 'GMQA';
-    await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, {
-      dataset: dataset
-    });
-    console.log(`✨ 后端数据集已同步为: ${dataset}`);
-  } catch (error) {
-    console.error("❌ 同步数据集失败:", error);
-  }
-},
-async handleDatasetChange() {
-  localStorage.setItem('geneti-dataset', this.currentDataset);
-  console.log(`🔄 正在尝试切换数据集到: ${this.currentDataset}`);
-  
-  try {
-    await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, {
-      dataset: this.currentDataset
-    });
-    console.log(`✅ 后端数据集已成功切换为: ${this.currentDataset}`);
-  } catch (error) {
-    console.error('切换数据集失败:', error);
-    alert('切换数据集失败，请检查后端连接');
-  }
-  
-  this.startNewQuery(); // 切换完后清空当前对话
-},
+    async syncDefaultDataset() {
+      try {
+        await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, { dataset: this.currentDataset });
+        this.lastSyncedDataset = this.currentDataset;
+      } catch (error) {
+        console.warn('Failed to sync the default database. You can switch it manually after the backend starts:', error);
+      }
+    },
     initSession() {
       
       this.sessionId = localStorage.getItem('geneti-session-id');
-      this.currentDataset = localStorage.getItem('geneti-dataset') || appConfig.DEFAULT_DATASET;
       if (this.sessionId) {
         this.loadHistory();
       } else {
@@ -264,6 +382,7 @@ async handleDatasetChange() {
           nextTick(() => {
             // 实时添加思考步骤
             if (msg.type === 'thinking') {
+              if (!String(msg.data || '').trim()) return;
               if (!sysMsg.thinking) {
                 sysMsg.thinking = [];
               }
@@ -272,10 +391,12 @@ async handleDatasetChange() {
                 type: 'thinking',
                 content: msg.data
               });
-              this.scrollToBottom();
+              this.scrollThinkingToBottom(msg.message_id);
+              this.scrollToBottomIfNearBottom();
             }
             // 处理print输出
             else if (msg.type === 'print') {
+              if (!String(msg.data || '').trim()) return;
               if (!sysMsg.thinking) {
                 sysMsg.thinking = [];
               }
@@ -284,7 +405,8 @@ async handleDatasetChange() {
                 type: 'print',
                 content: msg.data
               });
-              this.scrollToBottom();
+              this.scrollThinkingToBottom(msg.message_id);
+              this.scrollToBottomIfNearBottom();
             }
             // 处理最终结果
             else if (msg.type === 'result') {
@@ -292,10 +414,13 @@ async handleDatasetChange() {
               if (msg.data.success) {
                 sysMsg.subqueries = msg.data.subqueries;
                 sysMsg.tables = msg.data.tables;
+                sysMsg.mergedTable = msg.data.merged_table || null;
+                sysMsg.mergedCsv = msg.data.merged_csv || null;
                 sysMsg.explanation = msg.data.explanation;
               } else {
                 sysMsg.error = msg.data.error;
               }
+              this.scrollThinkingToBottom(msg.message_id);
               this.scrollToBottom();
             }
           });
@@ -341,6 +466,8 @@ async handleDatasetChange() {
         thinking: null,  // 初始化为null，收到第一个思考步骤时再创建数组
         subqueries: null,
         tables: null,
+        mergedTable: null,
+        mergedCsv: null,
         explanation: null,
         error: null,
         message_id,
@@ -357,7 +484,8 @@ async handleDatasetChange() {
         const response = await axios.post(`${appConfig.API_BASE_URL}/query`, {
           question,
           session_id: this.sessionId,
-          message_id
+          message_id,
+          dataset: this.currentDataset
         });
 
         const data = response.data;
@@ -368,6 +496,7 @@ async handleDatasetChange() {
         const newQuery = {
           id: query_id,
           user_message: question,
+          dataset: this.currentDataset,
           timestamp: new Date().toISOString(),
           response: data.result
         };
@@ -377,7 +506,7 @@ async handleDatasetChange() {
         localStorage.setItem('geneti-history-cache', JSON.stringify(this.queryHistory));
       } catch (error) {
         systemMessage.loading = false;
-        systemMessage.error = '查询失败: ' + (error.response?.data?.error || error.message);
+        systemMessage.error = 'Query failed: ' + (error.response?.data?.error || error.message);
       } finally {
         this.isProcessing = false;
         this.scrollToBottom();
@@ -397,7 +526,7 @@ async handleDatasetChange() {
       this.currentQueryId = query.id;
       const record = this.queryHistory.find(q => q.id === query.id);
       if (!record) {
-        alert('该对话不存在');
+        alert('This conversation does not exist.');
         return;
       }
 
@@ -416,6 +545,8 @@ async handleDatasetChange() {
         }) : [],
         subqueries: record.response?.subqueries || null,
         tables: record.response?.tables || null,
+        mergedTable: record.response?.merged_table || null,
+        mergedCsv: record.response?.merged_csv || null,
         explanation: record.response?.explanation || null,
         error: record.response?.error || null,
         message_id: null,
@@ -426,7 +557,7 @@ async handleDatasetChange() {
       this.scrollToBottom();
     },
     deleteQuery(queryId) {
-      if (!confirm('确定要删除这个对话吗？')) return;
+      if (!confirm('Delete this conversation?')) return;
       this.queryHistory = this.queryHistory.filter(q => q.id !== queryId);
       if (this.currentQueryId === queryId) {
         this.startNewQuery();
@@ -438,7 +569,7 @@ async handleDatasetChange() {
       localStorage.setItem('geneti-history-cache', JSON.stringify(this.queryHistory));
     },
     clearAllHistory() {
-      if (!confirm('确定要清空所有对话历史吗？此操作不可恢复。')) return;
+      if (!confirm('Clear all query history? This action cannot be undone.')) return;
       this.queryHistory = [];
       this.messages = [];
       this.currentQueryId = null;
@@ -449,6 +580,26 @@ async handleDatasetChange() {
     useExample(text) {
       this.inputText = text;
       this.sendQuery();
+    },
+    async switchDataset(dataset) {
+      if (this.isProcessing) {
+        this.currentDataset = this.lastSyncedDataset;
+        alert('A query is still running. Please wait until it finishes before switching databases.');
+        return;
+      }
+      if (!this.$config.DATASETS?.[dataset] || dataset === this.lastSyncedDataset) return;
+
+      this.datasetSwitching = true;
+      try {
+        await axios.post(`${appConfig.API_BASE_URL}/switch-dataset`, { dataset });
+        this.lastSyncedDataset = dataset;
+        this.startNewQuery();
+      } catch (error) {
+        this.currentDataset = this.lastSyncedDataset;
+        alert('Failed to switch database: ' + (error.response?.data?.error || error.message));
+      } finally {
+        this.datasetSwitching = false;
+      }
     },
     handleEnter(event) {
       if (!event.shiftKey) {
@@ -470,6 +621,25 @@ async handleDatasetChange() {
         }
       });
     },
+    scrollToBottomIfNearBottom() {
+      nextTick(() => {
+        const container = this.$refs.chatContainer;
+        if (!container) return;
+        const distanceToBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+        if (distanceToBottom < 180) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+    },
+    scrollThinkingToBottom(messageId) {
+      nextTick(() => {
+        const refName = `thinkingContent-${messageId}`;
+        const refValue = this.$refs[refName];
+        const contentEl = Array.isArray(refValue) ? refValue[0] : refValue;
+        if (!contentEl) return;
+        contentEl.scrollTop = contentEl.scrollHeight;
+      });
+    },
     truncateText(text, maxLength) {
       if (!text) return '';
       return text.length <= maxLength ? text : text.substring(0, maxLength) + '...';
@@ -481,15 +651,48 @@ async handleDatasetChange() {
       const diff = now - date;
 
       if (diff < 3600000) {
-        return Math.floor(diff / 60000) + ' 分钟前';
+        return Math.floor(diff / 60000) + ' min ago';
       } else if (diff < 86400000) {
-        return Math.floor(diff / 3600000) + ' 小时前';
+        return Math.floor(diff / 3600000) + ' hr ago';
       } else {
         return date.toLocaleDateString();
       }
     },
     renderMarkdown(text) {
       return marked.parse(text || '');
+    },
+    stripMergedTableTitle(text) {
+      return (text || '').replace(/^#{1,6}\s*联合汇总表\s*\n+/i, '');
+    },
+    openAboutModal() {
+      this.showAboutModal = true;
+    },
+    openDatasetJson() {
+      const datasetJsonPath = this.currentDatasetConfig.datasetJsonPath;
+      if (!datasetJsonPath) {
+        alert('No dataset JSON file is configured for the current database.');
+        return;
+      }
+      window.open(datasetJsonPath, '_blank', 'noopener,noreferrer');
+    },
+    closeAboutModal() {
+      this.showAboutModal = false;
+    },
+    onLogoError() {
+      this.logoLoadFailed = true;
+    },
+    downloadMergedCsv(message) {
+      if (!message || !message.mergedCsv) return;
+      const csvContent = '\ufeff' + message.mergedCsv;
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `zhiwei_jianzhu_merged_result_${Date.now()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     },
     // 思考过程控制方法
     toggleThinking(message) {
@@ -534,15 +737,71 @@ html, body, #app {
 }
 .logo {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   color: #202123;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
-.logo-icon {
-  font-size: 24px;
+.logo-png-box {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.logo-png {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.logo-png-placeholder {
+  font-size: 12px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+.logo-texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 2px;
+}
+.logo-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+.sidebar-link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.about-link {
+  border: 1px solid #2563eb;
+  background: #ffffff;
+  padding: 4px 8px;
+  color: #2563eb;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.about-link:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+.sidebar-features {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.sidebar-features li {
+  margin-bottom: 4px;
 }
 /* 数据集选择器样式 */
 .dataset-selector {
@@ -574,6 +833,16 @@ html, body, #app {
   outline: none;
   border-color: #10a37f;
   box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.1);
+}
+.dataset-select:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  background-color: #f8fafc;
+}
+.dataset-hint {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.45;
 }
 .new-query-btn {
   width: 100%;
@@ -749,7 +1018,13 @@ html, body, #app {
 .welcome-subtitle {
   font-size: 18px;
   color: #666;
-  margin-bottom: 48px;
+  margin-bottom: 18px;
+}
+.welcome-ontology-image {
+  width: min(520px, 82%);
+  max-height: 190px;
+  object-fit: contain;
+  margin: 0 0 22px;
 }
 .example-section {
   width: 100%;
@@ -910,6 +1185,9 @@ html, body, #app {
 .thinking-content {
   padding: 8px 10px;
   background: #ffffff;
+  max-height: 280px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .thinking-list {
   display: flex;
@@ -917,8 +1195,8 @@ html, body, #app {
   gap: 3px;
 }
 .thinking-item {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 1;
+  animation: fadeIn 0.12s ease-out;
   padding: 2px 0;
 }
 .thinking-message {
@@ -1028,7 +1306,7 @@ html, body, #app {
 }
 .input-wrapper {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
   background: #ffffff;
   border: 1px solid #e0e0e0;
@@ -1102,16 +1380,48 @@ html, body, #app {
 }
 /* 表格样式 */
 .result-table table {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   margin: 8px 0;
   font-size: 14px;
+}
+.result-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.merged-table-section {
+  margin-bottom: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.merged-table-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+}
+.merged-table-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #202123;
+}
+.merged-table-scroll {
+  max-width: 100%;
+  border-radius: 10px;
+}
+.detail-table-section {
+  margin-top: 12px;
 }
 .result-table th,
 .result-table td {
   border: 1px solid #e0e0e0;
   padding: 8px 12px;
   text-align: left;
+  white-space: nowrap;
 }
 .result-table th {
   background: #f5f5f5;
@@ -1119,6 +1429,82 @@ html, body, #app {
 }
 .result-table tr:hover {
   background: #f9f9f9;
+}
+.download-btn {
+  border: 1px solid #d6d6d6;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.download-btn:hover {
+  background: #f7f7f7;
+}
+.about-modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.about-modal {
+  width: min(860px, 100%);
+  max-height: 88vh;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 16px 50px rgba(2, 6, 23, 0.22);
+}
+.about-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+.about-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+.about-close {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.about-modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  max-height: calc(88vh - 56px);
+}
+.about-block {
+  margin-bottom: 14px;
+}
+.about-block h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #111827;
+}
+.about-block p,
+.about-block li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #374151;
+}
+.about-block ul {
+  margin: 0;
+  padding-left: 18px;
 }
 /* Markdown样式 */
 .message-content h1,
@@ -1147,6 +1533,40 @@ html, body, #app {
   border-radius: 3px;
   font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.9em;
+}
+/* 关于页面表格样式 */
+.stats-table, .details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 12px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.stats-table th, .stats-table td,
+.details-table th, .details-table td {
+  border: 1px solid #e0e0e0;
+  padding: 8px 10px;
+  text-align: left;
+}
+.stats-table th, .details-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+}
+.stats-table tr:hover, .details-table tr:hover {
+  background: #f9fafb;
+}
+.stats-table tr:nth-child(even), .details-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+.about-block h4 {
+  margin: 16px 0 8px 0;
+  font-size: 13px;
+  color: #111827;
+  font-weight: 600;
 }
 .message-content pre {
   background: #f5f5f5;
@@ -1193,4 +1613,5 @@ html, body, #app {
     transform: translateY(0);
   }
 }
+
 </style>

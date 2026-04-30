@@ -2,7 +2,7 @@
   <h1>FQMA v2.0</h1>
   <p><strong>Ontology-based Federated Query Multi-Agent Framework</strong></p>
   <p><em>Produced by Huazhong Agricultural University</em></p>
-  <p><em>A part of Huazhong Agricultural University Agents</em></p>
+  <p><em>Research prototype for ontology-based federated querying</em></p>
 
   <p>
     <img alt="Python" src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white">
@@ -57,7 +57,7 @@ Our framework introduces three main contributions to the field:
 
 * **Multi-Agent Architecture:** An ontology-based federated query multi-agent framework specifically designed for natural language queries over heterogeneous data sources. 
 * **Semantic Repair Algorithm:** An ontology-driven iterative semantic query repair algorithm based on formal first-order logic validation rules combined with LLM evaluation, which further improves the execution accuracy of generated SPARQL queries. 
-* **New Benchmarks:** The introduction of two ontology-based federated query benchmarks, including a reconstructed RODI-C question set (237 NLQs) and a newly constructed Gut Microbiota Question-Answer (GMQA) dataset (320 NLQs), on which FQMA achieves state-of-the-art FEX performance.
+* **New Benchmarks:** The introduction of two ontology-based federated query benchmarks, including a reconstructed RODI-C question set (237 NLQs) and a newly constructed Gut Microbiota Question-Answer (GMQA) dataset (364 NLQs), on which FQMA achieves state-of-the-art FEX performance.
 
 
 ---
@@ -90,10 +90,10 @@ All queries are decomposed into 2–3 interdependent subqueries spanning multipl
 | | Disease effects (human / murine) | 88 | 7 | 17 | 47.00 | 3–170 | 5–5 |
 | | Food effects (human / murine) | 67 | 7 | 17 | 45.06 | 3–168 | 5–5 |
 | | Drug effects (human / murine) | 66 | 7 | 17 | 42.14 | 13–144 | 5–5 |
-| | **Total** | **320** | **86** | **179** | **37.20** | **2–170** | **5–8** |
+| | **Total** | **364** | **86** | **179** | **37.20** | **2–170** | **5–8** |
 
 ## GMQA
-GMQA (**Gut Microbiota Question-Answer**) is a **self-constructed domain-specific benchmark** for ontology-based federated querying in the gut microbiota field, addressing the lack of public federated query datasets for this domain. The dataset integrates multiple real-world biological resources deployed on heterogeneous backends and contains **320 complex natural language queries** decomposed into 3 interdependent subqueries.
+GMQA (**Gut Microbiota Question-Answer**) is a **self-constructed domain-specific benchmark** for ontology-based federated querying in the gut microbiota field, addressing the lack of public federated query datasets for this domain. The dataset integrates multiple real-world biological resources deployed on heterogeneous backends and contains **364 complex natural language queries** decomposed into 3 interdependent subqueries.
 
 ### GMQA Data Sources
 GMQA unifies heterogeneous biological databases with a custom gut microbiota ontology, covering the following core data sources:
@@ -304,9 +304,7 @@ Open a terminal **inside the `FQMA/` directory** and follow the instructions for
 <img width="50%" alt="image" src="https://github.com/user-attachments/assets/865def32-6d91-441a-888d-62a2afdba9c7" />
 </div>
 
-> ⚠️ **macOS-only prerequisite:** The FQMA web backend runs on port **5000**. On macOS Monterey and later, the system **AirPlay Receiver** service also occupies port 5000 by default, which will prevent the backend from starting.
->
-> Before launching, go to **System Settings → General → AirDrop & Handoff** and **turn off "AirPlay Receiver"**.
+> The current web deployment uses **port 5001** for the backend API and **port 5173** for the frontend interface.
 
 <div align="center">
   <img width="50%" alt="image" src="https://github.com/user-attachments/assets/9ada0c84-6a4f-40b2-badf-93063c397350" />
@@ -331,7 +329,7 @@ The script will:
 2. Create a `.venv` virtual environment (first run only)
 3. Install all dependencies from `requirements.txt` (first run only)
 4. Check for Node.js and install frontend dependencies (first run only, ~2–5 min)
-5. Start the Flask backend on port **5000**
+5. Start the Flask backend on port **5001**
 6. Start the Vite frontend on port **5173**
 7. Automatically open `http://localhost:5173` in your browser
 
@@ -359,7 +357,7 @@ The script will:
 2. Create a `.venv` virtual environment (first run only)
 3. Install all dependencies from `requirements.txt` (first run only)
 4. Check for Node.js and install frontend dependencies (first run only, ~2–5 min)
-5. Open a **FQMA-Backend** window running Flask on port **5000**
+5. Open a **FQMA-Backend** window running Flask on port **5001**
 6. Open a **FQMA-Frontend** window running Vite on port **5173**
 7. Automatically open `http://localhost:5173` in your browser
 

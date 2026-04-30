@@ -117,7 +117,8 @@
         rr:sqlQuery """
             SELECT DISTINCT
                 hecrbm.gene_symbol,
-                hecrbm.relationship AS microbiota_name
+                hecrbm.relationship AS microbiota_name,
+                gmgcr.host_type AS host_type
             FROM relationship.has_expression_change_results_by_microbiota hecrbm
             JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
                 ON hecrbm.index = gmgcr.index
@@ -132,6 +133,10 @@
         rr:objectMap [
             rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
         ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # 6. 基因减少微生物丰度映射
@@ -140,7 +145,8 @@
         rr:sqlQuery """
             SELECT DISTINCT
                 hecrbm.gene_symbol,
-                hecrbm.relationship AS microbiota_name
+                hecrbm.relationship AS microbiota_name,
+                gmgcr.host_type AS host_type
             FROM relationship.has_expression_change_results_by_microbiota hecrbm
             JOIN newgutmgene.gut_microbiota_gene_change_results gmgcr
                 ON hecrbm.index = gmgcr.index
@@ -155,6 +161,10 @@
         rr:objectMap [
             rr:template "http://www.semanticweb.org/ontologies/integrated_gut_microbiota_ontology/microbiota/{microbiota_name}"
         ]
+    ] ;
+    rr:predicateObjectMap [
+        rr:predicate onto:host_type ;
+        rr:objectMap [ rr:column "host_type" ; rr:datatype xsd:string ]
     ] .
 
 # ===================================================================

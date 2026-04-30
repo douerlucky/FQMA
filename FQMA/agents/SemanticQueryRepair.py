@@ -624,7 +624,7 @@ class QueryChecker:
         query_without_filters = self._remove_filter_clauses(sparql_query)
 
         # 1. 提取 rdf:type 后面的类
-        type_pattern = r'(?:rdf:type|a)\s+([^\s.{}]+)'
+        type_pattern = r'(?:\brdf:type\b|(?<![\w:])a(?![\w:]))\s+([^\s.{}]+)'
         for match in re.finditer(type_pattern, sparql_query):
             cls = match.group(1).strip()
             if not cls.startswith('?'):
@@ -886,7 +886,8 @@ class QueryRepairer:
 ### 重要提示:
 - RODI 使用 conf: 前缀，不是 ont:
 - 返回实体URI，不是ID属性
-- ID过滤使用: FILTER (?person = 3)
+- 作者 ID 查论文时优先使用: ?paper conf:has_authors ?person
+- 可用过滤示例: FILTER (?person = 3)
 """
         else:
             return "使用默认本体信息"
@@ -920,8 +921,9 @@ if __name__ == "__main__":
         PREFIX conf: <http://conference#>
         SELECT ?paper
         WHERE {
+          ?paper rdf:type conf:Paper .
+          ?paper conf:has_authors ?person .
           ?person rdf:type conf:Person .
-          ?person conf:contributes ?paper .
           FILTER (?person = 3)
         }
         """

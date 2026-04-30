@@ -205,7 +205,7 @@ REM ── 启动服务 ──────────────────�
 echo [5/5] 启动服务...
 
 REM 清理占用端口的旧进程
-for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5000 " 2^>nul') do (
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5001 " 2^>nul') do (
     taskkill /F /PID %%a >nul 2>&1
 )
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5173 " 2^>nul') do (
@@ -214,7 +214,7 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":5173 " 2^>nul') do (
 timeout /t 1 /nobreak >nul
 
 REM 启动后端（新窗口）
-echo   启动后端 (端口 5000)...
+echo   启动后端 (端口 5001)...
 cd /d "%SCRIPT_DIR%"
 start "FQMA-Backend" cmd /k "chcp 65001 >nul && call %VENV_DIR%\Scripts\activate.bat && echo [后端] 正在启动... && python app.py"
 
@@ -224,7 +224,7 @@ set /a count=0
 :wait_backend
 timeout /t 2 /nobreak >nul
 set /a count+=1
-curl -s http://localhost:5000/api/health >nul 2>&1
+curl -s http://localhost:5001/api/health >nul 2>&1
 if not errorlevel 1 (
     echo  OK 后端已就绪
     goto backend_ready
@@ -250,7 +250,7 @@ echo   ✨ 启动完成！
 echo ════════════════════════════════════════
 echo.
 echo   前端地址: http://localhost:5173
-echo   后端地址: http://localhost:5000
+echo   后端地址: http://localhost:5001
 echo.
 echo   关闭说明:
 echo     - 关闭 FQMA-Backend  窗口停止后端

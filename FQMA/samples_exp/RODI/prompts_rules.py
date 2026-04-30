@@ -22,6 +22,7 @@ QueryPlannerRules = """
 4. **避免冗余**：不添加解释性查询
 5. **聚合操作**：需要COUNT、SUM等聚合时，单独作为一个子查询
 6. **⚠️ 保留数量限制**：如果问题中有"前N篇"、"N条"等限制，必须在子查询中保留！
+7. **按数据库拆分属性**：如果目标属性分属不同数据库，必须拆成多个依赖子查询；例如“姓名”与“邮箱”不能放在同一个子查询
 
 ## 🔥【重要】实体类型传递规则
 分解时必须明确每个子查询返回的实体类型，这关系到后续子查询的正确生成：
@@ -166,6 +167,29 @@ SELECT ?person WHERE {{
 | 查询论文的摘要文本 | `?abstract conf:is_the_1th_part_of ?paper` | MySQL的Abstract表有is_the_1th_part_of列 |
 | 查询审稿意见 | `?review conf:reviews ?paper` | MySQL的Review表有reviews列 |
 | 查询人员邮箱 | `?person conf:has_an_email ?email` | MySQL的has_an_email表 |
+
+**🔥 人员属性分库规则（必须遵守）：**
+- `conf:has_an_email` 只能在邮箱子查询中单独使用，依赖人员列表时必须写成 `FILTER (?person IN (<<SUBQUERY_X>>))`
+- `conf:has_the_first_name` / `conf:has_the_last_name` 属于 PostgreSQL 返回属性，必须拆成单独的姓名子查询
+- 不要在“查询这些人员的邮箱”子查询中重复上游关系，例如 `?committee conf:has_members ?person` 或 `FILTER (?committee = 1000)`
+
+**✅ 正确：邮箱依赖子查询**
+```sparql
+SELECT ?person ?email WHERE {{
+  ?person rdf:type conf:Person .
+  ?person conf:has_an_email ?email .
+  FILTER (?person IN (<<SUBQUERY_1>>))
+}}
+```
+
+**❌ 错误：重复上游关系，导致跨库查询**
+```sparql
+SELECT ?person ?email WHERE {{
+  ?committee conf:has_members ?person .
+  ?person conf:has_an_email ?email .
+  FILTER (?committee = 1000)
+}}
+```
 
 **🔥 查询摘要时的正确模式（必须遵守）：**
 ```sparql

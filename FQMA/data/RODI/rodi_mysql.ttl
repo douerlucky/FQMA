@@ -76,7 +76,7 @@
     rr:logicalTable [ 
         rr:sqlQuery """
             SELECT Person as person_id, 
-                   VALUE as email
+                   VALUE as has_an_email
             FROM has_an_email
         """ 
     ] ;
@@ -86,7 +86,7 @@
     rr:predicateObjectMap [
         rr:predicate conf:has_an_email ;
         rr:objectMap [ 
-            rr:column "email" ; 
+            rr:column "has_an_email" ; 
             rr:datatype xsd:string 
         ]
     ] .
