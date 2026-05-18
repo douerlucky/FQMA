@@ -19,7 +19,8 @@ PG_PASSWORD = "pwd"          # Postgre密码
 # Neo4j 配置
 NEO4J_URI      = "bolt://localhost:7687"
 NEO4J_USER     = "neo4j"
-NEO4J_PASSWORD = "pwd"    # Neo4j密码
+NEO4J_PASSWORD = "akie0126"    # Neo4j密码
+NEO4J_DATABASE = "rodi"        # Neo4j 数据库名
 
 # ════════════════════════════════════════════════════════════════
 #  以下内容无需修改
@@ -180,7 +181,7 @@ def import_neo4j(task):
 
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     try:
-        with driver.session() as session:
+        with driver.session(database=NEO4J_DATABASE) as session:
             cnt = session.run("MATCH (n) RETURN count(n) AS c").single()["c"]
             if cnt > 0:
                 log(f"Neo4j 已有 {cnt} 个节点，跳过导入", "SKIP"); return True
@@ -191,7 +192,7 @@ def import_neo4j(task):
         stmts, buf = [], []
         for line in content.splitlines():
             s = line.strip()
-            if not s or s.startswith("//") or s.startswith("#"):
+            if not s or s.startswith("//") or s.startswith("#") or s.startswith(":"):
                 continue
             buf.append(line)
             if s.endswith(";"):
@@ -202,7 +203,7 @@ def import_neo4j(task):
 
         log(f"共 {len(stmts)} 条语句，执行中...", "INFO")
         errors = 0
-        with driver.session() as session:
+        with driver.session(database=NEO4J_DATABASE) as session:
             for i, stmt in enumerate(stmts, 1):
                 try:
                     session.run(stmt)
@@ -235,13 +236,13 @@ def main():
 
     results = []
 
-    print("\n── MySQL ────────────────────────────────────")
-    for t in MYSQL_TASKS:
-        results.append((t["file"], "MySQL", import_mysql(t)))
+    # print("\n── MySQL ────────────────────────────────────")
+    # for t in MYSQL_TASKS:
+    #     results.append((t["file"], "MySQL", import_mysql(t)))
 
-    print("\n── PostgreSQL ───────────────────────────────")
-    for t in PG_TASKS:
-        results.append((t["file"], "PostgreSQL", import_pg(t)))
+    # print("\n── PostgreSQL ───────────────────────────────")
+    # for t in PG_TASKS:
+    #     results.append((t["file"], "PostgreSQL", import_pg(t)))
 
     print("\n── Neo4j ────────────────────────────────────")
     for t in NEO4J_TASKS:
